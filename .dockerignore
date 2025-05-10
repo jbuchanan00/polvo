@@ -1,0 +1,8 @@
+# .dockerignore
+node_modules
+.vite
+.git
+.gitignore
+Dockerfile
+docker-compose.yml
+*.log
