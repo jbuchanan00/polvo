@@ -59,7 +59,7 @@
         border-radius: 5px;
         background-color: #ff6b6b;
         margin: 10px;
-        box-shadow: 5px 5px black, -5px -5px #dbec79;
+        box-shadow: 5px 5px black, -5px -5px #8669d7;
     }
     .postCard img {
         width: 90%;
