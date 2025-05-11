@@ -12,3 +12,14 @@ html {
 	font-size: 100%;
     background-color: aquamarine;
 }
+
+body {
+	font-family: 'NEO', sans-serif;
+}
+
+@font-face {
+	font-family: 'NEO';
+	src: url('./lib/assets/Lexend_Mega/LexendMega-VariableFont_wght.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
