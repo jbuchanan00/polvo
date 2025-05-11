@@ -1,0 +1,1 @@
+export {default as tempProfile} from './tempProfile.svg'
