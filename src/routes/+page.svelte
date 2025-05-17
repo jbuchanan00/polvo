@@ -1,10 +1,29 @@
-<script>
+<script lang='ts'>
     import ProfileInfoCard from "$lib/components/profileInfoCard.svelte";
     import ProfileImageCard from "$lib/components/profileImageCard.svelte";
     import photo from '$lib/assets/photos/testTat.jpg'
+    import { onMount } from 'svelte'
+    import { loadRemoteNavbars } from "$lib/handleRemotes/remoteNavbars";
+
+    onMount(async () => {
+        try {
+            if(document){
+                const topNavElement = document.getElementById('top-nav')
+                const bottomNavElement = document.getElementById('bottom-nav')
+                const remote = await loadRemoteNavbars()
+                if(topNavElement) remote.TopNavInstance(topNavElement)
+                if(bottomNavElement) remote.BottomNavInstance(bottomNavElement)
+            }
+            
+        }catch(e){
+            console.error(`Failed to load remote navbars`, e)
+        }
+    })
+
 </script>
 
 <div>
+    <div id="top-nav"></div>
     <div class="topSection">
         <ProfileImageCard />
         <ProfileInfoCard/>
@@ -41,9 +60,16 @@
             <p>Here</p>
         </div>
     </div>
+    <div id="bottom-nav"></div>
 </div>
 
 <style>
+    #top-nav {
+        width: 100%;
+        position: sticky;
+        margin-top: -10px;
+        z-index: 1;
+    }
     .diagonalElement {
         border: 2px solid #000;
         transform: rotate(16deg) translate(-40%, 100px);
