@@ -6,8 +6,12 @@
     <form method="POST" use:enhance>
         <div class="form_group_all">
             <div class="form_group">
-                <label class="sub_title" for="name">Name</label>
-                <input placeholder="Enter your full name" class="form_style" type="text" name="name" />
+                <label class="sub_title" for="displayname">DISPLAY NAME</label>
+                <input placeholder="Enter your desired display name" class="form_style" type="text" name="display_name" />
+            </div>
+			<div class="form_group">
+                <label class="sub_title" for="given_name">GIVEN NAME (optional)</label>
+                <input placeholder="Enter your given name" class="form_style" type="text" name="given_name" />
             </div>
             <div class="form_group" id="options">
                 <fieldset>
@@ -21,27 +25,17 @@
                 </fieldset>
             </div>
             <div class="form_group">
-                <label class="sub_title" for="email">Email</label>
+                <label class="sub_title" for="location">LOCATION</label>
                 <input
-                    placeholder="Enter your email"
-                    id="email"
+                    placeholder="Enter your city, state, country"
+                    id="location"
                     class="form_style"
-                    type="email"
-                    name="email"
-                />
-            </div>
-            <div class="form_group">
-                <label class="sub_title" for="password">Password</label>
-                <input
-                    placeholder="Enter your password"
-                    id="password"
-                    class="form_style"
-                    type="password"
-                    name="password"
+                    type="text"
+                    name="location"
                 />
             </div>
         </div>
-        <button class="btn" type='submit' name="action" value="submit">SIGN UP</button>
+        <button class="btn" type='submit' name="action" value="submit">SAVE</button>
     </form>
 </div>
 
