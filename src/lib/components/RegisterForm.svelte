@@ -185,4 +185,51 @@
 		color: #264143;
 		padding: 5px;
 	}
+	input {
+		background-color: #DAF5F0;
+	}
+	input[type="radio"] {
+		opacity:0;
+		position: absolute;
+	}
+	input[type="radio"]:checked + label {
+		background-color: #e99f4c;
+	}
+	fieldset label:nth-child(3) {
+		border-radius: 5px 0px 0px 5px;
+	}
+	fieldset label:nth-child(7) {
+		border-radius: 0px 5px 5px 0px;
+	}
+	fieldset label {
+		z-index: 2;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 34%;
+		height: 35px;
+		cursor: pointer;
+		border: 1px solid #000;
+		background-color: #eddcd9;
+	}
+	fieldset label:active {
+		transform: translateY(1px);
+	}
+	#options fieldset{
+		display: flex;
+		position: relative;
+		width: 100%;
+		border-radius: 10px;
+	}
+	#options fieldset::after {
+		content: "";
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		height: 100%; /* Only cover the bottom half */
+		border-radius: 10px;
+		box-shadow: 5px 5px #e99f4c;
+		z-index: 0;
+	}
 </style>

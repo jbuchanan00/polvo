@@ -20,12 +20,12 @@
         font-size: .75em;
     }
     .infoSection {
-        background-color: #dbec79;
+        background-color: #FDFD96;
         padding: 10px;
         width: 55%;
         border-radius: 5px;
-        box-shadow: 10px 10px #8669d7, -10px -10px #ff6b6b;
-        border: 2px solid #000;
+        /* box-shadow: 10px -10px #FFA07A, -10px 10px #FF6B6B; */
+        border: 3px solid #000;
         margin-top: 30px;
     }
 </style>

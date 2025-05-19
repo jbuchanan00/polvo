@@ -4,6 +4,7 @@
     import { onMount } from 'svelte'
     import { loadRemoteNavbars } from "$lib/handleRemotes/remoteNavbars";
     import ProfilePostCard from "$lib/components/profilePostCard.svelte"
+    import testPic from '$lib/assets/photos/testProf.jpg'
 
     onMount(async () => {
         try {
@@ -24,7 +25,7 @@
 <div>
     <div id="top-nav"></div>
     <div class="topSection">
-        <ProfileImageCard />
+        <ProfileImageCard profilePic={testPic}/>
         <ProfileInfoCard/>
     </div>
     <div class="diagonalElement"></div>
@@ -56,13 +57,13 @@
     }
     .diagonalElement {
         border: 2px solid #000;
-        transform: rotate(16deg) translate(-40%, 100px);
+        transform: rotate(16deg) translate(-40%, 50px);
         margin-top: 50px;
         margin-right: 150px;
         z-index: -100;
         width: 250%;
         position: absolute;
-        background-color: #ffb2ef;
+        background-color: #DAF5F0;
         height: 100%;
     }
     .bodySection {

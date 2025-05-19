@@ -58,6 +58,9 @@
 </div>
 
 <style>
+	input {
+		background-color: #DAF5F0;
+	}
 	.form_group_all {
 		display: flex;
 		flex-direction: column;
@@ -65,6 +68,7 @@
 		align-items: center;
 	}
 	.totalContainer {
+		margin-top: 20px;
 		display: flex;
 		justify-content: center;
 	}

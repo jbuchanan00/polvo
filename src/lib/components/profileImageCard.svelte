@@ -1,10 +1,16 @@
 <script>
     import { tempProfile } from "$lib/icon";
+
+    let {profilePic} = $props()
 </script>
 
 <div class="profileContainer">
     <div class="imageContainer">
-        <img src={tempProfile} alt="profile" />
+        {#if profilePic}
+            <img src={profilePic} alt="profile" />
+        {:else}
+            <img src={tempProfile} alt="profile" />
+        {/if}
     </div>
 </div>
 
@@ -19,7 +25,7 @@
         width: 100%;
         border: 2px solid #000;
         padding: 10px;
-        background-color: white;
+        background-color: #FF6B6B;
         border-radius: 5px;
         transform: rotate(-10deg);
         box-shadow: 8px 8px black;

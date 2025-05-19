@@ -2,7 +2,7 @@
     import { enhance } from "$app/forms";
 </script>
 
-<div>
+<div class="formContainer">
     <form method="POST" use:enhance>
         <div class="form_group_all">
             <div class="form_group">
@@ -40,7 +40,75 @@
 </div>
 
 <style>
-    	#options{
+	fieldset label:nth-child(3) {
+		border-radius: 5px 0px 0px 5px;
+	}
+	fieldset label:nth-child(7) {
+		border-radius: 0px 5px 5px 0px;
+	}
+	form {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+	input {
+		background-color: #DAF5F0;
+	}
+	input[type="radio"] {
+		opacity:0;
+		position: absolute;
+	}
+	input[type="radio"]:checked + label {
+		background-color: #e99f4c;
+	}
+	fieldset label {
+		z-index: 2;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 34%;
+		height: 35px;
+		cursor: pointer;
+		background-color: #eddcd9;
+		border: 2px solid #000;
+	}
+	fieldset label:nth-child(5) {
+		border-left: 0px;
+		border-right: 0px;
+	}
+	fieldset label:active {
+		transform: translateY(1px);
+	}
+	#options fieldset{
+		display: flex;
+		position: relative;
+		width: 100%;
+		border-radius: 10px;
+	}
+	#options fieldset::after {
+		content: "";
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		height: 100%; /* Only cover the bottom half */
+		border-radius: 10px;
+		box-shadow: 5px 5px #e99f4c;
+		z-index: 0;
+	}
+	.formContainer {
+		border: 2px solid #000;
+		margin: 10px;
+		display: flex;
+		justify-content: center;
+		align-content: center;
+		background-color: #eddcd9;
+		border-radius: 20px;
+		box-shadow: 5px 5px #e99f4c;
+	}
+	#options{
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -51,62 +119,9 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
+		align-content: center;
 		align-items: center;
-	}
-	.totalContainer {
-		display: flex;
-		justify-content: center;
-	}
-	.login .link {
 		width: 100%;
-		padding: 20px;
-	}
-	.login {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		flex-direction: column;
-	}
-	.linkContainer {
-		display: flex;
-		justify-content: space-around;
-		width: 100%;
-	}
-	.link img {
-		width: 30%;
-	}
-	.link {
-		width: 50%;
-		display: flex;
-		justify-content: center;
-	}
-	.container {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		flex-direction: column;
-		text-align: center;
-		width: 95%;
-	}
-
-	.form_area {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		flex-direction: column;
-		background-color: #eddcd9;
-		height: auto;
-		width: auto;
-		border: 2px solid #264143;
-		border-radius: 20px;
-		box-shadow: 3px 4px 0px 1px #e99f4c;
-	}
-
-	.title {
-		color: #264143;
-		font-weight: 900;
-		font-size: 1.5em;
-		margin-top: 20px;
 	}
 
 	.sub_title {
@@ -117,8 +132,9 @@
 	.form_group {
 		display: flex;
 		flex-direction: column;
-		align-items: baseline;
-		margin: 10px;
+		align-items: center;
+		margin-bottom: 10px;
+		width: 100%;
 	}
 
 	.form_style {
@@ -146,15 +162,5 @@
 		border-radius: 10px;
 		font-weight: 800;
 		box-shadow: 3px 3px 0px 0px #e99f4c;
-	}
-
-	.btn:hover {
-		opacity: 0.9;
-	}
-
-	.link {
-		font-weight: 800;
-		color: #264143;
-		padding: 5px;
 	}
 </style>

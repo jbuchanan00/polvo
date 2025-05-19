@@ -26,7 +26,7 @@ export const actions = {
 		}catch(e){
 			console.log(`There was an error creating a user: ${e}`)
 		}
-		throw redirect(303, '/welcome')
+		throw redirect(303, '/')
 	}
 };
 
