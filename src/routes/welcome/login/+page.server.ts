@@ -1,6 +1,9 @@
 import { redirect, fail } from '@sveltejs/kit';
 import { authenticateUser } from '$lib/server/authentication/authentication.js';
+import { getUserByEmail } from '$lib/server/user/getUserByEmail.js';
 import type { RequestEvent } from './$types.js';
+
+
 
 export const actions = {
     default: async ({ request, locals }: RequestEvent) => {
@@ -18,9 +21,13 @@ export const actions = {
 		};
 
         const authenticated: boolean = await authenticateUser(locals.db, email, password)
+
+        const userResponse = await getUserByEmail(locals.db, email)
+
+        locals.user = userResponse
         
         if(authenticated){
-            redirect(303, '/welcome')
+            redirect(303, '/')
         }else{
             console.log('Incorrect login')
             return fail(400, {email, message: 'Incorrect password'})
