@@ -51,12 +51,11 @@
 <style>
     #top-nav {
         width: 100%;
-        position: sticky;
-        top: 0;
         margin-top: -10px;
         z-index: 100;
         background-color: beige;
         padding-bottom: 5px;
+        border-bottom: 2px solid black;
     }
     .diagonalElement {
         border: 2px solid #000;
