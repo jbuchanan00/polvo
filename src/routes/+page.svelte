@@ -6,6 +6,8 @@
     import ProfilePostCard from "$lib/components/profilePostCard.svelte"
     import testPic from '$lib/assets/photos/testProf.jpg'
 
+    const modalUp = $state(false)
+
     onMount(async () => {
         try {
             if(document){
@@ -29,6 +31,9 @@
         <ProfileInfoCard/>
     </div>
     <div class="diagonalElement"></div>
+    {#if modalUp}
+    <div></div>
+    {/if}
     <div class="bodySection">
         <ProfilePostCard likes=0 liked={false}/>
         <ProfilePostCard likes=2 liked={true}/>

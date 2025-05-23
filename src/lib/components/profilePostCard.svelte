@@ -4,7 +4,9 @@
     import {likedIcon} from '$lib/icon/index'
 
     let {likes, liked} = $props()
-    let {likedActive} = $state(liked)
+    let likedActive = $state(liked)
+
+    
 
     if(likes < 1000000 && likes > 999){
         likes = likes / 1000 + 'k'

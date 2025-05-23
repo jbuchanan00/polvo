@@ -51,9 +51,9 @@
 					</div>
 				</div>
 				<div class="login">
-					<button class="btn" type='submit' name="action" value="submit">SIGN UP</button>
+					<div class="link"><Arrow text="submit" actionText='submit' /></div>
 					<p>Have an Account?</p>
-					<div class="link"><Arrow text="login" actionText='login' /></div>
+					<button class="btn" name="action" value="login">LOGIN</button>
 				</div>
 				<div class="linkContainer">
 					<a class="link" href="/"><img src={appleIcon} alt="appleicon" /></a>
@@ -168,7 +168,7 @@
 	.btn {
 		padding: 15px;
 		margin: 25px 0px;
-		width: 290px;
+		width: 145px;
 		font-size: 15px;
 		background: #de5499;
 		border-radius: 10px;
