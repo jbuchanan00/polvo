@@ -3,7 +3,7 @@
 </script>
 
 <div class="formContainer">
-    <form method="POST" use:enhance>
+    <form method="POST" use:enhance action='?/submitEdit'>
         <div class="form_group_all">
             <div class="form_group">
                 <label class="sub_title" for="displayname">DISPLAY NAME</label>
@@ -23,6 +23,15 @@
                     <input type="radio" id="shop" name="role" value="shop">
                     <label for="shop">Shop</label> 
                 </fieldset>
+            </div>
+			<div class="form_group">
+                <label class="sub_title" for="bio">BIO</label>
+                <textarea
+                    placeholder="Enter bio"
+                    id="bio"
+                    class="form_style"
+                    name="bio"
+                ></textarea>
             </div>
             <div class="form_group">
                 <label class="sub_title" for="location">LOCATION</label>
@@ -54,6 +63,9 @@
 		align-items: center;
 	}
 	input {
+		background-color: #DAF5F0;
+	}
+	textarea {
 		background-color: #DAF5F0;
 	}
 	input[type="radio"] {

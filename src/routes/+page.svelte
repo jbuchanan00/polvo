@@ -32,7 +32,7 @@
     </div>
     <div class="diagonalElement"></div>
     {#if modalUp}
-    <div></div>
+        <div></div>
     {/if}
     <div class="bodySection">
         <ProfilePostCard likes=0 liked={false}/>

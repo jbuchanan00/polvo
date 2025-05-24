@@ -11,7 +11,8 @@ CREATE TABLE IF NOT EXISTS account (
     username varchar(35),
     key Text,
     roleId int references role(id),
-    location point
+    location point,
+    bio Text
 );
 
 CREATE TABLE IF NOT EXISTS authentication (

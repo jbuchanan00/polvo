@@ -17,6 +17,10 @@ body {
 	font-family: 'NEO', sans-serif;
 }
 
+html, body {
+	overflow-x: hidden;
+}
+
 @font-face {
 	font-family: 'NEO';
 	src: url('./lib/assets/Lexend_Mega/LexendMega-VariableFont_wght.ttf') format('truetype');
