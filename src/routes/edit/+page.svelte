@@ -1,5 +1,10 @@
-<script>
+<script lang="ts">
     import { enhance } from "$app/forms";
+	import type { PageData } from "./$types";
+
+	export let data: PageData
+
+	const {user: userData} = data
 </script>
 
 <div class="formContainer">
@@ -7,22 +12,11 @@
         <div class="form_group_all">
             <div class="form_group">
                 <label class="sub_title" for="displayname">DISPLAY NAME</label>
-                <input placeholder="Enter your desired display name" class="form_style" type="text" name="display_name" />
+                <input placeholder="Enter your desired display name" class="form_style" type="text" name="display_name" defaultValue={userData.username}/>
             </div>
 			<div class="form_group">
                 <label class="sub_title" for="given_name">GIVEN NAME (optional)</label>
-                <input placeholder="Enter your given name" class="form_style" type="text" name="given_name" />
-            </div>
-            <div class="form_group" id="options">
-                <fieldset>
-                    <legend class="sub_title">Role</legend>
-                    <input type="radio" id="canvas" name="role" value="canvas" checked>
-                    <label for="canvas">Canvas</label>
-                    <input type="radio" id="artist" name="role" value="artist">
-                    <label for="artist">Artist</label>
-                    <input type="radio" id="shop" name="role" value="shop">
-                    <label for="shop">Shop</label> 
-                </fieldset>
+                <input placeholder="Enter your given name" class="form_style" type="text" name="given_name" defaultValue={userData.name}/>
             </div>
 			<div class="form_group">
                 <label class="sub_title" for="bio">BIO</label>

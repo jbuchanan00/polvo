@@ -1,4 +1,4 @@
-import type { RequestEvent } from './$types.js'
+import type { RequestEvent, PageServerLoad } from './$types.js'
 import { redirect } from '@sveltejs/kit'
 
 export const actions = {
@@ -11,5 +11,17 @@ export const actions = {
 
         
         throw redirect(303, '/')
+    }
+}
+
+// export const load: PageServerLoad = async ({locals}) => {
+//     return {user: {name: "Tommy", username: "TommyTats", role: 2, location: {latitude: 15, longitude: 15}}}
+// }
+
+export const load: PageServerLoad = async ({locals}: {locals: any}) => {
+    const user = {name: "Tommy", username: "TommyTats", role: 2, location: {latitude: 15, longitude: 15}}
+    console.log('USER SERVER', user)
+    return {
+        user
     }
 }

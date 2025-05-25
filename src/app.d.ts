@@ -12,8 +12,12 @@ declare global {
 			user: User
 		}
 		interface PageData {
-			error: boolean,
-			message: string
+			error?: boolean,
+			message?: string,
+			user?: User
+		}
+		interface PageLoad {
+			user: User
 		}
 		// interface PageState {}
 		// interface Platform {}

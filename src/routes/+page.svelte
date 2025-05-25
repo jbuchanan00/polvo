@@ -61,6 +61,10 @@
         background-color: beige;
         padding-bottom: 5px;
         border-bottom: 2px solid black;
+        height: 75px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
     .diagonalElement {
         border: 2px solid #000;
