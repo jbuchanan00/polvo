@@ -3,7 +3,7 @@
     import {likeIcon} from '$lib/icon/index'
     import {likedIcon} from '$lib/icon/index'
 
-    let {likes, liked} = $props()
+    let {likes, liked, seePost, postId} = $props()
     let likedActive = $state(liked)
 
     
@@ -27,7 +27,9 @@
 </script>
 
 <div class="postCard">
-    <img class="postPhoto" src={photo} alt="test" />
+    <!-- svelte-ignore a11y_click_events_have_key_events -->
+    <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+    <img class="postPhoto" src={photo} alt="test" onclick={() => seePost(postId, photo)}/>
     <div class="likeContainer">
         <p>{likes}</p>
         {#if likedActive}

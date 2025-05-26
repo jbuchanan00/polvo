@@ -3,10 +3,24 @@
     import ProfileImageCard from "$lib/components/profileImageCard.svelte";
     import { onMount } from 'svelte'
     import { loadRemoteNavbars } from "$lib/handleRemotes/remoteNavbars";
-    import ProfilePostCard from "$lib/components/profilePostCard.svelte"
+    import ProfilePostCard from "$lib/components/profilePostCard.svelte";
+    import PostModal from "$lib/components/PostModal.svelte";
     import testPic from '$lib/assets/photos/testProf.jpg'
 
-    const modalUp = $state(false)
+    let modalUp = $state(false)
+    let focusedPost = $state()
+    let image = $state('')
+
+    const handlePostClick = (postId: number, imageUrl: string) => {
+        modalUp = true;
+        focusedPost = postId
+        image = imageUrl
+    }
+
+    const handlePostExit = () => {
+        modalUp = false
+        focusedPost = null
+    }
 
     onMount(async () => {
         try {
@@ -24,31 +38,32 @@
 
 </script>
 
-<div>
+<div class="pageContainer">
     <div id="top-nav"></div>
+    {#if modalUp}
+        <div><PostModal postId={focusedPost} postImage={image} postExit={handlePostExit}/></div>
+    {/if}
     <div class="topSection">
         <ProfileImageCard profilePic={testPic}/>
         <ProfileInfoCard/>
     </div>
     <div class="diagonalElement"></div>
-    {#if modalUp}
-        <div></div>
-    {/if}
+    
     <div class="bodySection">
-        <ProfilePostCard likes=0 liked={false}/>
-        <ProfilePostCard likes=2 liked={true}/>
-        <ProfilePostCard likes=25 liked={true}/>
-        <ProfilePostCard likes=2500 liked={false}/>
-        <ProfilePostCard likes=2500000 liked={true}/>
-        <ProfilePostCard likes=999 liked={true}/>
-        <ProfilePostCard likes=0 liked={false}/>
-        <ProfilePostCard likes=2 liked={true}/>
-        <ProfilePostCard likes=25 liked={true}/>
-        <ProfilePostCard likes=2500 liked={false}/>
-        <ProfilePostCard likes=2500000 liked={true}/>
-        <ProfilePostCard likes=999 liked={true}/>
-        <ProfilePostCard likes=0 liked={false}/>
-        <ProfilePostCard likes=2 liked={true}/>
+        <ProfilePostCard likes=0 liked={false} postId={1} seePost={handlePostClick}/>
+        <ProfilePostCard likes=2 liked={true} postId={2} seePost={handlePostClick}/>
+        <ProfilePostCard likes=25 liked={true} postId={3} seePost={handlePostClick}/>
+        <ProfilePostCard likes=2500 liked={false} postId={4} seePost={handlePostClick}/>
+        <ProfilePostCard likes=2500000 liked={true} postId={5} seePost={handlePostClick}/>
+        <ProfilePostCard likes=999 liked={true} postId={6} seePost={handlePostClick}/>
+        <ProfilePostCard likes=0 liked={false} postId={7} seePost={handlePostClick}/>
+        <ProfilePostCard likes=2 liked={true} postId={8} seePost={handlePostClick}/>
+        <ProfilePostCard likes=25 liked={true} postId={9} seePost={handlePostClick}/>
+        <ProfilePostCard likes=2500 liked={false} postId={10} seePost={handlePostClick}/>
+        <ProfilePostCard likes=2500000 liked={true} postId={11} seePost={handlePostClick}/>
+        <ProfilePostCard likes=999 liked={true} postId={12} seePost={handlePostClick}/>
+        <ProfilePostCard likes=0 liked={false} postId={13} seePost={handlePostClick}/>
+        <ProfilePostCard likes=2 liked={true} postId={14} seePost={handlePostClick}/>
     </div>
     <div id="bottom-nav"></div>
 </div>
@@ -65,6 +80,18 @@
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+    #bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 60px;
+        z-index: 1000;
+        background-color: beige;
+    }
+    .pageContainer {
+        padding-bottom: 60px;
     }
     .diagonalElement {
         border: 2px solid #000;
