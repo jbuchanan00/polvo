@@ -1,12 +1,18 @@
 <script>
+    const {userData} = $props();
 
+    console.log(userData)
 </script>
 
 <div class="infoSection">
-    <h1>First Name</h1>
-    <h3>Last Name</h3>
-    <h5>Role</h5>
-    <h5>Location</h5>
+    <h1>{userData.user.username}</h1>
+    <h3>{userData.user.name}</h3>
+    {#if userData.user.role === 1}
+    <h5>Canvas</h5>
+    {:else if userData.user.role === 2}
+    <h5>Tattooer</h5>
+    {/if}
+    <h5>{JSON.stringify(userData.user.location)}</h5>
     <h5>Contact Link</h5>
 </div>
 

@@ -21,3 +21,10 @@ interface User {
     role: number,
     location: Coordinates | null
 }
+
+interface Post {
+    id: number | string,
+    description: string,
+    image: string,
+    date: Date | string | number
+}

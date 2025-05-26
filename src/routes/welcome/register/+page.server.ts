@@ -1,7 +1,7 @@
 import { goto } from '$app/navigation';
 import { redirect } from '@sveltejs/kit';
 import { createUser } from '$lib/db/queries/users.js';
-import { hashAndSalt } from '$lib/server/authentication/hashAndSalt.js';
+import { hashAndSalt } from '$lib/server/db/authentication/hashAndSalt.js';
 import type { RequestEvent } from './$types.js';
 
 export const actions = {

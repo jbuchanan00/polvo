@@ -19,8 +19,12 @@ export const actions = {
 // }
 
 export const load: PageServerLoad = async ({locals}: {locals: any}) => {
-    const user = {name: "Tommy", username: "TommyTats", role: 2, location: {latitude: 15, longitude: 15}}
-    console.log('USER SERVER', user)
+    let user;
+    if(locals.user){
+        user = locals.user
+    }else {
+        user = {name: "Tommy", username: "TommyTats", role: 2, location: {latitude: 15, longitude: 15}} 
+    }
     return {
         user
     }

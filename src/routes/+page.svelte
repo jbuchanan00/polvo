@@ -6,21 +6,34 @@
     import ProfilePostCard from "$lib/components/profilePostCard.svelte";
     import PostModal from "$lib/components/PostModal.svelte";
     import testPic from '$lib/assets/photos/testProf.jpg'
+	import type { PageData } from "./$types";
 
     let modalUp = $state(false)
     let focusedPost = $state()
     let image = $state('')
+    let post = $state()
 
-    const handlePostClick = (postId: number, imageUrl: string) => {
-        modalUp = true;
+    const { data: userData } = $props<{data: PageData}>();
+
+    const handlePostClick = async (postId: number, imageUrl: string) => {
         focusedPost = postId
         image = imageUrl
+        const call = await fetch(`/?id=${focusedPost}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        post = await call.json()
+        modalUp = true;
     }
 
     const handlePostExit = () => {
         modalUp = false
         focusedPost = null
     }
+    
+    
 
     onMount(async () => {
         try {
@@ -39,13 +52,13 @@
 </script>
 
 <div class="pageContainer">
-    <div id="top-nav"></div>
+    <div id="top-nav" class:top-nav-show={modalUp} ></div>
     {#if modalUp}
-        <div><PostModal postId={focusedPost} postImage={image} postExit={handlePostExit}/></div>
+        <div><PostModal postId={focusedPost} postImage={image} postExit={handlePostExit} user={userData} postInfo={post}/></div>
     {/if}
     <div class="topSection">
         <ProfileImageCard profilePic={testPic}/>
-        <ProfileInfoCard/>
+        <ProfileInfoCard {userData}/>
     </div>
     <div class="diagonalElement"></div>
     
@@ -80,6 +93,10 @@
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+    .top-nav-show {
+        position: fixed;
+        top: 0;
     }
     #bottom-nav {
         position: fixed;

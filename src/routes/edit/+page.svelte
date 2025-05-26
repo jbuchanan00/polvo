@@ -43,12 +43,6 @@
 </div>
 
 <style>
-	fieldset label:nth-child(3) {
-		border-radius: 5px 0px 0px 5px;
-	}
-	fieldset label:nth-child(7) {
-		border-radius: 0px 5px 5px 0px;
-	}
 	form {
 		width: 100%;
 		display: flex;
@@ -62,48 +56,6 @@
 	textarea {
 		background-color: #DAF5F0;
 	}
-	input[type="radio"] {
-		opacity:0;
-		position: absolute;
-	}
-	input[type="radio"]:checked + label {
-		background-color: #e99f4c;
-	}
-	fieldset label {
-		z-index: 2;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		width: 34%;
-		height: 35px;
-		cursor: pointer;
-		background-color: #eddcd9;
-		border: 2px solid #000;
-	}
-	fieldset label:nth-child(5) {
-		border-left: 0px;
-		border-right: 0px;
-	}
-	fieldset label:active {
-		transform: translateY(1px);
-	}
-	#options fieldset{
-		display: flex;
-		position: relative;
-		width: 100%;
-		border-radius: 10px;
-	}
-	#options fieldset::after {
-		content: "";
-		position: absolute;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		height: 100%; /* Only cover the bottom half */
-		border-radius: 10px;
-		box-shadow: 5px 5px #e99f4c;
-		z-index: 0;
-	}
 	.formContainer {
 		border: 2px solid #000;
 		margin: 10px;
@@ -113,13 +65,6 @@
 		background-color: #eddcd9;
 		border-radius: 20px;
 		box-shadow: 5px 5px #e99f4c;
-	}
-	#options{
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		justify-content: space-between;
-		width: 75%;
 	}
 	.form_group_all {
 		display: flex;

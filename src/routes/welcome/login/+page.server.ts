@@ -1,6 +1,6 @@
 import { redirect, fail } from '@sveltejs/kit';
-import { authenticateUser } from '$lib/server/authentication/authentication.js';
-import { getUserByEmail } from '$lib/server/user/getUserByEmail.js';
+import { authenticateUser } from '$lib/server/db/authentication/authentication.js';
+import { getUserByEmail } from '$lib/server/db/user/getUserByEmail.js';
 import type { RequestEvent } from './$types.js';
 
 
