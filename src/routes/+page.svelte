@@ -1,6 +1,7 @@
 <script lang='ts'>
     import ProfileInfoCard from "$lib/components/profileInfoCard.svelte";
     import ProfileImageCard from "$lib/components/profileImageCard.svelte";
+    import editGear from "$lib/assets/svg/editGear.svg"
     import { onMount } from 'svelte'
     import { loadRemoteNavbars } from "$lib/handleRemotes/remoteNavbars";
     import ProfilePostCard from "$lib/components/profilePostCard.svelte";
@@ -56,6 +57,7 @@
     {#if modalUp}
         <div><PostModal postId={focusedPost} postImage={image} postExit={handlePostExit} user={userData} postInfo={post}/></div>
     {/if}
+    <div class="profileEditContainer"><a href="/edit"><img src={editGear} alt="edit" /></a></div>
     <div class="topSection">
         <ProfileImageCard profilePic={testPic}/>
         <ProfileInfoCard {userData}/>
@@ -82,6 +84,11 @@
 </div>
 
 <style>
+    .profileEditContainer {
+        position: absolute;
+        margin: 5px;
+        padding: 5px;
+    }
     #top-nav {
         width: 100%;
         margin-top: -10px;

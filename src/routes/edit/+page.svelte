@@ -10,6 +10,7 @@
 <div class="formContainer">
     <form method="POST" use:enhance action='?/submitEdit'>
         <div class="form_group_all">
+			<div class="exitLink"><a href="/" >X</a></div>
             <div class="form_group">
                 <label class="sub_title" for="displayname">DISPLAY NAME</label>
                 <input placeholder="Enter your desired display name" class="form_style" type="text" name="display_name" defaultValue={userData.username}/>
@@ -43,6 +44,12 @@
 </div>
 
 <style>
+	.exitLink {
+		position: absolute;
+		top: 0;
+		right: 0;
+		margin: 25px;
+	}
 	form {
 		width: 100%;
 		display: flex;

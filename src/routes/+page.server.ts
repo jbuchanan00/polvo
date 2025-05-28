@@ -14,10 +14,3 @@ export const load: PageServerLoad = async ({locals}: {locals: any}) => {
     }
 }
 
-export const GET: RequestHandler = async ({request}) => {
-    const { id } = await request.json()
-    const res = getPostData(id)
-    return new Response(JSON.stringify(res), {
-        headers: {'Content-Type': 'application/json'}
-    })
-}
