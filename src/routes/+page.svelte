@@ -7,9 +7,9 @@
     import ProfilePostCard from "$lib/components/profilePostCard.svelte";
     import PostModal from "$lib/components/PostModal.svelte";
     import testPic from '$lib/assets/photos/testProf.jpg'
+    import { postModalState } from "$lib/stores/ui";
 	import type { PageData } from "./$types";
 
-    let modalUp = $state(false)
     let focusedPost = $state()
     let image = $state('')
     let post = $state()
@@ -26,11 +26,11 @@
             }
         })
         post = await call.json()
-        modalUp = true;
+        $postModalState.open = true;
     }
 
     const handlePostExit = () => {
-        modalUp = false
+        $postModalState.open = false
         focusedPost = null
     }
     
@@ -38,13 +38,7 @@
 
     onMount(async () => {
         try {
-            if(document){
-                const topNavElement = document.getElementById('top-nav')
-                const bottomNavElement = document.getElementById('bottom-nav')
-                const remote = await loadRemoteNavbars()
-                if(topNavElement) remote.TopNavInstance(topNavElement)
-                if(bottomNavElement) remote.BottomNavInstance(bottomNavElement)
-            }
+            $postModalState.open= false
         }catch(e){
             console.error(`Failed to load remote navbars`, e)
         }
@@ -53,8 +47,7 @@
 </script>
 
 <div class="pageContainer">
-    <div id="top-nav" class:top-nav-show={modalUp} ></div>
-    {#if modalUp}
+    {#if $postModalState.open}
         <div><PostModal postId={focusedPost} postImage={image} postExit={handlePostExit} user={userData} postInfo={post}/></div>
     {/if}
     <div class="profileEditContainer"><a href="/edit"><img src={editGear} alt="edit" /></a></div>
@@ -80,7 +73,6 @@
         <ProfilePostCard likes=0 liked={false} postId={13} seePost={handlePostClick}/>
         <ProfilePostCard likes=2 liked={true} postId={14} seePost={handlePostClick}/>
     </div>
-    <div id="bottom-nav"></div>
 </div>
 
 <style>
@@ -88,31 +80,6 @@
         position: absolute;
         margin: 5px;
         padding: 5px;
-    }
-    #top-nav {
-        width: 100%;
-        margin-top: -10px;
-        z-index: 100;
-        background-color: beige;
-        padding-bottom: 5px;
-        border-bottom: 2px solid black;
-        height: 75px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .top-nav-show {
-        position: fixed;
-        top: 0;
-    }
-    #bottom-nav {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 60px;
-        z-index: 1000;
-        background-color: beige;
     }
     .pageContainer {
         padding-bottom: 60px;

@@ -1,8 +1,6 @@
 <script>
     let {postId, postExit, postImage, user, postInfo} = $props()
 
-    console.log('COMPARE IDS', postId, postInfo.id)
-
 </script>
 
 <div class="modalContainer">
