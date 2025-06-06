@@ -3,7 +3,6 @@
     import ProfileImageCard from "$lib/components/profileImageCard.svelte";
     import editGear from "$lib/assets/svg/editGear.svg"
     import { onMount } from 'svelte'
-    import { loadRemoteNavbars } from "$lib/handleRemotes/remoteNavbars";
     import ProfilePostCard from "$lib/components/profilePostCard.svelte";
     import PostModal from "$lib/components/PostModal.svelte";
     import testPic from '$lib/assets/photos/testProf.jpg'
