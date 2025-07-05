@@ -14,6 +14,10 @@ export const actions = {
 			throw redirect(303, '/welcome/login')
 		}
 
+		if(action === 'googleOAuth'){
+			throw redirect(303, '/auth/google')
+		}
+
 		const { name, email, password, role } = form as {
 			name: string;
 			email: string;

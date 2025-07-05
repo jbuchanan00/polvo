@@ -6,6 +6,21 @@
 	import tiktokIcon from '../assets/icons/tiktok-svgrepo-com.svg';
 	import instagramIcon from '../assets/svg/instagram-svgrepo-com.svg';
 	import Arrow from './LinkButton.svelte';
+
+	function oauthSignIn() {
+		// Google's OAuth 2.0 endpoint for requesting an access token
+		var oauth2Endpoint = 'https://accounts.google.com/o/oauth2/v2/auth';
+
+  		// Parameters to pass to OAuth 2.0 endpoint.
+		var params: any = {'client_id': 'YOUR_CLIENT_ID',
+						'redirect_uri': 'YOUR_REDIRECT_URI',
+						'response_type': 'token',
+						'scope': 'https://www.googleapis.com/auth/drive.metadata.readonly https://www.googleapis.com/auth/calendar.readonly',
+						'include_granted_scopes': 'true',
+						'state': 'pass-through value'};
+	}
+
+
 </script>
 
 <div class="totalContainer">
@@ -57,13 +72,16 @@
 				</div>
 				<div class="linkContainer">
 					<a class="link" href="/"><img src={appleIcon} alt="appleicon" /></a>
-					<a class="link" href="/"><img src={googleIcon} alt="googleicon" /></a>
+					<button class="oauthIcon" name="action"  value="googleOAuth"><img src={googleIcon} alt="googleicon" /></button>
 					<a class="link" href="/"><img src={tiktokIcon} alt="tiktokicon" /></a>
 					<a class="link" href="/"><img src={instagramIcon} alt="instagramicon" /></a>
 				</div>
 			</form>
 		</div>
 		<a class="link" href="/">Go Back</a>
+	</div>
+	<div class="bottom_buffer">
+
 	</div>
 </div>
 
@@ -99,6 +117,14 @@
 		display: flex;
 		justify-content: space-around;
 		width: 100%;
+	}
+	.oauthIcon {
+		width: 50%;
+		display: flex;
+		justify-content: center;
+	}
+	.oauthIcon img {
+		width: 30%;
 	}
 	.link img {
 		width: 30%;

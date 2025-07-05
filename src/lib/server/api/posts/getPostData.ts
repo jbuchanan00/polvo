@@ -12,7 +12,6 @@ export const getPostData = async (postId: number | string): Promise<Post> => {
             }
         })
 
-        console.log('RES', res)
 
         if(!res.ok){
             throw new Error(`Failed to fetch post of id: ${postId}`)

@@ -27,8 +27,9 @@
 <div id="top-nav" class:top-nav-show = {$postModalState.open} ></div>
 
 {@render children()}
-
+<div id="behind-bottom-nav"></div>
 <div id="bottom-nav"></div>
+
 
 
 <style>
@@ -56,5 +57,8 @@
         height: 60px;
         z-index: 1000;
         background-color: beige;
+    }
+    #behind-bottom-nav {
+        height: 60px;
     }
 </style>
