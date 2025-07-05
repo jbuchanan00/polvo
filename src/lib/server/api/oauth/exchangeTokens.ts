@@ -1,16 +1,16 @@
 import dotenv from 'dotenv'
-
+import { json } from '@sveltejs/kit'
 
 dotenv.config()
 
 
-export default async function exchangeTokens(code: string): Promise<void>{
+export default async function exchangeTokens(code: string): Promise<Response>{
 
     const body = new URLSearchParams({
         code,
         client_id: process.env.GOOGLE_CLIENT_ID!,
         client_secret: process.env.GOOGLE_CLIENT_SECRET!,
-        redirect_uri: 'http://localhost:5433/auth/google/callback',
+        redirect_uri: 'http://localhost:5173/auth/google/callback',
         grant_type: 'authorization_code'
     })
 
@@ -20,6 +20,10 @@ export default async function exchangeTokens(code: string): Promise<void>{
         body
     })
 
-    if(!response.ok) throw new Error(`Token exchange failed, ${response.status}`)
-    return response.json();
+    
+    if(!response.ok) {
+        const error = await response.json()
+        throw new Error(`Token exchange failed: ${error.error_description || error.error}`)
+    };
+    return response;
 }
