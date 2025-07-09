@@ -4,15 +4,29 @@ import { json } from '@sveltejs/kit'
 dotenv.config()
 
 
-export default async function exchangeTokens(code: string): Promise<Response>{
+export default async function exchangeTokens(code: string, mode: string): Promise<Response>{
+    let body
 
-    const body = new URLSearchParams({
-        code,
-        client_id: process.env.GOOGLE_CLIENT_ID!,
-        client_secret: process.env.GOOGLE_CLIENT_SECRET!,
-        redirect_uri: 'http://localhost:5173/auth/google/callback',
-        grant_type: 'authorization_code'
-    })
+    if(mode === 'register'){
+        body = new URLSearchParams({
+            code,
+            client_id: process.env.GOOGLE_CLIENT_ID!,
+            client_secret: process.env.GOOGLE_CLIENT_SECRET!,
+            redirect_uri: 'http://localhost:5173/auth/google/callback/register',
+            grant_type: 'authorization_code'
+        })
+    }else if(mode === 'login'){
+        body = new URLSearchParams({
+            code,
+            client_id: process.env.GOOGLE_CLIENT_ID!,
+            client_secret: process.env.GOOGLE_CLIENT_SECRET!,
+            redirect_uri: 'http://localhost:5173/auth/google/callback/login',
+            grant_type: 'authorization_code'
+        })
+    }else{
+        throw new Error('Error with mode type')
+    }
+    
 
     const response = await fetch('https://oauth2.googleapis.com/token', {
         method: "POST",

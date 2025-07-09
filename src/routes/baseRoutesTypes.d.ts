@@ -1,8 +1,9 @@
 
 interface RegisteringUser {
     email: string,
-    role: string,
-    name: string
+    role: number,
+    givenName: string,
+    familyName: string
 }
 
 interface HashAndSalt {
@@ -28,3 +29,14 @@ interface Post {
     image: string,
     date: Date | string | number
 }
+
+interface AuthProvider {
+    id?: string,
+    userId: string,
+    provider: Providers,
+    providerUserId?: string | number | null,
+    email: string
+}
+
+type Providers = 'google' | 'native'
+

@@ -1,0 +1,50 @@
+import { createUser } from '$lib/db/queries/index.js'
+import exchangeTokens from '$lib/server/api/oauth/exchangeTokens.js'
+import { prepCreateAuthProvider } from '$lib/server/db/authentication/createAuthProvider.js'
+import { redirect } from '@sveltejs/kit'
+import { createToken } from '$lib/server/tokens/jwt.js'
+import dotenv from 'dotenv'
+
+
+export const GET = async ({url, cookies, locals}): Promise<void | Response> => {
+    const code = url.searchParams.get('code')
+    const state = url.searchParams.get('state')
+
+
+    if(!code){
+        return new Response('Failed to complete Authorization', {status: 400})
+    }
+
+    let res
+    try{
+         res = exchangeTokens(code, 'register')
+    }catch(err){
+        console.error('ERROR', err)
+        return
+    }
+
+    const json = await (await res).json()
+    const payload = JSON.parse(
+        Buffer.from(json.id_token.split('.')[1], 'base64').toString('utf8')
+    );
+    console.log(payload)
+
+    try {
+        const {email, given_name: givenName, family_name: familyName, sub} = payload
+        const userId = await createUser(locals.db, {givenName, familyName, email, role: 1})
+        await prepCreateAuthProvider(locals.db, {email, userId, provider: 'google', providerUserId: sub})
+        const token = await createToken({userId})
+        cookies.set('jwt', token, {
+            httpOnly: true,
+            secure: process.env.ENVIORNMENT ? true : false,
+            sameSite: 'strict',
+            maxAge: 3600 * 1000,
+            path: '/',
+            domain: 'localhost'
+        })
+    } catch(err) {
+        console.error('ERROR', err)
+    }
+    
+    throw redirect(301, '/')
+}

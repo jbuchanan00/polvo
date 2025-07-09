@@ -36,11 +36,11 @@
 					<div class="form_group" id="options">
 						<fieldset>
 							<legend class="sub_title">Role</legend>
-							<input type="radio" id="canvas" name="role" value="canvas" checked>
+							<input type="radio" id="canvas" name="role" value="1" checked>
 							<label for="canvas">Canvas</label>
-							<input type="radio" id="artist" name="role" value="artist">
+							<input type="radio" id="artist" name="role" value="2">
 							<label for="artist">Artist</label>
-							<input type="radio" id="shop" name="role" value="shop">
+							<input type="radio" id="shop" name="role" value="3">
 							<label for="shop">Shop</label> 
 						</fieldset>
 					</div>
