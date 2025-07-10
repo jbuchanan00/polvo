@@ -1,10 +1,20 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
 	import type { PageData } from "./$types";
+	import { onMount } from "svelte";
 
 	export let data: PageData
+	let ReactComp: any
 
 	const {user: userData} = data
+
+	onMount(async () => {
+		// @ts-ignore
+		await import('http://localhost:5176/dist/autofill-location')
+		
+	})
+
+
 </script>
 
 <div class="formContainer">
@@ -30,13 +40,7 @@
             </div>
             <div class="form_group">
                 <label class="sub_title" for="location">LOCATION</label>
-                <input
-                    placeholder="Enter your city, state, country"
-                    id="location"
-                    class="form_style"
-                    type="text"
-                    name="location"
-                />
+                <autofill-location></autofill-location>
             </div>
         </div>
         <button class="btn" type='submit' name="action" value="submit">SAVE</button>
