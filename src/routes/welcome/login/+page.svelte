@@ -47,7 +47,7 @@
 				</div>
 				<div class="linkContainer">
 					<a class="link" href="/"><img src={appleIcon} alt="appleicon" /></a>
-					<a class="link" href="/"><img src={googleIcon} alt="googleicon" /></a>
+					<button class="oauthIcon" name="action" value="googleOAuth"><img src={googleIcon} alt="googleicon" /></button>
 					<a class="link" href="/"><img src={tiktokIcon} alt="tiktokicon" /></a>
 					<a class="link" href="/"><img src={instagramIcon} alt="instagramicon" /></a>
 				</div>
@@ -86,6 +86,14 @@
 		display: flex;
 		justify-content: space-around;
 		width: 100%;
+	}
+		.oauthIcon {
+		width: 50%;
+		display: flex;
+		justify-content: center;
+	}
+	.oauthIcon img {
+		width: 30%;
 	}
 	.link img {
 		width: 30%;

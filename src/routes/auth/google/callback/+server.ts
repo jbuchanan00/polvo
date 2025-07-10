@@ -4,6 +4,8 @@ import { prepCreateAuthProvider } from '$lib/server/db/authentication/createAuth
 import { redirect } from '@sveltejs/kit'
 import { createToken } from '$lib/server/tokens/jwt.js'
 import dotenv from 'dotenv'
+import { getUserByJwt } from '$lib/server/db/user/getUserByJwt.js'
+import { retrieveUserIdBySub } from '$lib/server/db/authentication/getUserIdBySub.js'
 
 
 export const GET = async ({url, cookies, locals}): Promise<void | Response> => {
@@ -31,8 +33,11 @@ export const GET = async ({url, cookies, locals}): Promise<void | Response> => {
 
     try {
         const {email, given_name: givenName, family_name: familyName, sub} = payload
-        const userId = await createUser(locals.db, {givenName, familyName, email, role: 1})
-        await prepCreateAuthProvider(locals.db, {email, userId, provider: 'google', providerUserId: sub})
+        let userId = await retrieveUserIdBySub(locals.db, sub)
+        if(!userId){
+            userId = await createUser(locals.db, {givenName, familyName, email, role: 1})
+            await prepCreateAuthProvider(locals.db, {email, userId, provider: 'google', providerUserId: sub})
+        }
         const token = await createToken({userId})
         cookies.set('jwt', token, {
             httpOnly: true,
