@@ -10,11 +10,15 @@
 html {
 	height: 100%;
 	font-size: 100%;
-    background-color: #7FBC8C;
 }
 
 body {
 	font-family: 'NEO', sans-serif;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: #fde047;
 }
 
 html, body {

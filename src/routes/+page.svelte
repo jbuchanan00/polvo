@@ -54,7 +54,7 @@
         <ProfileImageCard profilePic={testPic}/>
         <ProfileInfoCard {userData}/>
     </div>
-    <div class="diagonalElement"></div>
+    
     
     <div class="bodySection">
         <ProfilePostCard likes=0 liked={false} postId={1} seePost={handlePostClick}/>
@@ -82,17 +82,6 @@
     }
     .pageContainer {
         padding-bottom: 60px;
-    }
-    .diagonalElement {
-        border: 2px solid #000;
-        transform: rotate(16deg) translate(-40%, 50px);
-        margin-top: 50px;
-        margin-right: 150px;
-        z-index: -100;
-        width: 250%;
-        position: absolute;
-        background-color: #DAF5F0;
-        height: 100%;
     }
     .bodySection {
         z-index: 1;

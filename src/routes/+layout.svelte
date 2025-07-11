@@ -13,8 +13,8 @@
                 const topNavElement = document.getElementById('top-nav')
                 const bottomNavElement = document.getElementById('bottom-nav')
                 const remote = await loadRemoteNavbars()
-                if(topNavElement) remote.TopNavInstance(topNavElement)
-                if(bottomNavElement) remote.BottomNavInstance(bottomNavElement)
+                if(topNavElement) remote.TopNavInstance(topNavElement, {assetBase: "http://localhost:5177/"})
+                if(bottomNavElement) remote.BottomNavInstance(bottomNavElement, {assetBase: "http://localhost:5177/"})
             }
         }catch(e){
             console.error(`Failed to load remote navbars`, e)
@@ -24,23 +24,27 @@
 
 </script>
 
-<div id="top-nav" class:top-nav-show = {$postModalState.open} ></div>
 
-{@render children()}
+<div id="top-nav" class:top-nav-show = {$postModalState.open} ></div>
+<div id="body">
+    {@render children()}
+</div>
 <div id="behind-bottom-nav"></div>
 <div id="bottom-nav"></div>
 
 
 
 <style>
+    #body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 375px;
+    }
 	#top-nav {
         width: 100%;
-        margin-top: -10px;
         z-index: 100;
-        background-color: beige;
         padding-bottom: 5px;
-        border-bottom: 2px solid black;
-        height: 75px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -54,9 +58,11 @@
         bottom: 0;
         left: 0;
         width: 100%;
-        height: 60px;
+        height: 75px;
         z-index: 1000;
-        background-color: beige;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
     #behind-bottom-nav {
         height: 60px;

@@ -1,4 +1,4 @@
-type MountFunction = (target: HTMLElement) => void
+type MountFunction = (target: HTMLElement, prop?: any) => void
 
 interface RemoteNavbars {
     TopNavInstance: MountFunction;
