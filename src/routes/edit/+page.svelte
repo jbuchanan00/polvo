@@ -1,22 +1,40 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
 	import Dropdown from "$lib/components/edit/dropdown.svelte";
-	import type { FormEventHandler } from "svelte/elements";
-	import type { PageData } from "./$types";
-	import { onMount } from "svelte";
 
-	let timer: any;
 	let dropdownVisible = $state(false)
+	let input = $state("")
 	let locations = $state([])
 	const {data} = $props()
 	const {user: userData} = data
 
-	const handleLocationChange = (input: any) => {
-		clearTimeout(timer)
-		timer = setTimeout(async () => {
-			await fetch(input)
-		}, 500)
+	const handleLocationChange = async () => {
+		if(input.length > 2){
+			await fetch(`http://localhost:8081/autofill`, {
+				method: "POST",
+				body: JSON.stringify({
+					location: input,
+					baseLoc: userData.location
+				})
+			}).then(async (res) => {
+				locations = await res.json()
+			})
+		}
 	}
+
+	const debounce = (callback: Function, wait = 300) => {
+    let timeout: ReturnType<typeof setTimeout>;
+
+    return (...args: any[]) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => callback(...args), wait);
+    };
+
+};
+
+const debounceWithLocation = debounce(() => {
+	handleLocationChange();
+}, 750);
 
 </script>
 
@@ -69,7 +87,11 @@
 					<label class="sub_title" for="location">LOCATION</label>
 				</div>
 				<div class="itemInput">
-					<input placeholder="Enter your location" class="textInput" type="text" name="location" defaultValue={userData.location} onchange={(e) => handleLocationChange(e)}/>
+					<input placeholder="Enter your location" class="textInput" type="text" name="location" defaultValue={userData.location} 
+						oninput={() => {
+							debounceWithLocation()
+						}} 
+						bind:value={input}/>
 					{#if dropdownVisible}
 						<Dropdown locations/>
 					{/if}

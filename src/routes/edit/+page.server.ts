@@ -14,16 +14,13 @@ export const actions = {
     }
 }
 
-// export const load: PageServerLoad = async ({locals}) => {
-//     return {user: {name: "Tommy", username: "TommyTats", role: 2, location: {latitude: 15, longitude: 15}}}
-// }
 
 export const load: PageServerLoad = async ({locals}: {locals: any}) => {
     let user;
     if(locals.user){
         user = locals.user
     }else {
-        user = {name: "Tommy", username: "TommyTats", role: 2, location: {latitude: 15, longitude: 15}} 
+        user = {name: "Tommy", username: "TommyTats", role: 2, location: {}} 
     }
     return {
         user

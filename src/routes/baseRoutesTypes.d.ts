@@ -20,7 +20,15 @@ interface User {
     name: string | null,
     username: string,
     role: number,
-    location: Coordinates | null
+    location: Location | null
+}
+
+interface Location {
+    id: number,
+    name: string,
+    state: string | null,
+    country: string | null,
+    coords: Coordinates
 }
 
 interface Post {
