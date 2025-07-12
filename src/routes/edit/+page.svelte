@@ -18,7 +18,12 @@
 				})
 			}).then(async (res) => {
 				locations = await res.json()
+				dropdownVisible = true;
+				console.log(locations, dropdownVisible)
 			})
+		}else{
+			locations = []
+			dropdownVisible = false
 		}
 	}
 
@@ -93,7 +98,7 @@ const debounceWithLocation = debounce(() => {
 						}} 
 						bind:value={input}/>
 					{#if dropdownVisible}
-						<Dropdown locations/>
+						<Dropdown locations={locations}/>
 					{/if}
 				</div>
 			</div>
