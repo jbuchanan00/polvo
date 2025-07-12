@@ -44,7 +44,6 @@
 	#top-nav {
         width: 100%;
         z-index: 100;
-        padding-bottom: 5px;
         display: flex;
         justify-content: center;
         align-items: center;

@@ -11,6 +11,5 @@
 <style>
 	.formContainer {
 		padding-top: 10px;
-		margin-top: 75px;
 	}
 </style>
