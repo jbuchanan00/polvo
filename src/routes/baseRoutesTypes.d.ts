@@ -17,7 +17,8 @@ declare type Coordinates = {
 }
 
 interface User {
-    name: string | null,
+    firstName: string | null,
+    lastName: string | null,
     username: string,
     role: number,
     location: Location | null

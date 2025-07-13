@@ -13,8 +13,8 @@
                 const topNavElement = document.getElementById('top-nav')
                 const bottomNavElement = document.getElementById('bottom-nav')
                 const remote = await loadRemoteNavbars()
-                if(topNavElement) remote.TopNavInstance(topNavElement, {assetBase: "http://localhost:5177/"})
-                if(bottomNavElement) remote.BottomNavInstance(bottomNavElement, {assetBase: "http://localhost:5177/"})
+                if(topNavElement) remote.TopNavInstance(topNavElement, {assetBase: "http://localhost:5175/"})
+                if(bottomNavElement) remote.BottomNavInstance(bottomNavElement, {assetBase: "http://localhost:5175/"})
             }
         }catch(e){
             console.error(`Failed to load remote navbars`, e)

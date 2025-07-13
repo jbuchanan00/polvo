@@ -6,12 +6,8 @@
     let locationStr = $state();
 
     onMount(() => {
-        locationStr = userData.user.location === 'null' ? '' : getLocStr(userData.user.location.latitude, userData.user.location.longitude)
+        locationStr = userData.user.location === null ? '' : `${userData.user.location.name} ${userData.user.location.state}`
     })
-    async function getLocStr(lat: string, lon: string) {
-        const res = await fetch(`${process.env.LOCATION_SERVICE_URL}/withinradius?lng=${lon}&lat=${lat}&radius=1`)
-        console.log(res)
-    }
 
 </script>
 

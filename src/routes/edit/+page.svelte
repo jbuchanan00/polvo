@@ -1,15 +1,19 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
 	import Dropdown from "$lib/components/edit/dropdown.svelte";
+	import { json, redirect } from "@sveltejs/kit";
+	import type { EventHandler } from "svelte/elements";
 
 	let dropdownVisible = $state(false)
 	let input = $state("")
 	let locations = $state([])
 	const {data} = $props()
 	const {user: userData} = data
+	let location = $state(JSON.stringify(userData.location))
 
 	const handleLocationChange = async () => {
-		if(input.length > 2){
+		if(input.length > 2 && !input.includes(",")){
+			console.log(userData.location)
 			await fetch(`http://localhost:8081/autofill`, {
 				method: "POST",
 				body: JSON.stringify({
@@ -37,9 +41,19 @@
 
 };
 
-const debounceWithLocation = debounce(() => {
-	handleLocationChange();
-}, 750);
+	const debounceWithLocation = debounce(() => {
+		handleLocationChange();
+	}, 500);
+
+	const handleNewLocation = async (event: MouseEvent) => {
+		if(event.target != null){
+			const target = event.target as HTMLButtonElement
+			location = target.value
+			const locationObj = JSON.parse(location)
+			input = `${locationObj.name}${locationObj.state ? ', ' + locationObj.state : ''}` 
+			dropdownVisible = false
+		}
+	}
 
 </script>
 
@@ -47,7 +61,7 @@ const debounceWithLocation = debounce(() => {
 <div class="pageContainer">
 	<div class="backHeader">
 		<div class="backButtonContainer">
-			<button type="button" class="backButton"><img class="backArrow" src="/back-arrow.svg" alt="back arrow" /></button>
+			<button type="button" class="backButton" onclick={() => history.back()}><img class="backArrow" src="/back-arrow.svg" alt="back arrow" /></button>
 		</div>
 		<div id="editTextContainer">
 			<h3>EDIT PROFILE</h3>
@@ -76,7 +90,7 @@ const debounceWithLocation = debounce(() => {
 					<label class="sub_title" for="first_name">FIRST NAME</label>
 				</div>
 				<div class="itemInput">
-					<input placeholder="Enter your first name" class="textInput" type="text" name="first_name" defaultValue={userData.name}/>
+					<input placeholder="Enter your first name" class="textInput" type="text" name="first_name" defaultValue={userData.firstName}/>
 				</div>
 			</div>
 			<div class="itemContainer">
@@ -84,7 +98,7 @@ const debounceWithLocation = debounce(() => {
 					<label class="sub_title" for="last_name">LAST NAME</label>
 				</div>
 				<div class="itemInput">
-					<input placeholder="Enter your given name" class="textInput" type="text" name="last_name" defaultValue={userData.name}/>
+					<input placeholder="Enter your given name" class="textInput" type="text" name="last_name" defaultValue={userData.lastName}/>
 				</div>
 			</div>
 			<div class="itemContainer">
@@ -96,9 +110,10 @@ const debounceWithLocation = debounce(() => {
 						oninput={() => {
 							debounceWithLocation()
 						}} 
-						bind:value={input}/>
+						bind:value={input}
+						autocomplete="off"/>
 					{#if dropdownVisible}
-						<Dropdown locations={locations}/>
+						<Dropdown locations={locations} handling={handleNewLocation}/>
 					{/if}
 				</div>
 			</div>

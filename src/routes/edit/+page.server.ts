@@ -9,7 +9,7 @@ export const actions = {
 
         const originalUserData = locals.user
 
-        
+        console.log('form', form)
         throw redirect(303, '/')
     }
 }
@@ -20,7 +20,7 @@ export const load: PageServerLoad = async ({locals}: {locals: any}) => {
     if(locals.user){
         user = locals.user
     }else {
-        user = {name: "Tommy", username: "TommyTats", role: 2, location: {}} 
+        user = {firstName: "Tommy", lastName: "Johnson", username: "TommyTats", role: 2, location: {}} 
     }
     return {
         user
