@@ -1,26 +1,25 @@
-Lexend Mega Variable Font
-=========================
+Sora Variable Font
+==================
 
-This download contains Lexend Mega as both a variable font and static fonts.
+This download contains Sora as both a variable font and static fonts.
 
-Lexend Mega is a variable font with this axis:
+Sora is a variable font with this axis:
   wght
 
 This means all the styles are contained in a single file:
-  LexendMega-VariableFont_wght.ttf
+  Sora-VariableFont_wght.ttf
 
 If your app fully supports variable fonts, you can now pick intermediate styles
 that aren’t available as static fonts. Not all apps support variable fonts, and
-in those cases you can use the static font files for Lexend Mega:
-  static/LexendMega-Thin.ttf
-  static/LexendMega-ExtraLight.ttf
-  static/LexendMega-Light.ttf
-  static/LexendMega-Regular.ttf
-  static/LexendMega-Medium.ttf
-  static/LexendMega-SemiBold.ttf
-  static/LexendMega-Bold.ttf
-  static/LexendMega-ExtraBold.ttf
-  static/LexendMega-Black.ttf
+in those cases you can use the static font files for Sora:
+  static/Sora-Thin.ttf
+  static/Sora-ExtraLight.ttf
+  static/Sora-Light.ttf
+  static/Sora-Regular.ttf
+  static/Sora-Medium.ttf
+  static/Sora-SemiBold.ttf
+  static/Sora-Bold.ttf
+  static/Sora-ExtraBold.ttf
 
 Get started
 -----------

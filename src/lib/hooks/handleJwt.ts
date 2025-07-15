@@ -9,10 +9,12 @@ export const handleJwt: Handle = async ({event, resolve}) => {
     
     if(token){
         const userJwt = await verifyToken(token)
-        console.log('JWT', userJwt)
         let user
+        console.log(userJwt)
         if(userJwt?.userId){
-            user = await getUserByJwt(event.locals.db, userJwt.userId as string)
+            
+            const pool = await event.locals.db()
+            user = await getUserByJwt(pool, userJwt.userId as string)
             console.log('User', user)
         }
         if(user){

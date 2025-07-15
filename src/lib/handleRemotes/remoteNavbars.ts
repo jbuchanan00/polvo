@@ -5,7 +5,7 @@ interface RemoteNavbars {
     BottomNavInstance: MountFunction;
 }
 
-const remoteUrl = 'http://localhost:5175/navbars.js';
+const remoteUrl = 'http://localhost:5177/navbars.js';
 
 export async function loadRemoteNavbars(): Promise<RemoteNavbars> {
     const remote = await import(/* @vite-ignore */ remoteUrl);

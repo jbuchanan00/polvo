@@ -6,6 +6,7 @@ import { createToken } from '$lib/server/tokens/jwt.js'
 import dotenv from 'dotenv'
 import { getUserByJwt } from '$lib/server/db/user/getUserByJwt.js'
 import { retrieveUserIdBySub } from '$lib/server/db/authentication/getUserIdBySub.js'
+import type { PoolClient } from 'pg'
 
 
 export const GET = async ({url, cookies, locals}): Promise<void | Response> => {
@@ -32,21 +33,23 @@ export const GET = async ({url, cookies, locals}): Promise<void | Response> => {
     console.log(payload)
 
     try {
+        const pool: PoolClient = await locals.db()
         const {email, given_name: givenName, family_name: familyName, sub} = payload
-        let userId = await retrieveUserIdBySub(locals.db, sub)
+        let userId = await retrieveUserIdBySub(pool, sub)
         if(!userId){
-            userId = await createUser(locals.db, {givenName, familyName, email, role: 1})
-            await prepCreateAuthProvider(locals.db, {email, userId, provider: 'google', providerUserId: sub})
+            userId = await createUser(pool, {givenName, familyName, email, role: 1})
+            await prepCreateAuthProvider(pool, {email, userId, provider: 'google', providerUserId: sub})
         }
         const token = await createToken({userId})
         cookies.set('jwt', token, {
             httpOnly: true,
-            secure: process.env.ENVIORNMENT ? true : false,
+            secure: process.env.ENVIORNMENT === 'dev' ? false : true,
             sameSite: 'strict',
             maxAge: 3600 * 1000,
             path: '/',
             domain: 'localhost'
         })
+        
     } catch(err) {
         console.error('ERROR', err)
     }
