@@ -30,13 +30,37 @@
 </div>
 
 <style>
+    .buttonContainer {
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .buttonContainer button {
+        width: 280px;
+        background-color: #22c55e;
+        color: white;
+        font-size: small;
+        padding: 5px;
+        border: 3px solid black;
+        box-shadow: 3px 3px black;
+        border-radius: 5px;
+    }
+    .buttonContainer a {
+        margin: 20px;
+        font-size: 0.6em;
+        color: grey;
+    }
     #password {
-        background: url('../lock-icon.svg') no-repeat scroll 0px 0px;
+        background: url('../lock-icon.svg') no-repeat scroll 4px 4px;
         padding-left: 25px;
+        width: 100%;
     }
     #email {
         background: url('../mail-icon.svg') no-repeat scroll 0px 0px;
         padding-left: 25px;
+        width: 100%;
     }
     .input {
         background-color: #cffafe;
@@ -44,9 +68,7 @@
         box-shadow: 3px 3px black;
         border-radius: 5px;
     }
-    input:-webkit-autofill {
-        box-shadow: 0 0 0px 1000px #cffafe inset !important;
-        -webkit-text-fill-color: #000 !important;
-        transition: background-color 5000s ease-in-out 0s;
+    .loginContainer {
+        font-weight: bolder;
     }
 </style>
