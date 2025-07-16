@@ -12,7 +12,8 @@ CREATE TABLE IF NOT EXISTS app_user (
     avatar_url TEXT,
     role_id int references role(id),
     location point,
-    bio Text
+    bio Text,
+    UNIQUE(email, username)
 );
 
 CREATE TABLE IF NOT EXISTS auth_provider (
