@@ -3,7 +3,7 @@
 </script>
 
 <div class="registerContainer">
-	<form method='POST' use:enhance >
+	<form method='POST' use:enhance action='?/register'>
 		<div class="emailContainer">
             <div class="inputHeader">
                 <label for="fullname">FULL NAME</label>

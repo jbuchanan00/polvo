@@ -7,7 +7,7 @@ export const load: PageServerLoad = async ({locals, cookies}: {locals: any, cook
     if(locals.user !== undefined){
         user = locals.user
     }else {
-        throw redirect(303, '/welcome/login') 
+        throw redirect(303, '/welcome/auth') 
     }
     return {
         user

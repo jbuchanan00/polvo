@@ -5,7 +5,7 @@
 </script>
 
 <div class="loginContainer">
-    <form method='POST' use:enhance >
+    <form method='POST' use:enhance action='?/login'>
         <div class="emailContainer">
             <div class="inputHeader">
                 <label for="email">EMAIL</label>

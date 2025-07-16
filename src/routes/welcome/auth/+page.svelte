@@ -33,9 +33,9 @@
         </div>
     </div>
     <div class="oauthContainer">
-        <div class="googleContainer">
+        <a class="googleContainer" href='/auth/google'>
             <img src='/mail-icon.svg' alt="mail" /> CONTINUE WITH GOOGLE
-        </div>
+        </a>
     </div>
     <div class="containerSplit">
         <div class="split"></div>   OR   <div class="split"></div>
