@@ -66,6 +66,11 @@
         font-size: 0.6em;
         color: grey;
     }
+	#fullname {
+		background: url('../person-icon.svg') no-repeat scroll 4px 4px;
+        padding-left: 25px;
+        width: 100%;
+	}
     #password {
         background: url('../lock-icon.svg') no-repeat scroll 4px 4px;
         padding-left: 25px;
