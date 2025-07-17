@@ -35,11 +35,12 @@ export const actions: Actions = {
                 path: '/',
                 domain: 'localhost'
             })
-            throw redirect(303, '/')
+            
         }catch(e){
             console.log(`There was an error creating a user: ${JSON.stringify(e)}`)
             return fail(400, {message: 'Error trying to register'})
         }
+        throw redirect(303, '/')
     },
     login: async ({request, locals, cookies}) => {
         const formData = await request.formData()

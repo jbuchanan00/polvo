@@ -1,11 +1,16 @@
-import { redirect, type RequestHandler } from "@sveltejs/kit";
+import { redirect } from "@sveltejs/kit";
 import type { PageServerLoad } from "./edit/$types";
-import { getPostData } from "$lib/server/api/posts/getPostData.js";
+import { verifyToken } from "$lib/server/tokens/jwt";
+import { getUserById } from "$lib/db/queries/getUser/getUserById";
 
 export const load: PageServerLoad = async ({locals, cookies}: {locals: any, cookies: any}) => {
     let user;
-    if(locals.user !== undefined){
-        user = locals.user
+    let cookie = await cookies.get('jwt')
+    
+    if(cookie !== null){
+        const pool = await locals.db()
+        cookie = await verifyToken(cookie)
+        user = await getUserById(pool, cookie.user_id)
     }else {
         throw redirect(303, '/welcome/auth') 
     }
