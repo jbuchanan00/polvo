@@ -31,7 +31,7 @@ export const actions: Actions = {
                 httpOnly: true,
                 secure: process.env.ENVIORNMENT === 'dev' ? false : true,
                 sameSite: 'strict',
-                maxAge: 3600 * 1000,
+                maxAge: 3600 * 1000 * 24,
                 path: '/',
                 domain: 'localhost'
             })
@@ -64,7 +64,7 @@ export const actions: Actions = {
                 httpOnly: true,
                 secure: process.env.ENVIORNMENT === 'dev' ? false : true,
                 sameSite: 'strict',
-                maxAge: 3600 * 1000,
+                maxAge: 3600 * 1000 * 24,
                 path: '/',
                 domain: 'localhost'
             })

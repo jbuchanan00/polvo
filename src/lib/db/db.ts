@@ -12,4 +12,4 @@ const pool = new Pool({
   port: 5432
 });
 
-export const connectToDB = async () => await pool.connect();
+export const connectToDB = () => pool.connect();
