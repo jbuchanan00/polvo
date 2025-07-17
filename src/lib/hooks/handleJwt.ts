@@ -1,6 +1,6 @@
 import { getUserById } from "$lib/db/queries/getUser/getUserById";
 import { verifyToken } from "$lib/server/tokens/jwt";
-import { redirect, type Handle } from "@sveltejs/kit";
+import { type Handle } from "@sveltejs/kit";
 
 
 

@@ -40,6 +40,7 @@ export const GET = async ({url, cookies, locals}): Promise<void | Response> => {
             userId = await createUser(pool, {givenName, familyName, email, role: 1})
             await prepCreateAuthProvider(pool, {email, userId, provider: 'google', providerUserId: sub})
         }
+        pool.release()
         const token = await createToken({userId})
         cookies.set('jwt', token, {
             httpOnly: true,

@@ -26,6 +26,7 @@ export const actions: Actions = {
             const user_id = await createUser(pool, {givenName, familyName, email, role: 1})
             await upsertNativeAuth(pool, crypted, user_id)
             await prepCreateAuthProvider(pool, {userId: user_id, provider: 'native', email})
+            pool.release()
             const token = await createToken({user_id})
             cookies.set('jwt', token, {
                 httpOnly: true,
@@ -58,7 +59,7 @@ export const actions: Actions = {
             const userResponse = await getUserByEmail(pool, email)
 
             locals.user = userResponse
-        
+            pool.release()
             const token = await createToken({userId: userResponse.id})
             cookies.set('jwt', token, {
                 httpOnly: true,
@@ -70,6 +71,7 @@ export const actions: Actions = {
             })
             throw redirect(303, '/')
         }else{
+            pool.release()
             console.log('Incorrect login')
             return fail(400, {email, message: 'Incorrect password'})
         }
