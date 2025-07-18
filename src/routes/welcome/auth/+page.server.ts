@@ -33,8 +33,7 @@ export const actions: Actions = {
                 secure: process.env.ENVIORNMENT === 'dev' ? false : true,
                 sameSite: 'strict',
                 maxAge: 3600 * 1000 * 24,
-                path: '/',
-                domain: 'localhost'
+                path: '/'
             })
             
         }catch(e){
@@ -66,8 +65,7 @@ export const actions: Actions = {
                 secure: process.env.ENVIORNMENT === 'dev' ? false : true,
                 sameSite: 'strict',
                 maxAge: 3600 * 1000 * 24,
-                path: '/',
-                domain: 'localhost'
+                path: '/'
             })
             throw redirect(303, '/')
         }else{

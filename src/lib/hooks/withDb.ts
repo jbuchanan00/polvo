@@ -5,6 +5,6 @@ export const withDb: Handle = async ({ event, resolve }): Promise<Response> => {
   const dbconn = connectToDB;
   event.locals.db = dbconn;
 
-    const response = await resolve(event);
-    return response;
+  const response = await resolve(event);
+  return response;
 };

@@ -10,8 +10,7 @@ export const handleJwt: Handle = async ({event, resolve}) => {
         const userJwt = await verifyToken(token)
         if(userJwt?.userId){
             const pool = await event.locals.db()
-            const user = await getUserById(pool, userJwt.userId as string)
-            event.locals.user = user
+            
             pool.release()
         }
     }

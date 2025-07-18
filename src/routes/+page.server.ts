@@ -10,6 +10,7 @@ export const load: PageServerLoad = async ({locals, cookies}: {locals: any, cook
     if(cookie !== null){
         const pool = await locals.db()
         cookie = await verifyToken(cookie)
+        console.log('COOKIE', cookie)
         if(cookie?.userId){
             try{
                 user = await getUserById(pool, cookie.userId)

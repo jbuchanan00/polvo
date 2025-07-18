@@ -55,5 +55,5 @@ export const GET = async ({url, cookies, locals}): Promise<void | Response> => {
         console.error('ERROR', err)
     }
     
-    throw redirect(301, '/')
+    return Response.redirect('http://localhost:5173/', 303)
 }
