@@ -1,15 +1,14 @@
 import { createUser } from '$lib/db/queries/index.js'
 import exchangeTokens from '$lib/server/api/oauth/exchangeTokens.js'
 import { prepCreateAuthProvider } from '$lib/server/db/authentication/createAuthProvider.js'
-import { redirect } from '@sveltejs/kit'
 import { createToken } from '$lib/server/tokens/jwt.js'
-import dotenv from 'dotenv'
-import { getUserByJwt } from '$lib/server/db/user/getUserByJwt.js'
 import { retrieveUserIdBySub } from '$lib/server/db/authentication/getUserIdBySub.js'
 import type { PoolClient } from 'pg'
+import { fail, redirect, type RequestHandler } from '@sveltejs/kit'
+import { setCookieProperties } from '$lib/server/api/cookies'
 
 
-export const GET = async ({url, cookies, locals}): Promise<void | Response> => {
+export const GET: RequestHandler = async ({url, cookies, locals}): Promise<Response> => {
     const code = url.searchParams.get('code')
     const state = url.searchParams.get('state')
 
@@ -23,14 +22,14 @@ export const GET = async ({url, cookies, locals}): Promise<void | Response> => {
          res = exchangeTokens(code, 'register')
     }catch(err){
         console.error('ERROR', err)
-        return
+        return new Response('Failed to complete Authorization', {status: 400})
     }
 
     const json = await (await res).json()
     const payload = JSON.parse(
         Buffer.from(json.id_token.split('.')[1], 'base64').toString('utf8')
     );
-    console.log(payload)
+    
 
     try {
         const pool: PoolClient = await locals.db()
@@ -42,18 +41,12 @@ export const GET = async ({url, cookies, locals}): Promise<void | Response> => {
         }
         pool.release()
         const token = await createToken({userId})
-        cookies.set('jwt', token, {
-            httpOnly: true,
-            secure: process.env.ENVIORNMENT === 'dev' ? false : true,
-            sameSite: 'strict',
-            maxAge: 3600 * 1000 * 24,
-            path: '/',
-            domain: 'localhost'
-        })
-        
+        cookies.set('jwt', token, setCookieProperties())
+        console.log('CHECKING JWT', cookies.get('jwt'))
     } catch(err) {
         console.error('ERROR', err)
+        return new Response('Failed to complete Authorization', {status: 400})
     }
     
-    return Response.redirect('http://localhost:5173/', 303)
+    throw redirect(303, '/')
 }

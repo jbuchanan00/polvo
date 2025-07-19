@@ -2,7 +2,7 @@
 	import { onMount } from "svelte";
 
     const {userData} = $props();
-
+    console.log(userData)
     let locationStr = $state();
 
     onMount(() => {
@@ -12,7 +12,7 @@
 </script>
 
 <div class="infoSection">
-    {#if userData.user.username}
+    {#if userData.user?.username}
         <h1>{userData.user.username}</h1>
         <h3>{userData.user.name}</h3>
     {:else}

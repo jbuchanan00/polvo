@@ -1,11 +1,12 @@
 import { fail, redirect } from '@sveltejs/kit';
-import type { Actions } from '../../$types.js';
+import type { Actions, PageServerLoad } from '../../$types.js';
 import { hashAndSalt, prepCreateAuthProvider } from '$lib/server/db/authentication/index.js';
 import { createUser } from '$lib/db/queries/index.js';
 import { upsertNativeAuth } from '$lib/db/queries/createUser/upsertNativeAuth.js';
 import { authenticateUser } from '$lib/server/db/authentication/authentication.js';
 import { getUserByEmail } from '$lib/server/db/user/getUserByEmail.js';
 import { createToken } from '$lib/server/tokens/jwt.js';
+import { setCookieProperties } from '$lib/server/api/cookies/setCookieProperties.js';
 
 
 export const actions: Actions = {
@@ -28,14 +29,7 @@ export const actions: Actions = {
             await prepCreateAuthProvider(pool, {userId: user_id, provider: 'native', email})
             pool.release()
             const token = await createToken({user_id})
-            cookies.set('jwt', token, {
-                httpOnly: true,
-                secure: process.env.ENVIORNMENT === 'dev' ? false : true,
-                sameSite: 'strict',
-                maxAge: 3600 * 1000 * 24,
-                path: '/'
-            })
-            
+            cookies.set('jwt', token, setCookieProperties())
         }catch(e){
             console.log(`There was an error creating a user: ${JSON.stringify(e)}`)
             return fail(400, {message: 'Error trying to register'})
@@ -56,22 +50,22 @@ export const actions: Actions = {
         const authenticated: boolean = await authenticateUser(pool, email, password)
         if(authenticated){
             const userResponse = await getUserByEmail(pool, email)
-
             locals.user = userResponse
             pool.release()
             const token = await createToken({userId: userResponse.id})
-            cookies.set('jwt', token, {
-                httpOnly: true,
-                secure: process.env.ENVIORNMENT === 'dev' ? false : true,
-                sameSite: 'strict',
-                maxAge: 3600 * 1000 * 24,
-                path: '/'
-            })
-            throw redirect(303, '/')
+            cookies.set('jwt', token, setCookieProperties())
+            console.log('CHECKING JWT', cookies.get('jwt'))
         }else{
             pool.release()
             console.log('Incorrect login')
             return fail(400, {email, message: 'Incorrect password'})
         }
+        throw redirect(303, '/')
     }
+}
+
+export const load: PageServerLoad = async ({locals}: {locals: any}) => {
+    // if(locals.user){
+    //     throw redirect(303, '/')
+    // }
 }
