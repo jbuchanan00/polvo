@@ -52,7 +52,7 @@ export const actions: Actions = {
             const userResponse = await getUserByEmail(pool, email)
             locals.user = userResponse
             pool.release()
-            const token = await createToken({userId: userResponse.id})
+            const token = await createToken({user_id: userResponse.id})
             cookies.set('jwt', token, setCookieProperties())
             console.log('CHECKING JWT', cookies.get('jwt'))
         }else{

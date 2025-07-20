@@ -25,7 +25,10 @@ export const GET: RequestHandler = async ({url, cookies, locals}): Promise<Respo
         return new Response('Failed to complete Authorization', {status: 400})
     }
 
-    const json = await (await res).json()
+    // const json = await (await res).json()
+    const json = await res.then(async res => {
+        return await res.json()
+    })
     const payload = JSON.parse(
         Buffer.from(json.id_token.split('.')[1], 'base64').toString('utf8')
     );
@@ -40,9 +43,8 @@ export const GET: RequestHandler = async ({url, cookies, locals}): Promise<Respo
             await prepCreateAuthProvider(pool, {email, userId, provider: 'google', providerUserId: sub})
         }
         pool.release()
-        const token = await createToken({userId})
+        const token = await createToken({user_id: userId})
         cookies.set('jwt', token, setCookieProperties())
-        console.log('CHECKING JWT', cookies.get('jwt'))
     } catch(err) {
         console.error('ERROR', err)
         return new Response('Failed to complete Authorization', {status: 400})
