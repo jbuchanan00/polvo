@@ -3,10 +3,10 @@ import type { PageServerLoad } from "./edit/$types";
 import { verifyToken } from "$lib/server/tokens/jwt";
 import { getUserById } from "$lib/db/queries/getUser/getUserById";
 
-export const load: PageServerLoad = async ({locals, cookies}: {locals: any, cookies: any}) => {
+export const load: PageServerLoad = async ({locals, cookies, request}: {locals: any, cookies: any, request: any}) => {
     let user;
     let cookie = cookies.get('jwt')
-    
+    console.log('REQ IN HOME', request)
     if(cookie !== null){
         const pool = await locals.db()
         console.log('BEFORE COOKIE', cookie)

@@ -25,7 +25,6 @@ export const GET: RequestHandler = async ({url, cookies, locals}): Promise<Respo
         return new Response('Failed to complete Authorization', {status: 400})
     }
 
-    // const json = await (await res).json()
     const json = await res.then(async res => {
         return await res.json()
     })
@@ -45,10 +44,9 @@ export const GET: RequestHandler = async ({url, cookies, locals}): Promise<Respo
         pool.release()
         const token = await createToken({user_id: userId})
         cookies.set('jwt', token, setCookieProperties())
+        return new Response('Success', {status: 200})
     } catch(err) {
         console.error('ERROR', err)
         return new Response('Failed to complete Authorization', {status: 400})
     }
-    
-    throw redirect(303, '/')
 }
