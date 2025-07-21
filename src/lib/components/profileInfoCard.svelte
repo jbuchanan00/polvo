@@ -6,7 +6,7 @@
     let locationStr = $state();
 
     onMount(() => {
-        locationStr = userData.user.location === null ? '' : `${userData.user.location.name} ${userData.user.location.state}`
+        locationStr = userData.user?.location === null ? '' : `${userData.user.location.name} ${userData.user.location.state}`
     })
 
 </script>
@@ -16,11 +16,11 @@
         <h1>{userData.user.username}</h1>
         <h3>{userData.user.name}</h3>
     {:else}
-        <h3>{userData.user.first_name} {userData.user.last_name}</h3>
+        <h3>{userData.user?.first_name} {userData.user?.last_name}</h3>
     {/if}
-    {#if userData.user.role_id === 1}
+    {#if userData.user?.role_id === 1}
         <h5>Canvas</h5>
-    {:else if userData.user.role === 2}
+    {:else if userData.user?.role === 2}
         <h5>Tattooer</h5>
     {/if}
     {#if locationStr}

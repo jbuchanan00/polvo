@@ -10,13 +10,13 @@ export const load: PageServerLoad = async ({locals, cookies}: {locals: any, cook
     if(cookie !== null){
         const pool = await locals.db()
         cookie = await verifyToken(cookie)
-        if(cookie?.userId){
-            // try{
-            //     user = await getUserById(pool, cookie.userId.user_id)
-            // }catch(e){
-            //     console.log('Error getting user by id, ', JSON.stringify(e))
-            //     return fail(400, {message: 'something wrong'})
-            // }
+        if(cookie?.user_id){
+            try{
+                user = await getUserById(pool, cookie.user_id)
+            }catch(e){
+                console.log('Error getting user by id, ', JSON.stringify(e))
+                return fail(400, {message: 'something wrong'})
+            }
         }else{
             throw redirect(303, '/welcome/auth')
         }

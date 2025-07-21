@@ -8,9 +8,8 @@ export const handleJwt: Handle = async ({event, resolve}) => {
     const token = event.cookies.get('jwt')
     if(token){
         const userJwt = await verifyToken(token)
-        console.log('HOOK JWT', userJwt)
-        if(userJwt?.userId){
-            
+        if(userJwt?.user_id){
+            event.locals.user = {id: userJwt.user_id}
         }
     }
     

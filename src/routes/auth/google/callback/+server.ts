@@ -4,17 +4,16 @@ import { prepCreateAuthProvider } from '$lib/server/db/authentication/createAuth
 import { createToken } from '$lib/server/tokens/jwt.js'
 import { retrieveUserIdBySub } from '$lib/server/db/authentication/getUserIdBySub.js'
 import type { PoolClient } from 'pg'
-import { fail, redirect, type RequestHandler } from '@sveltejs/kit'
+import { redirect, type RequestHandler } from '@sveltejs/kit'
 import { setCookieProperties } from '$lib/server/api/cookies'
 
 
 export const GET: RequestHandler = async ({url, cookies, locals}): Promise<Response> => {
     const code = url.searchParams.get('code')
-    const state = url.searchParams.get('state')
 
 
     if(!code){
-        return new Response('Failed to complete Authorization', {status: 400})
+        throw redirect(303, '/welcome/auth?status=fail')
     }
 
     let res
@@ -22,12 +21,15 @@ export const GET: RequestHandler = async ({url, cookies, locals}): Promise<Respo
          res = exchangeTokens(code, 'register')
     }catch(err){
         console.error('ERROR', err)
-        return new Response('Failed to complete Authorization', {status: 400})
+        throw redirect(303, '/welcome/auth?status=fail')
     }
 
     const json = await res.then(async res => {
         return await res.json()
     })
+    if(!json){
+        throw redirect(303, '/welcome/auth?status=fail')
+    }
     const payload = JSON.parse(
         Buffer.from(json.id_token.split('.')[1], 'base64').toString('utf8')
     );
@@ -44,9 +46,10 @@ export const GET: RequestHandler = async ({url, cookies, locals}): Promise<Respo
         pool.release()
         const token = await createToken({user_id: userId})
         cookies.set('jwt', token, setCookieProperties())
-        return new Response('Success', {status: 200})
+        
     } catch(err) {
         console.error('ERROR', err)
-        return new Response('Failed to complete Authorization', {status: 400})
+        throw redirect(303, '/welcome/auth?status=fail')
     }
+    throw redirect(303, '/welcome/auth?status=success')
 }

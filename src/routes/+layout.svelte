@@ -2,7 +2,6 @@
 	import '../app.css';
 	import { onMount } from 'svelte';
 	import { loadRemoteNavbars } from "$lib/handleRemotes/remoteNavbars";
-	import { postModalState } from '$lib/stores/ui';
 
 	let { children } = $props();
 
@@ -25,7 +24,7 @@
 </script>
 
 
-<div id="top-nav" class:top-nav-show = {$postModalState.open} ></div>
+<div id="top-nav" ></div>
 <div id="body">
     {@render children()}
 </div>
@@ -47,10 +46,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-    }
-    .top-nav-show {
-        position: fixed;
-        top: 0;
     }
     #bottom-nav {
         position: fixed;

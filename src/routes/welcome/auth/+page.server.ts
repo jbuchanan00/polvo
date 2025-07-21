@@ -54,18 +54,20 @@ export const actions: Actions = {
             pool.release()
             const token = await createToken({user_id: userResponse.id})
             cookies.set('jwt', token, setCookieProperties())
-            console.log('CHECKING JWT', cookies.get('jwt'))
         }else{
             pool.release()
-            console.log('Incorrect login')
             return fail(400, {email, message: 'Incorrect password'})
         }
         throw redirect(303, '/')
     }
 }
 
-export const load: PageServerLoad = async ({locals}: {locals: any}) => {
-    // if(locals.user){
-    //     throw redirect(303, '/')
-    // }
+export const load: PageServerLoad = async ({url}: {url: any}) => {
+    const status = url.searchParams.get('status')
+    if(status === 'success'){
+        return {status}
+    }else{
+        return {status: 'failed'}
+    }
+
 }

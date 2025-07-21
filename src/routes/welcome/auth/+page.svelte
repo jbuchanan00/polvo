@@ -1,8 +1,19 @@
 <script lang="ts">
     import RegisterForm from "$lib/components/RegisterForm.svelte";
     import LoginForm from "$lib/components/LoginForm.svelte";
+    import { goto } from '$app/navigation'
+	import { onMount } from "svelte";
 
     let mode = $state('login')
+
+    const {data} = $props()
+    const {status: authStatus} = data
+
+    onMount(() => {
+        if(authStatus === 'success'){
+            goto('/')
+        }
+    })
 
     function modeSwitch(type: string) {
         mode = type;
