@@ -1,18 +1,28 @@
 <script lang='ts'>
-    import ProfileInfoCard from "$lib/components/profileInfoCard.svelte";
-    import ProfileImageCard from "$lib/components/profileImageCard.svelte";
-    import editGear from "$lib/assets/svg/editGear.svg"
-    import ProfilePostCard from "$lib/components/profilePostCard.svelte";
-    import testPic from '$lib/assets/photos/testProf.jpg'
 	import type { PageData } from "./$types";
+	import { goto } from "$app/navigation";
 
-    let focusedPost = $state()
-    let image = $state('')
-    let post = $state()
+    let status = $state('success')
+    const baseUrl = 'http://localhost:5175'
+    
+    function handleEdit(){
+        goto('/edit')
+    }
+    
+    function handleMessage(){
+
+    }
 
     const { data } = $props<{data: PageData}>();
-    const {user: userData} = data
+    if(data.status === 'fail'){
+        status = 'fail'
+    }
+    const {user: userData, posts} = data
 </script>
+
+{#if status === 'fail'}
+    <div>FAILED TO GET USER</div>
+{:else}
 
 <div class="page">
     <div class="heading">
@@ -47,41 +57,155 @@
             </div>
         </div>
         <div class="numericInfo">
-            <div class="followers">
-
+            <div class="followersAndFollowing">
+                <div class="numberBox">
+                    100
+                </div>
+                <div class="textForNumber">
+                    FOLLOWERS
+                </div>
             </div>
-            <div class="following">
-
+            <div class="followersAndFollowing">
+                <div class="numberBox">
+                    245     
+                </div>
+                <div class="textForNumber">
+                    FOLLOWING
+                </div>
             </div>
         </div>
         <div class="bio">
-
+            Capturing moments that matter <br> Coffee addict | Travel lover<br> DM for collabs
         </div>
-        <div class="button">
-            <div class="editButton">
-
+        <div class="buttons">
+            <div class="button" id="edit">
+                <button onclick={handleEdit}>EDIT PROFILE</button>
             </div>
-            <div class="messageButton">
-
+            <div class="button" id="message">
+                <button onclick={handleMessage}>MESSAGE</button>
             </div>
-        </div>
-    </div>
-    <div class="postTypeSwitch">
-        <div class="postsTab">
-
-        </div>
-        <div class="taggedTab">
-
         </div>
     </div>
     <div class="post">
+        {#if posts.length < 1}
+        <div>NO PHOTOS CURRENTLY</div>
+        {:else}
+            {#each posts as post}
+            <div class="postPicture">
+                <a href={`/${post.id}`}><img class="postImg" src={`${baseUrl}/${post.image}`} alt="post" /></a>  
+            </div>
+            {/each}
+        
+        {/if}
         <div class="postPicture">
-
+            <a href="/"><img class="postImg" src="test/test-profile.jpg" alt="post" /></a>  
+        </div>
+        <div class="postPicture">
+            <img class="postImg" src="test/test-profile.jpg" alt="post" />
+        </div>
+        <div class="postPicture">
+            <img class="postImg" src="test/test-profile.jpg" alt="post" />
+        </div>
+        <div class="postPicture">
+            <img class="postImg" src="test/test-profile.jpg" alt="post" />
+        </div>
+        <div class="postPicture">
+            <img class="postImg" src="test/test-profile.jpg" alt="post" />
+        </div>
+        <div class="postPicture">
+            <img class="postImg" src="test/test-profile.jpg" alt="post" />
+        </div>
+        <div class="postPicture">
+            <img class="postImg" src="test/test-profile.jpg" alt="post" />
+        </div>
+        <div class="postPicture">
+            <img class="postImg" src="test/test-profile.jpg" alt="post" />
         </div>
     </div>
 </div>
+{/if}
 
 <style>
+    .button:active {
+		transform: translateY(2px) translateX(2px);
+		box-shadow: none;
+	}
+    .postImg {
+        object-fit: contain;
+        width: 100%;
+        border: 3px solid black;
+        box-shadow: 3px 3px black;
+        height: auto;
+        aspect-ratio: 1 / 1;
+        background-color: white;
+    }
+    .postPicture {
+        width: 100%;
+        margin: 5px;
+    }
+    .post {
+        width: 100%;
+        display: grid;
+        background-color: #86efac;
+        grid-template-columns: 30% 30% 30%;
+        column-gap: 10px;
+        grid-column: auto;
+        border-bottom: 3px solid black;
+        
+    }
+    #message {
+        background-color: #3b82f6;
+    }
+    #edit {
+        background-color: #22c55e;
+    }
+    .button {
+        width: 47%;
+        border: 3px solid #000;
+        box-shadow: 3px 3px black;
+        text-align: center;
+        padding:5px;
+        font-size: .9em;
+        font-weight: bolder;
+        color: white;
+    }
+    .buttons{
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    .bio {
+        padding-left: 5px;
+        font-size: small;
+        font-weight: bolder;
+    }
+    .textForNumber {
+        font-weight: bolder;
+        margin-top: 5px;
+    }
+    .numberBox {
+        width: 100%;
+        background-color: white;
+        padding: 5px;
+        text-align: center;
+        font-weight: bolder;
+        border: 3px solid black;
+        box-shadow: 3px 3px black;
+    }
+    .followersAndFollowing {
+        display: flex;
+        flex-direction: column;
+        height: 75%;
+        justify-content: center;
+    }
+    .numericInfo {
+        height: 100px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
     .roleAndLocation {
         font-size: small;
         font-weight: bold;
@@ -99,10 +223,13 @@
         width: 375px;
         border: 5px solid black;
         box-shadow: 5px 5px black;
+        background-color: white;
+        min-height: 1000px;
     }
     .heading {
         background-color: #f472b6;
         padding: 10px;
+        border-bottom: 3px solid black;
     }
     .informational {
         display: flex;

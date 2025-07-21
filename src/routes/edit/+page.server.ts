@@ -20,7 +20,7 @@ export const load: PageServerLoad = async ({locals}: {locals: any}) => {
     if(locals.user){
         user = locals.user
     }else {
-        throw redirect(303, '/auth/welcome')
+        throw redirect(303, '/welcome/auth')
     }
     return {
         user
