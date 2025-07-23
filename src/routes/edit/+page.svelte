@@ -1,9 +1,8 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
 	import Dropdown from "$lib/components/edit/dropdown.svelte";
-	import { json, redirect } from "@sveltejs/kit";
-	import type { EventHandler } from "svelte/elements";
 
+	
 	let dropdownVisible = $state(false)
 	let input = $state("")
 	let locations = $state([])
@@ -90,7 +89,7 @@
 					<label class="sub_title" for="first_name">FIRST NAME</label>
 				</div>
 				<div class="itemInput">
-					<input placeholder="Enter your first name" class="textInput" type="text" name="first_name" defaultValue={userData.firstName}/>
+					<input placeholder="Enter your first name" class="textInput" type="text" name="first_name" defaultValue={userData.first_name}/>
 				</div>
 			</div>
 			<div class="itemContainer">
@@ -98,7 +97,7 @@
 					<label class="sub_title" for="last_name">LAST NAME</label>
 				</div>
 				<div class="itemInput">
-					<input placeholder="Enter your given name" class="textInput" type="text" name="last_name" defaultValue={userData.lastName}/>
+					<input placeholder="Enter your given name" class="textInput" type="text" name="last_name" defaultValue={userData.last_name}/>
 				</div>
 			</div>
 			<div class="itemContainer">
@@ -106,7 +105,7 @@
 					<label class="sub_title" for="location">LOCATION</label>
 				</div>
 				<div class="itemInput">
-					<input placeholder="Enter your location" class="textInput" type="text" name="location" defaultValue={userData.location} 
+					<input placeholder="Enter your location" class="textInput" type="text" name="location" defaultValue={userData.location || ''} 
 						oninput={() => {
 							debounceWithLocation()
 						}} 

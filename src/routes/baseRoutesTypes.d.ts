@@ -16,10 +16,21 @@ declare type Coordinates = {
     longitude: number
 }
 
+type User = {[key: string]: any}
+
 interface User {
     id: string,
     firstName: string | null,
     lastName: string | null,
+    username: string,
+    role: number,
+    location: Location | null
+}
+
+interface FrontEndUser {
+    id: string,
+    first_name: string | null,
+    last_name: string | null,
     username: string,
     role: number,
     location: Location | null
