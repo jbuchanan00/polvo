@@ -79,10 +79,10 @@
 		<form method="POST" use:enhance action='?/submitEdit' class="form">
 			<div class="itemContainer">
 				<div class="inputHeading">
-					<label class="sub_title" for="displayname">USERNAME</label>
+					<label class="sub_title" for="username">USERNAME</label>
 				</div>
 				<div class="itemInput">
-					<input placeholder="Enter your desired display name" class="textInput" type="text" name="display_name" defaultValue={userData.username}/> 
+					<input placeholder="Enter your desired username" class="textInput" type="text" name="username" defaultValue={userData.username}/> 
 				</div>
 			</div>
 			<div class="itemContainer">
