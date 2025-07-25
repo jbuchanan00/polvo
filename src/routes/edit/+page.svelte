@@ -22,7 +22,6 @@
 			}).then(async (res) => {
 				locations = await res.json()
 				dropdownVisible = true;
-				console.log(locations, dropdownVisible)
 			})
 		}else{
 			locations = []
@@ -54,6 +53,12 @@
 		}
 	}
 
+	function handleSubmit(event: any){
+		const defaultForm = event.formData
+		defaultForm.delete('location')
+		defaultForm.append('location', location)
+	}
+
 </script>
 
 
@@ -75,7 +80,7 @@
 		</div>
 	</div>
 	<div class="formContainer">
-		<form method="POST" use:enhance action='?/submitEdit' class="form">
+		<form method="POST" use:enhance={(event) => handleSubmit(event)} action='?/submitEdit' class="form">
 			<div class="itemContainer">
 				<div class="inputHeading">
 					<label class="sub_title" for="username">USERNAME</label>

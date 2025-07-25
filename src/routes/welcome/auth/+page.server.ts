@@ -62,8 +62,12 @@ export const actions: Actions = {
     }
 }
 
-export const load: PageServerLoad = async ({url}: {url: any}) => {
+export const load: PageServerLoad = async ({url, locals}: {url: any, locals: any}) => {
     const status = url.searchParams.get('status')
+    const user = locals.user
+    if(user?.id){
+        throw redirect(301, '/')
+    }
     if(status === 'success'){
         return {status}
     }else{

@@ -10,6 +10,7 @@ export const handleJwt: Handle = async ({event, resolve}) => {
         const userJwt = await verifyToken(token)
         if(userJwt?.user_id){
             event.locals.user = {id: userJwt.user_id}
+            console.log('SET USER ID TOKEN')
         }
     }
     

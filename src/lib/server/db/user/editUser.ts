@@ -8,7 +8,7 @@ export async function editUser(db: PoolClient, userWId: User){
         if(user[key] !== ''){
             if(key === 'location'){
                 if(user[key] != null){
-                    setClauses.push(`${location}=(${user[key].coords.latitude}, ${user[key].coords.longitude}`)
+                    setClauses.push(`location=point(${parseFloat(user[key].latitude)}, ${parseFloat(user[key].longitude)})`)
                 }
             }else{
                 setClauses.push(`${key}='${user[key]}'`)
@@ -22,7 +22,6 @@ export async function editUser(db: PoolClient, userWId: User){
             SET
             ${setStr}
             WHERE id='${id}'`
-        console.log('QUERY TEXT', queryText)
         await db.query(queryText)
         await db.query('COMMIT')
     }catch(e){

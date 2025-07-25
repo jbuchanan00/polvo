@@ -7,14 +7,18 @@ export const actions = {
     submitEdit: async ({request, locals}: RequestEvent) => {
         const formData = await request.formData()
 		const form = Object.fromEntries(formData);
-
+        let submittedLocation: Location | string = ''
         const {username, first_name, last_name, location} = form
+
+        if(location !== ''){
+            submittedLocation = JSON.parse(location as string)
+        }
 
         locals.user = {
             firstName: first_name,
             lastName: last_name,
             username,
-            location,
+            location: submittedLocation,
             ...locals.user
         }
 

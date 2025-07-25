@@ -18,6 +18,7 @@
         status = 'fail'
     }
     const {user: userData, posts} = data
+    console.log(userData.location)
 </script>
 
 {#if status === 'fail'}
@@ -49,7 +50,7 @@
                 </div>
                 <div class="roleAndLocation">
                     {#if userData.location}
-                    <img src="icon/earth-icon.svg" alt="location" /><h4>{userData.location}</h4>
+                    <img src="icon/earth-icon.svg" alt="location" /><h4>{userData.location.name}{userData.location.state ? `, ${userData.location.state}` : ''}</h4>
                     {:else}
                     <img src="icon/earth-icon.svg" alt="location" /><h4>Planet Earth</h4>
                     {/if}
@@ -97,30 +98,6 @@
             {/each}
         
         {/if}
-        <div class="postPicture">
-            <a href="/"><img class="postImg" src="test/test-profile.jpg" alt="post" /></a>  
-        </div>
-        <div class="postPicture">
-            <img class="postImg" src="test/test-profile.jpg" alt="post" />
-        </div>
-        <div class="postPicture">
-            <img class="postImg" src="test/test-profile.jpg" alt="post" />
-        </div>
-        <div class="postPicture">
-            <img class="postImg" src="test/test-profile.jpg" alt="post" />
-        </div>
-        <div class="postPicture">
-            <img class="postImg" src="test/test-profile.jpg" alt="post" />
-        </div>
-        <div class="postPicture">
-            <img class="postImg" src="test/test-profile.jpg" alt="post" />
-        </div>
-        <div class="postPicture">
-            <img class="postImg" src="test/test-profile.jpg" alt="post" />
-        </div>
-        <div class="postPicture">
-            <img class="postImg" src="test/test-profile.jpg" alt="post" />
-        </div>
     </div>
 </div>
 {/if}

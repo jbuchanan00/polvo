@@ -3,6 +3,7 @@ import type { PageServerLoad } from "../edit/$types";
 import { verifyToken } from "$lib/server/tokens/jwt";
 import { getUserById } from "$lib/db/queries/getUser/getUserById";
 import { getPostsByUser } from "$lib/server/api/posts/getPostsByUser";
+import { getLocationData } from "$lib/server/api/geo";
 
 export const load: PageServerLoad = async ({locals, cookies}: {locals: any, cookies: any}) => {
     let user;
@@ -15,6 +16,10 @@ export const load: PageServerLoad = async ({locals, cookies}: {locals: any, cook
         if(cookie?.user_id){
             try{
                 user = await getUserById(pool, cookie.user_id)
+                if(user.location?.coords && !user.location?.name){
+                    const userLoc = await getLocationData(user.location.coords)
+                    console.log('FETCHED LOCATION', userLoc)
+                }
                 posts = await getPostsByUser(user.id)
                 console.log('POSTS', posts)
             }catch(e){
