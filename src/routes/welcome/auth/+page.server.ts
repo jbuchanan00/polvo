@@ -65,6 +65,7 @@ export const actions: Actions = {
 export const load: PageServerLoad = async ({url, locals}: {url: any, locals: any}) => {
     const status = url.searchParams.get('status')
     const user = locals.user
+    console.log('LOGGING USER IN AUTH', locals)
     if(user?.id){
         throw redirect(301, '/')
     }
