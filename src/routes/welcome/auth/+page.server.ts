@@ -7,6 +7,7 @@ import { authenticateUser } from '$lib/server/db/authentication/authentication.j
 import { getUserByEmail } from '$lib/server/db/user/getUserByEmail.js';
 import { createToken } from '$lib/server/tokens/jwt.js';
 import { setCookieProperties } from '$lib/server/api/cookies/setCookieProperties.js';
+import { base } from '$app/paths';
 
 
 export const actions: Actions = {
@@ -32,9 +33,9 @@ export const actions: Actions = {
             cookies.set('jwt', token, setCookieProperties())
         }catch(e){
             console.log(`There was an error creating a user: ${JSON.stringify(e)}`)
-            return fail(400, {message: 'Error trying to register'})
+            throw redirect(303, `${base}/welcome/auth?status=success`)
         }
-        throw redirect(303, '/')
+        throw redirect(303, `${base}/welcome/auth?status=success`)
     },
     login: async ({request, locals, cookies}) => {
         const formData = await request.formData()
@@ -45,29 +46,35 @@ export const actions: Actions = {
             password: string;
         };
 
-        const pool = await locals.db()
+        try{
+            const pool = await locals.db()
 
-        const authenticated: boolean = await authenticateUser(pool, email, password)
-        if(authenticated){
-            const userResponse = await getUserByEmail(pool, email)
-            locals.user = userResponse
-            pool.release()
-            const token = await createToken({user_id: userResponse.id})
-            cookies.set('jwt', token, setCookieProperties())
-        }else{
-            pool.release()
-            return fail(400, {email, message: 'Incorrect password'})
+            const authenticated: boolean = await authenticateUser(pool, email, password)
+            if(authenticated){
+                const userResponse = await getUserByEmail(pool, email)
+                locals.user = userResponse
+                pool.release()
+                const token = await createToken({user_id: userResponse.id})
+                console.log(token)
+                cookies.set('jwt', token, setCookieProperties())
+            }else{
+                pool.release()
+                console.log('Was not authenticated')
+                throw redirect(303, `${base}/welcome/auth?status=failed`)
+            }
+        }catch(e){
+            console.log('Error trying to authenticate', e)
+            throw redirect(303, `${base}/welcome/auth?status=failed`)
         }
-        throw redirect(303, '/')
+        throw redirect(303, `${base}/welcome/auth?status=success`)
     }
 }
 
 export const load: PageServerLoad = async ({url, locals}: {url: any, locals: any}) => {
     const status = url.searchParams.get('status')
     const user = locals.user
-    console.log('LOGGING USER IN AUTH', locals)
     if(user?.id){
-        throw redirect(301, '/')
+        throw redirect(301, `${base}/`)
     }
     if(status === 'success'){
         return {status}

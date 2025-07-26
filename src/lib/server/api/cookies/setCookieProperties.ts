@@ -3,12 +3,12 @@ import dotenv from 'dotenv'
 
 dotenv.configDotenv()
 
-export const setCookieProperties = (): CookieSerializeOptions & {path: string} => {
+export const setCookieProperties = (age = 3600 * 1000 * 24): CookieSerializeOptions & {path: string} => {
     const props = {
         httpOnly: true,
         secure: process.env.ENVIRONMENT !== 'dev',
         sameSite: 'strict' as const,
-        maxAge: 3600 * 1000 * 24,
+        maxAge: age,
         path: '/',
     }
     return props

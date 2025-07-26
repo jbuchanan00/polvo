@@ -6,6 +6,7 @@ import { retrieveUserIdBySub } from '$lib/server/db/authentication/getUserIdBySu
 import type { PoolClient } from 'pg'
 import { redirect, type RequestHandler } from '@sveltejs/kit'
 import { setCookieProperties } from '$lib/server/api/cookies'
+import { base } from '$app/paths'
 
 
 export const GET: RequestHandler = async ({url, cookies, locals}): Promise<Response> => {
@@ -13,7 +14,7 @@ export const GET: RequestHandler = async ({url, cookies, locals}): Promise<Respo
 
 
     if(!code){
-        throw redirect(303, '/welcome/auth?status=fail')
+        throw redirect(303, `${base}/welcome/auth?status=fail`)
     }
 
     let res
@@ -21,14 +22,14 @@ export const GET: RequestHandler = async ({url, cookies, locals}): Promise<Respo
          res = exchangeTokens(code, 'register')
     }catch(err){
         console.error('ERROR', err)
-        throw redirect(303, '/welcome/auth?status=fail')
+        throw redirect(303, `${base}/welcome/auth?status=fail`)
     }
 
     const json = await res.then(async res => {
         return await res.json()
     })
     if(!json){
-        throw redirect(303, '/welcome/auth?status=fail')
+        throw redirect(303, `${base}/welcome/auth?status=fail`)
     }
     const payload = JSON.parse(
         Buffer.from(json.id_token.split('.')[1], 'base64').toString('utf8')
@@ -49,7 +50,7 @@ export const GET: RequestHandler = async ({url, cookies, locals}): Promise<Respo
         
     } catch(err) {
         console.error('ERROR', err)
-        throw redirect(303, '/welcome/auth?status=fail')
+        throw redirect(303, `${base}/welcome/auth?status=fail`)
     }
-    throw redirect(303, '/welcome/auth?status=success')
+    throw redirect(303, `${base}/welcome/auth?status=success`)
 }

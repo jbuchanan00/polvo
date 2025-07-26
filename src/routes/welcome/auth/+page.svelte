@@ -3,6 +3,7 @@
     import LoginForm from "$lib/components/LoginForm.svelte";
     import { goto } from '$app/navigation'
 	import { onMount } from "svelte";
+    import {base} from '$app/paths'
 
     let mode = $state('login')
 
@@ -24,7 +25,7 @@
 <div class="authContainer">
     <div class="headingContainer">
         <div class="logoContainer">
-            <img src="/square-logo.png" alt="square-logo" class="logo"/>
+            <img src={`${base}/icon/square-logo.png`} alt="square-logo" class="logo"/>
         </div>
         <div class="titleContainer">
             <h1>INKED OUT</h1>
@@ -44,8 +45,8 @@
         </div>
     </div>
     <div class="oauthContainer">
-        <a class="googleContainer" href='/auth/google'>
-            <img src='/mail-icon.svg' alt="mail" /> CONTINUE WITH GOOGLE
+        <a class="googleContainer" href={`${base}/auth/google`}>
+            <img src={`${base}/icon/mail-icon.svg`} alt="mail" /> CONTINUE WITH GOOGLE
         </a>
     </div>
     <div class="containerSplit">

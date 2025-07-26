@@ -4,6 +4,7 @@ import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
+	base: '/profile/',
 	plugins: [tailwindcss(), sveltekit()],
 	test: {
 		workspace: [

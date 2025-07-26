@@ -15,7 +15,9 @@ const config = {
 	ssr: {
 		noExternal: ['pg']
 	},
-	kit: { adapter: adapter() }
+	kit: { adapter: adapter(),
+		paths: {base: '/profile'}
+	 }
 };
 
 export default config;

@@ -2,6 +2,7 @@ import type { RequestEvent, PageServerLoad } from './$types.js'
 import { redirect } from '@sveltejs/kit'
 import { editExistingUser } from '$lib/server/api/users/editExistingUser.js'
 import { getUserById } from '$lib/db/queries/getUser/getUserById.js'
+import { base } from '$app/paths'
 
 export const actions = {
     submitEdit: async ({request, locals}: RequestEvent) => {
@@ -29,8 +30,7 @@ export const actions = {
             console.error('FAILED TO EDIT EXISTING USER, ', e)
         }
 
-        console.log('form', form)
-        throw redirect(303, `/${locals.user.id}`)
+        throw redirect(303, `${base}/${locals.user.id}`)
     }
 }
 
@@ -41,7 +41,7 @@ export const load: PageServerLoad = async ({locals}: {locals: any}) => {
         const pool = await locals.db()
         user = await getUserById(pool, locals.user.id)
     }else {
-        throw redirect(303, '/welcome/auth')
+        throw redirect(303, `${base}/welcome/auth`)
     }
     return {
         user

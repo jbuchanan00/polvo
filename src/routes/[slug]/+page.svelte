@@ -1,16 +1,24 @@
 <script lang='ts'>
 	import type { PageData } from "./$types";
 	import { goto } from "$app/navigation";
+	import { base } from "$app/paths";
 
     let status = $state('success')
     const baseUrl = 'http://localhost:5175'
     
     function handleEdit(){
-        goto('/edit')
+        goto(`${base}/edit`)
     }
     
     function handleMessage(){
 
+    }
+
+    async function handleLogout(){
+        await fetch(`${base}/logout`, {
+            method: 'DELETE'
+        })
+        goto(`${base}/welcome/auth`)
     }
 
     const { data } = $props<{data: PageData}>();
@@ -18,7 +26,6 @@
         status = 'fail'
     }
     const {user: userData, posts} = data
-    console.log(userData.location)
 </script>
 
 {#if status === 'fail'}
@@ -56,7 +63,11 @@
                     {/if}
                 </div>
             </div>
+            <button type="button" class="logout" onclick={handleLogout}>
+                <img src="icon/logout-icon.svg" alt="logout" class="logoutIcon"/>
+            </button>
         </div>
+        
         <div class="numericInfo">
             <div class="followersAndFollowing">
                 <div class="numberBox">
@@ -103,6 +114,23 @@
 {/if}
 
 <style>
+    .logout {
+        width: 30px;
+        height: 30px; 
+        background-color: #ef4444;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 2px solid black;
+        box-shadow: 3px 3px black;
+    }
+    .logoutIcon {
+        filter: invert(100%);
+    }
+    .logout:active {
+        transform: translateX(3px) translateY(3px);
+        box-shadow: none;
+    }
     .button:active {
 		transform: translateY(2px) translateX(2px);
 		box-shadow: none;
@@ -218,5 +246,6 @@
     }
     .personalInfo {
         margin-left: 20px;
+        width: 70%;
     }
 </style>

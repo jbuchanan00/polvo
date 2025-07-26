@@ -1,6 +1,7 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
 	import Dropdown from "$lib/components/edit/dropdown.svelte";
+	import {base} from '$app/paths'
 
 	
 	let dropdownVisible = $state(false)
@@ -65,7 +66,7 @@
 <div class="pageContainer">
 	<div class="backHeader">
 		<div class="backButtonContainer">
-			<button type="button" class="backButton" onclick={() => history.back()}><img class="backArrow" src="/back-arrow.svg" alt="back arrow" /></button>
+			<button type="button" class="backButton" onclick={() => history.back()}><img class="backArrow" src={`${base}/back-arrow.svg`} alt="back arrow" /></button>
 		</div>
 		<div id="editTextContainer">
 			<h3>EDIT PROFILE</h3>
@@ -73,7 +74,7 @@
 	</div>
 	<div class="photoChangeContainer">
 		<div class="imageContainer">
-			<img class="profilePic" src="/testTat.jpg" alt="profile pic" />
+			<img class="profilePic" src={`${base}/testTat.jpg`} alt="profile pic" />
 		</div>
 		<div class="photoButtonContainer">
 			<button class="changePhotoButton">Change Photo</button>
