@@ -2,8 +2,18 @@
 	import type { PageData } from "./$types";
 	import { goto } from "$app/navigation";
 	import { base } from "$app/paths";
+	import { enhance } from "$app/forms";
 
     let status = $state('success')
+
+    const { data } = $props<{data: PageData}>();
+    if(data.status === 'fail'){
+        status = 'fail'
+    }
+    const {user: userData, posts} = data
+
+    let bioEdit = $state(false)
+    let userBio = $state(userData.bio)
     const baseUrl = 'http://localhost:5175'
     
     function handleEdit(){
@@ -21,11 +31,15 @@
         goto(`${base}/welcome/auth`)
     }
 
-    const { data } = $props<{data: PageData}>();
-    if(data.status === 'fail'){
-        status = 'fail'
+    function handleBioEdit(){
+
     }
-    const {user: userData, posts} = data
+
+    function submitBio(){
+
+    }
+
+
 </script>
 
 {#if status === 'fail'}
@@ -86,9 +100,21 @@
                 </div>
             </div>
         </div>
-        <div class="bio">
-            Capturing moments that matter <br> Coffee addict | Travel lover<br> DM for collabs
+        {#if bioEdit}
+        <div class="bioEdit">
+                <input class="bioText" bind:value={userBio} type="text" defaultValue={userData.bio}/>
+                <button type="button" onclick={() => submitBio()}>Checkmark</button>
         </div>
+        {:else}
+        <div class="bio">
+            <div class="bioText">
+                {userData.bio}
+            </div>
+            <div class="bioEdit">
+                <button type="button" onclick={() => handleBioEdit()}><img src={`${base}/icon/edit-pencil-icon.svg`} alt="edit bio" /></button> 
+            </div>
+        </div>
+        {/if}
         <div class="buttons">
             <div class="button" id="edit">
                 <button onclick={handleEdit}>EDIT PROFILE</button>
