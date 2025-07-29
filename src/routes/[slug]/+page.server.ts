@@ -4,6 +4,7 @@ import { getUserById } from "$lib/db/queries/getUser/getUserById";
 import { getPostsByUser } from "$lib/server/api/posts/getPostsByUser";
 import { getLocationData } from "$lib/server/api/geo";
 import { base } from "$app/paths";
+import editUserBio from "$lib/server/api/users/editUserBio";
 
 export const load: PageServerLoad = async ({locals}: {locals: any, cookies: any}) => {
     let user;
@@ -36,8 +37,20 @@ export const load: PageServerLoad = async ({locals}: {locals: any, cookies: any}
 }
 
 export const actions: Actions = {
-    submitBio: async ({}) => {
+    submitBio: async ({request, locals}) => {
+        const formData = await request.formData()
+        const form = Object.fromEntries(formData);
 
+        let {bio} = form as {
+            bio: string
+        }
+
+        try{
+            const pool = await locals.db()
+            await editUserBio(pool, {id: locals.user.id, bio})
+        }catch(e){
+            console.error('Error caught in action')
+        }
     }
 }
 

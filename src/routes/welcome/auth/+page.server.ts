@@ -55,7 +55,6 @@ export const actions: Actions = {
                 locals.user = userResponse
                 pool.release()
                 const token = await createToken({user_id: userResponse.id})
-                console.log(token)
                 cookies.set('jwt', token, setCookieProperties())
             }else{
                 pool.release()

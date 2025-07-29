@@ -5,6 +5,7 @@
 	import { enhance } from "$app/forms";
 
     let status = $state('success')
+    let bioHtml
 
     const { data } = $props<{data: PageData}>();
     if(data.status === 'fail'){
@@ -12,8 +13,9 @@
     }
     const {user: userData, posts} = data
 
-    let bioEdit = $state(false)
+    let bioEdit = $state(true)
     let userBio = $state(userData.bio)
+
     const baseUrl = 'http://localhost:5175'
     
     function handleEdit(){
@@ -32,14 +34,12 @@
     }
 
     function handleBioEdit(){
-
+        bioEdit = true;
     }
 
     function submitBio(){
-
+        bioEdit = false;
     }
-
-
 </script>
 
 {#if status === 'fail'}
@@ -102,13 +102,15 @@
         </div>
         {#if bioEdit}
         <div class="bioEdit">
-                <input class="bioText" bind:value={userBio} type="text" defaultValue={userData.bio}/>
-                <button type="button" onclick={() => submitBio()}>Checkmark</button>
+                <form method="POST" action="?/submitBio" use:enhance={() => submitBio()}>
+                    <textarea maxlength=250 rows="3" class="bioTextArea" bind:value={userBio} name="bio"></textarea>
+                    <button type="submit"><img class="checkmark" src={`${base}/icon/checkmark.svg`} alt="edit bio"/></button>
+                </form>
         </div>
         {:else}
         <div class="bio">
-            <div class="bioText">
-                {userData.bio}
+            <div class="bioText" id="showBioText">
+                {userBio}
             </div>
             <div class="bioEdit">
                 <button type="button" onclick={() => handleBioEdit()}><img src={`${base}/icon/edit-pencil-icon.svg`} alt="edit bio" /></button> 
@@ -140,6 +142,28 @@
 {/if}
 
 <style>
+    .checkmark {
+        width: 20px;
+    }
+    .bioTextArea {
+        width: 300px;
+        resize: none;
+        background-color: white;
+        border: 2px solid #000;
+        box-shadow: 3px 3px black;
+        border-radius: 5px;
+    }
+    .bioEdit form {
+        display: flex;
+        justify-content: space-between;
+    }
+    .bioText {
+        white-space: pre-line;
+    }
+    .bio {
+        display: flex;
+        justify-content: space-between;
+    }
     .logout {
         width: 30px;
         height: 30px; 

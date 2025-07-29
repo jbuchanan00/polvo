@@ -10,7 +10,7 @@ export async function getLocationData(coords: Coordinates): Promise<Location | n
                 delete location.longitude
             }
             return location
-        })
+        }).catch(e => console.log('Error', e))
 
         return res
     }catch(e){
