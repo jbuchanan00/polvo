@@ -1,4 +1,4 @@
-import { editUser } from "$lib/db/queries/user";
+import { editUser } from "$lib/db/queries";
 import type { PoolClient } from "pg";
 
 
