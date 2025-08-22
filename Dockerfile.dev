@@ -2,11 +2,11 @@ FROM node:alpine3.20
 
 WORKDIR /app
 
+# Install Docker CLI (and compose plugin optional)
+RUN apk add --no-cache docker-cli docker-cli-compose
+
 COPY package.json package-lock.json* ./
 RUN npm install
 
-
-
 EXPOSE 5173
-
 CMD ["npm", "run", "dev", "--", "--host"]
