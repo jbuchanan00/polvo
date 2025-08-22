@@ -1,7 +1,7 @@
 import type { RequestEvent, PageServerLoad } from './$types.js'
 import { redirect } from '@sveltejs/kit'
 import { editExistingUser } from '$lib/server/api/users/editExistingUser.js'
-import { getUserById } from '$lib/db/queries/getUser/getUserById.js'
+import { getUserById } from '$lib/db/queries/user/gets/getUserById.js'
 import { base } from '$app/paths'
 
 export const actions = {

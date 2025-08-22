@@ -1,4 +1,4 @@
-import { verifyToken } from "$lib/server/tokens/jwt";
+import { verifyToken } from "$lib/server/api/tokens/jwt";
 import { type Handle } from "@sveltejs/kit";
 
 

@@ -1,8 +1,8 @@
 import type { PoolClient } from "pg";
-import { getSaltByUser } from "$lib/db/queries/getSalt";
+import { getSaltByUser } from "$lib/db/queries/authorization/getSalt";
 import { hashAndSalt } from "./hashAndSalt";
-import { getUserHashByEmail } from "$lib/db/queries/getUser/getUserHashByEmail";
-import { verifyUserExistsByEmail } from "../../../db/queries/verifyUser";
+import { getUserHashByEmail } from "$lib/db/queries/authorization/getUserHashByEmail";
+import { verifyUserExistsByEmail } from "../../../db/queries/user/gets/verifyUser";
 
 
 export async function authenticateUser(db: PoolClient, email: string, password: string): Promise<boolean>{

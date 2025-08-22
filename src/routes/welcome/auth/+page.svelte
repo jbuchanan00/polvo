@@ -7,7 +7,8 @@
 
     let mode = $state('login')
 
-    const {data} = $props()
+    const {data, form} = $props()
+    console.log(form, data)
     const {status: authStatus} = data
 
     onMount(() => {
@@ -56,7 +57,7 @@
         {#if mode === 'login'}
         <LoginForm />
         {:else if mode === 'register'}
-        <RegisterForm />
+        <RegisterForm form={form}/>
         {/if}
     </div>
 </div>

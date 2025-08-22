@@ -1,6 +1,6 @@
 import { fail, redirect, type Action, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "../edit/$types";
-import { getUserById } from "$lib/db/queries/getUser/getUserById";
+import { getUserById } from "$lib/db/queries/user/gets/getUserById";
 import { getPostsByUser } from "$lib/server/api/posts/getPostsByUser";
 import { getLocationData } from "$lib/server/api/geo";
 import { base } from "$app/paths";

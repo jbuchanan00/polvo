@@ -1,9 +1,39 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+
+    let debounceTimeout: any;
+
+    let {form} = $props()
+
+    console.log(form)
+
+    let firstInput = $state()
+    let secondInput = $state()
+    let doesntMatch = $state(false)
+
+    function handleInput(){
+
+        clearTimeout(debounceTimeout)
+
+        debounceTimeout = setTimeout(() => {
+        if(firstInput === secondInput){
+            doesntMatch = false
+        }else{
+            doesntMatch = true
+        }
+    }, 500)
+    }
+
+    
 </script>
 
 <div class="registerContainer">
+    
 	<form method='POST' use:enhance action='?/register'>
+        {#if form?.error}
+        {console.log(form)}
+            <p style={"color: red;"}>Error: {form.error}!</p>
+        {/if}
 		<div class="emailContainer">
             <div class="inputHeader">
                 <label for="fullname">FULL NAME</label>
@@ -25,7 +55,7 @@
                 <label for="password">PASSWORD</label>
             </div>
             <div class="input">
-                <input type="password" name="password" required id="password"/>
+                <input bind:value={firstInput} type="password" name="password" pattern={".{8,}"} title="Password must be at least 8 characters" required id="password"/>
             </div>
         </div>
 		<div class="passwordConfirmContainer">
@@ -33,7 +63,10 @@
                 <label for="passwordConfirm">CONFIRM PASSWORD</label>
             </div>
             <div class="input">
-                <input type="password" name="passwordConfirm" required id="password"/>
+                <input bind:value={secondInput} class:doesntMatch = {doesntMatch} type="password" name="passwordConfirm" oninput={() => handleInput()} required id="password"/>
+                {#if doesntMatch}
+                    <p>Passwords don't match</p>
+                {/if}
             </div>
         </div>
         <div class="buttonContainer">
@@ -50,6 +83,10 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+    }
+    .buttonContainer button:active {
+        transform: translateX(3px) translateY(3px);
+        box-shadow: none;
     }
     .buttonContainer button {
         width: 280px;
@@ -86,6 +123,9 @@
         border: 3px solid black;
         box-shadow: 3px 3px black;
         border-radius: 5px;
+    }
+    .doesntMatch {
+        border: 3px solid red;
     }
     .registerContainer {
         font-weight: bolder;
