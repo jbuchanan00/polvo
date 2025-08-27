@@ -13,7 +13,6 @@
 
 	const handleLocationChange = async () => {
 		if(input.length > 2 && !input.includes(",")){
-			console.log(userData.location)
 			await fetch(`http://localhost:8081/autofill`, {
 				method: "POST",
 				body: JSON.stringify({

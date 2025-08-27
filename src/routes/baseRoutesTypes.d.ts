@@ -24,7 +24,8 @@ interface User {
     lastName: string | null,
     username: string,
     role: number,
-    location: Location | null
+    location: Location | null,
+    shopName?: string | null
 }
 
 interface FrontEndUser {
@@ -33,7 +34,8 @@ interface FrontEndUser {
     last_name: string | null,
     username: string,
     role: number,
-    location: Location | null
+    location: Location | null,
+    shop_name?: string | null
 }
 
 interface Location {

@@ -8,7 +8,6 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
-      - /var/run/docker.sock:/var/run/docker.sock   # <— talk to host daemon
     environment:
       - NODE_ENV=development
     env_file: .env
@@ -16,11 +15,6 @@ services:
       - shared
     extra_hosts:
       - "host.docker.internal:host-gateway"
-    # simplest: run as root so socket perms don't bite you
-    user: "0:0"
-    # safer alternative (replace  your host docker group's GID):
-    # group_add:
-    #   - "999"
 
 networks:
   shared:

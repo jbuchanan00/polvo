@@ -31,9 +31,10 @@ CREATE TABLE IF NOT EXISTS native_auth (
     salt Text
 );
 
-CREATE TABLE IF NOT EXISTS refresh_token (
+CREATE TABLE IF NOT EXISTS shop (
     id VARCHAR(36) PRIMARY KEY,
-    user_id VARCHAR(36) REFERENCES app_user(id)
-);
+    name TEXT,
+    location point
+)
 
 INSERT INTO role (role_name) VALUES ('canvas'), ('artist'), ('shop');

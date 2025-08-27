@@ -6,13 +6,17 @@ import { getLocationData } from "$lib/server/api/geo";
 import { base } from "$app/paths";
 import editUserBio from "$lib/server/api/users/editUserBio";
 
-export const load: PageServerLoad = async ({locals}: {locals: any, cookies: any}) => {
+export const load: PageServerLoad = async ({locals, params, fetch}: {locals: any, params: any, fetch: any}) => {
     let user;
     let posts: Location[];
+    let isSelf;
+    
     if(locals.user){
+        if(params.slug === locals.user.id){
+            isSelf = true
+        }
         try{
             const pool = await locals.db()
-            console.log(locals.user.id)
             user = await getUserById(pool, locals.user.id)
             if(user.location?.coords && !user.location?.name){
                 const userLoc = await getLocationData(user.location.coords)
@@ -24,11 +28,17 @@ export const load: PageServerLoad = async ({locals}: {locals: any, cookies: any}
             posts = []
             pool.release()
         }catch(e){
-            console.log('Error getting user by id, ', JSON.stringify(e))
-            return {failed: fail(500)}
+            if(isSelf){
+                await fetch(`${base}/logout`,{
+                    method: "DELETE"
+                })
+                throw redirect(303, `${base}/welcome/auth`)
+            }
+            
+            throw redirect(303, `${base}/home`)
         }
     }else {
-        throw redirect(303, `${base}/welcome/auth`) 
+        throw redirect(303, `${base}/welcome/auth`)
     }
     return {
         user,
