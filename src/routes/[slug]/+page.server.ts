@@ -3,13 +3,14 @@ import type { PageServerLoad } from "../edit/$types";
 import { getUserById } from "$lib/db/queries/user/gets/getUserById";
 import { getPostsByUser } from "$lib/server/api/posts/getPostsByUser";
 import { getLocationData } from "$lib/server/api/geo";
-import { base } from "$app/paths";
+import { base, resolve } from "$app/paths";
 import editUserBio from "$lib/server/api/users/editUserBio";
 
 export const load: PageServerLoad = async ({locals, params, fetch}: {locals: any, params: any, fetch: any}) => {
     let user;
     let posts: Location[];
-    let isSelf;
+    let profilePicture;
+    let isSelf = false;
     
     if(locals.user){
         if(params.slug === locals.user.id){
@@ -17,17 +18,25 @@ export const load: PageServerLoad = async ({locals, params, fetch}: {locals: any
         }
         try{
             const pool = await locals.db()
-            user = await getUserById(pool, locals.user.id)
+            user = await getUserById(pool, params.slug)
             if(user.location?.coords && !user.location?.name){
                 const userLoc = await getLocationData(user.location.coords)
                 if(userLoc){
                     user.location = userLoc
                 }
             }
+            try{
+                profilePicture = await fetch(`${resolve(`/avatar?userId=${params.slug}`)}`)
+                profilePicture = (await profilePicture.json())[0]
+                console.log('PICTURE', profilePicture)
+            }catch(e){
+                console.log('Error pulling picture', e)
+            }
             // posts = await getPostsByUser(user.id)
             posts = []
             pool.release()
         }catch(e){
+            console.log('Catching getting user')
             if(isSelf){
                 await fetch(`${base}/logout`,{
                     method: "DELETE"
@@ -42,7 +51,9 @@ export const load: PageServerLoad = async ({locals, params, fetch}: {locals: any
     }
     return {
         user,
-        posts
+        posts,
+        isSelf,
+        profilePicture
     }
 }
 

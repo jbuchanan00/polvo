@@ -1,7 +1,7 @@
 <script lang='ts'>
 	import type { PageData } from "./$types";
 	import { goto } from "$app/navigation";
-	import { base } from "$app/paths";
+	import { resolve } from "$app/paths";
 	import { enhance } from "$app/forms";
 
     let status = $state('success')
@@ -11,15 +11,16 @@
     if(data.status === 'fail'){
         status = 'fail'
     }
-    const {user: userData, posts} = data
-
-    let bioEdit = $state(true)
+    const {user: userData, posts, isSelf, profilePicture} = data
+    console.log(profilePicture)
+    console.log(isSelf)
+    let bioEdit = $state(false)
     let userBio = $state(userData.bio)
 
     const baseUrl = 'http://localhost:5175'
     
     function handleEdit(){
-        goto(`${base}/edit`)
+        goto(`${resolve(`/edit`)}`)
     }
     
     function handleMessage(){
@@ -27,10 +28,10 @@
     }
 
     async function handleLogout(){
-        await fetch(`${base}/logout`, {
+        await fetch(`${resolve(`/logout`)}`, {
             method: 'DELETE'
         })
-        goto(`${base}/welcome/auth`)
+        goto(`${resolve(`/welcome/auth`)}`)
     }
 
     function handleBioEdit(){
@@ -50,7 +51,7 @@
     <div class="heading">
         <div class="informational">
             <div class="profilePicture">
-                <img class="profileImage" src="test/test-profile.jpg" alt="profile" />
+                <img class="profileImage" src={"data:image/jpeg;base64, " + profilePicture} alt="profile" />
             </div>
             <div class="personalInfo">
                 <div class="name">
@@ -82,7 +83,7 @@
             </button>
         </div>
         
-        <div class="numericInfo">
+        <!-- <div class="numericInfo">
             <div class="followersAndFollowing">
                 <div class="numberBox">
                     100
@@ -99,12 +100,12 @@
                     FOLLOWING
                 </div>
             </div>
-        </div>
+        </div> -->
         {#if bioEdit}
         <div class="bioEdit">
                 <form method="POST" action="?/submitBio" use:enhance={() => submitBio()}>
                     <textarea maxlength=250 rows="3" class="bioTextArea" bind:value={userBio} name="bio"></textarea>
-                    <button type="submit"><img class="checkmark" src={`${base}/icon/checkmark.svg`} alt="edit bio"/></button>
+                    <button type="submit"><img class="checkmark" src={`${resolve('/icon/checkmark.svg')}`} alt="edit bio"/></button>
                 </form>
         </div>
         {:else}
@@ -113,17 +114,20 @@
                 {userBio}
             </div>
             <div class="bioEdit">
-                <button type="button" onclick={() => handleBioEdit()}><img src={`${base}/icon/edit-pencil-icon.svg`} alt="edit bio" /></button> 
+                <button type="button" onclick={() => handleBioEdit()}><img src={`${resolve('/icon/edit-pencil-icon.svg')}`} alt="edit bio" /></button> 
             </div>
         </div>
         {/if}
         <div class="buttons">
+            {#if isSelf}
             <div class="button" id="edit">
                 <button onclick={handleEdit}>EDIT PROFILE</button>
             </div>
+            {:else}
             <div class="button" id="message">
                 <button onclick={handleMessage}>MESSAGE</button>
             </div>
+            {/if}
         </div>
     </div>
     <div class="post">
@@ -142,6 +146,10 @@
 {/if}
 
 <style>
+    .button button {
+        background: none;
+        border: none;
+    }
     .checkmark {
         width: 20px;
     }
@@ -156,8 +164,14 @@
     .bioEdit form {
         display: flex;
         justify-content: space-between;
+        margin-top: 10px;
+    }
+    .bioEdit button {
+        border: none;
+        background: none;
     }
     .bioText {
+        margin-top: 10px;
         white-space: pre-line;
     }
     .bio {
@@ -227,7 +241,6 @@
     .buttons{
         margin-top: 10px;
         display: flex;
-        justify-content: space-around;
         align-items: center;
         margin-bottom: 10px;
     }
@@ -236,7 +249,7 @@
         font-size: small;
         font-weight: bolder;
     }
-    .textForNumber {
+    /* .textForNumber {
         font-weight: bolder;
         margin-top: 5px;
     }
@@ -260,7 +273,7 @@
         display: flex;
         justify-content: space-around;
         align-items: center;
-    }
+    } */
     .roleAndLocation {
         font-size: small;
         font-weight: bold;
@@ -289,7 +302,8 @@
     .informational {
         display: flex;
     }
-    .profilePicture{
+    .profilePicture img{
+        object-fit: cover;
         width: 50px;
         border: 3px solid black;
         box-shadow: 3px 3px black;

@@ -1,11 +1,11 @@
-import tailwindcss from '@tailwindcss/vite';
 import { svelteTesting } from '@testing-library/svelte/vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 
+
 export default defineConfig({
-	base: '/profile/',
-	plugins: [tailwindcss(), sveltekit()],
+	base: '/profile',
+	plugins: [sveltekit()],
 	test: {
 		workspace: [
 			{
@@ -32,8 +32,20 @@ export default defineConfig({
 		]
 	},
 	server: {
+		host: true,
+		port: 5173,
+		strictPort: true,
+		origin: 'http://host.docker.internal:5173',
+		hmr: {
+			protocol: 'ws',
+			host: 'host.docker.internal',
+			clientPort: 5173,
+			port: 5173,
+			path: '/'
+		},
 		watch: {
 			usePolling: true,
+			interval: 100
 		}
 	}
 });

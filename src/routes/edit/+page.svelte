@@ -1,7 +1,7 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
 	import Dropdown from "$lib/components/edit/dropdown.svelte";
-	import {base} from '$app/paths'
+	import {base, resolve} from '$app/paths'
 
 	
 	let dropdownVisible = $state(false)
@@ -10,6 +10,8 @@
 	const {data} = $props()
 	const {user: userData} = data
 	let location = $state(JSON.stringify(userData.location))
+	let fileInput: HTMLInputElement | null = null
+	let profileImage: string | null = $state(null)
 
 	const handleLocationChange = async () => {
 		if(input.length > 2 && !input.includes(",")){
@@ -59,6 +61,29 @@
 		defaultForm.append('location', location)
 	}
 
+	function handleProfileImageChange(){
+        fileInput?.click()
+	}
+
+	async function handleImageChange(event: Event){
+		const target = event.target as HTMLInputElement
+		const file = target.files?.[0]
+		
+		if(file){
+			const reader = new FileReader()
+			reader.onload = async () => {
+				profileImage = reader.result as string
+
+				await fetch(`${resolve(`/avatar`)}`, {
+					method: "POST",
+					body: JSON.stringify(reader.result)
+				})
+			}
+			reader.readAsDataURL(file)
+			
+		}
+    }
+
 </script>
 
 
@@ -73,10 +98,15 @@
 	</div>
 	<div class="photoChangeContainer">
 		<div class="imageContainer">
-			<img class="profilePic" src={`${base}/testTat.jpg`} alt="profile pic" />
+			{#if profileImage}
+			<img class="profilePic" src={profileImage} alt="profile pic" />
+			{:else}
+			<img class="profilePic" src={`${resolve('/testTat.jpg')}`} alt="profile pic" />
+			{/if}
 		</div>
 		<div class="photoButtonContainer">
-			<button class="changePhotoButton">Change Photo</button>
+			<input id="imgUpload" type="file" style="display:none" bind:this={fileInput} onchange={handleImageChange}/>
+			<button onclick={() => handleProfileImageChange()} class="changePhotoButton">Change Photo</button>
 		</div>
 	</div>
 	<div class="formContainer">
@@ -230,8 +260,8 @@
 		background-color: #c084fc;
 		border-bottom: 3px solid black;
 	}
-	.backArrow {
-		width: 25px;
+	.backHeader img {
+		width: 100%;
 	}
 	.backHeader button {
 		background-color: white;
