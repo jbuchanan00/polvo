@@ -12,6 +12,6 @@ export async function getUserById(db: PoolClient, id: string): Promise<FrontEndU
             res.rows[0].location = {coords: locationCoords}
         }
         return res.rows[0]
-    }).catch(e => console.log('Catched', e))
+    }).catch(e => console.log('Caught failing query for getting user', e))
     return res
 }

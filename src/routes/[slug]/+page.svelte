@@ -11,9 +11,8 @@
     if(data.status === 'fail'){
         status = 'fail'
     }
-    const {user: userData, posts, isSelf, profilePicture} = data
-    console.log(profilePicture)
-    console.log(isSelf)
+    const {user: userData, posts, isSelf, profilePicture, pictureExt} = data
+    
     let bioEdit = $state(false)
     let userBio = $state(userData.bio)
 
@@ -51,7 +50,7 @@
     <div class="heading">
         <div class="informational">
             <div class="profilePicture">
-                <img class="profileImage" src={"data:image/jpeg;base64, " + profilePicture} alt="profile" />
+                <img class="profileImage" src={profilePicture ? "data:image/jpeg;base64, " + profilePicture : `${resolve('/test/test-profile.jpg')}`} alt="profile" />
             </div>
             <div class="personalInfo">
                 <div class="name">

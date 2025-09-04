@@ -1,10 +1,12 @@
+import { updateUserProfileExtension } from "$lib/server/api/users";
+import { getUsersProfilePictureExtension } from "$lib/server/api/users/getUsersProfilePictureExtensions";
 import type { RequestHandler } from "@sveltejs/kit";
 import { mkdir, writeFile, readFileSync } from 'fs'
 import path from "path";
 
 const BASE_PATH = '/data/avatars/'
 
-export const GET: RequestHandler = async ({request, url}) => {
+export const GET: RequestHandler = async ({request, url, locals}) => {
     const data = url.searchParams.getAll('userId')
     if(!data){
         return new Response('No UserIds')
@@ -12,15 +14,23 @@ export const GET: RequestHandler = async ({request, url}) => {
 
     const userIds = data
     let profilePictures: any[] = [];
+    let extensions;
+
+    const pool = await locals.db()
+    try{
+        extensions = await getUsersProfilePictureExtension(pool, data)
+    }catch(e){
+        console.log('Couldnt get extensions (ROUTE)', e)
+        return new Response()
+    }
 
     userIds.forEach((userId) => {
-        const pic = readFileSync(`${BASE_PATH}${userId}/avatar.jpeg`)
+        const userExt = extensions.get(userId)
+        const pic = readFileSync(`${BASE_PATH}${userId}/avatar.${userExt}`)
         profilePictures.push(Buffer.from(pic).toString('base64'))
     })
 
-    console.log(profilePictures)
-
-    return new Response(JSON.stringify(profilePictures))
+    return new Response(JSON.stringify({profilePictures, extensions: Object.fromEntries(extensions)}))
 }
 
 export const POST: RequestHandler = async ({request, locals}) => {
@@ -44,11 +54,13 @@ export const POST: RequestHandler = async ({request, locals}) => {
 
     const bytes = Buffer.from(raw, 'base64')
 
-    writeFile(`${BASE_PATH}${locals.user.id}/avatar.${extension}`, bytes, (err) => {
+    writeFile(`${BASE_PATH}${locals.user.id}/avatar.${extension}`, bytes, async (err) => {
         if(err){
             console.log('Error saving image', err)
         }else{
             console.log('Image successfully saved')
+            const pool = await locals.db()
+            updateUserProfileExtension(pool, locals.user.id, extension)
         }
     })
 

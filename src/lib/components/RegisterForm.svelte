@@ -5,8 +5,6 @@
 
     let {form} = $props()
 
-    console.log(form)
-
     let firstInput = $state()
     let secondInput = $state()
     let doesntMatch = $state(false)
@@ -31,7 +29,6 @@
     
 	<form method='POST' use:enhance action='?/register'>
         {#if form?.error}
-        {console.log(form)}
             <p style={"color: red;"}>Error: {form.error}!</p>
         {/if}
 		<div class="emailContainer">

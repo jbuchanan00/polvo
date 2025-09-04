@@ -8,7 +8,6 @@
     let mode = $state('login')
 
     const {data, form} = $props()
-    console.log(form, data)
     const {status: authStatus} = data
 
     onMount(() => {

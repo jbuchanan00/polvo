@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS app_user (
     last_name Text,
     email Text,
     username varchar(35),
-    avatar_url TEXT,
+    avatar_extension TEXT,
     role_id int references role(id),
     location point,
     bio Text,
@@ -43,10 +43,10 @@ CREATE TABLE IF NOT EXISTS native_auth (
 INSERT INTO role (role_name) VALUES ('canvas'), ('artist'), ('shop');
 
 -- Users
-INSERT INTO app_user (id, first_name, last_name, email, username, avatar_url, role_id, location, bio) VALUES
-    ('11111111-1111-1111-1111-111111111111', 'Ava', 'Smith', 'ava.smith@example.com', 'ava_s', 'https://example.com/avatars/ava.png', 1, POINT(-111.876183, 40.758701), 'Tattoo enthusiast, always looking for new ink.'),
-    ('22222222-2222-2222-2222-222222222222', 'Leo', 'Garcia', 'leo.garcia@example.com', 'inkedbyleo', 'https://example.com/avatars/leo.png', 2, POINT(-118.243683, 34.052235), 'Blackwork artist specializing in geometric designs.'),
-    ('33333333-3333-3333-3333-333333333333', 'Maya', 'Kim', 'maya.kim@example.com', 'maya_k', 'https://example.com/avatars/maya.png', 3, POINT(-73.935242, 40.730610), 'Shop owner and piercer based in NYC.');
+INSERT INTO app_user (id, first_name, last_name, email, username, avatar_extension, role_id, location, bio) VALUES
+    ('11111111-1111-1111-1111-111111111111', 'Ava', 'Smith', 'ava.smith@example.com', 'ava_s', 'png', 1, POINT(-111.876183, 40.758701), 'Tattoo enthusiast, always looking for new ink.'),
+    ('22222222-2222-2222-2222-222222222222', 'Leo', 'Garcia', 'leo.garcia@example.com', 'inkedbyleo', 'png', 2, POINT(-118.243683, 34.052235), 'Blackwork artist specializing in geometric designs.'),
+    ('33333333-3333-3333-3333-333333333333', 'Maya', 'Kim', 'maya.kim@example.com', 'maya_k', 'png', 3, POINT(-73.935242, 40.730610), 'Shop owner and piercer based in NYC.');
 
 -- Auth providers (Google + GitHub)
 INSERT INTO auth_provider (id, user_id, provider, provider_user_id, email) VALUES

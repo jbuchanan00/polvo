@@ -37,7 +37,6 @@ export const actions = {
 
 export const load: PageServerLoad = async ({locals}: {locals: any}) => {
     let user;
-    console.log('Edit load', locals)
     if(locals.user){
         const pool = await locals.db()
         user = await getUserById(pool, locals.user.id)
