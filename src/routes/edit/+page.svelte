@@ -8,10 +8,11 @@
 	let input = $state("")
 	let locations = $state([])
 	const {data} = $props()
-	const {user: userData} = data
+	let {user: userData, profilePicture, pictureExt: ext}: any = data
 	let location = $state(JSON.stringify(userData.location))
 	let fileInput: HTMLInputElement | null = null
-	let profileImage: string | null = $state(null)
+	let profileImage: string | null = $state(profilePicture)
+	let pictureExt: string | null = $state(ext)
 
 	const handleLocationChange = async () => {
 		if(input.length > 2 && !input.includes(",")){
@@ -73,6 +74,11 @@
 			const reader = new FileReader()
 			reader.onload = async () => {
 				profileImage = reader.result as string
+				let [mime, raw] = profileImage.split(',', 2)
+				let [imageType] = mime.split(';', 1)
+				const extension = imageType.split('/')[1]
+				profileImage = raw
+				pictureExt = extension
 
 				await fetch(`${resolve(`/avatar`)}`, {
 					method: "POST",
@@ -98,11 +104,7 @@
 	</div>
 	<div class="photoChangeContainer">
 		<div class="imageContainer">
-			{#if profileImage}
-			<img class="profilePic" src={profileImage} alt="profile pic" />
-			{:else}
-			<img class="profilePic" src={`${resolve('/testTat.jpg')}`} alt="profile pic" />
-			{/if}
+			<img class="profilePic" src={profileImage ? `data:image/${pictureExt};base64, ` + profileImage : `${resolve('/test/test-profile.jpg')}`} alt="profile pic" />
 		</div>
 		<div class="photoButtonContainer">
 			<input id="imgUpload" type="file" style="display:none" bind:this={fileInput} onchange={handleImageChange}/>

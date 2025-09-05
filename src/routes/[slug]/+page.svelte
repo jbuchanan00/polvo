@@ -5,7 +5,6 @@
 	import { enhance } from "$app/forms";
 
     let status = $state('success')
-    let bioHtml
 
     const { data } = $props<{data: PageData}>();
     if(data.status === 'fail'){
@@ -50,7 +49,7 @@
     <div class="heading">
         <div class="informational">
             <div class="profilePicture">
-                <img class="profileImage" src={profilePicture ? "data:image/jpeg;base64, " + profilePicture : `${resolve('/test/test-profile.jpg')}`} alt="profile" />
+                <img class="profileImage" src={profilePicture ? `data:image/{${pictureExt}};base64, ` + profilePicture : `${resolve('/test/test-profile.jpg')}`} alt="profile" />
             </div>
             <div class="personalInfo">
                 <div class="name">
@@ -131,7 +130,7 @@
     </div>
     <div class="post">
         {#if posts.length < 1}
-        <div>NO PHOTOS CURRENTLY</div>
+        <div></div>
         {:else}
             {#each posts as post}
             <div class="postPicture">
@@ -210,8 +209,12 @@
     .postPicture {
         width: 100%;
         margin: 5px;
+        border: none;
+        background: none;
+        cursor: pointer;
     }
     .post {
+        padding: 10px;
         width: 100%;
         display: grid;
         background-color: #86efac;
@@ -277,6 +280,7 @@
         font-size: small;
         font-weight: bold;
         display: flex;
+        margin-top: 3px;
     }
     .roleAndLocation img {
         width: 15px;
@@ -303,6 +307,7 @@
     }
     .profilePicture img{
         object-fit: cover;
+        aspect-ratio: 1/1;
         width: 50px;
         border: 3px solid black;
         box-shadow: 3px 3px black;

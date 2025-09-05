@@ -1,7 +1,6 @@
 <script>
     import photo from '$lib/assets/photos/testTat.jpg'
-    import {likeIcon} from '$lib/icon/index'
-    import {likedIcon} from '$lib/icon/index'
+    import {resolve} from '$app/paths'
 
     let {likes, liked, postId} = $props()
     let likedActive = $state(liked)
@@ -27,50 +26,108 @@
 </script>
 
 <div class="postCard">
-    <!-- svelte-ignore a11y_click_events_have_key_events -->
-    <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-    <img class="postPhoto" src={photo} alt="test" />
-    <div class="likeContainer">
-        <p>{likes}</p>
-        {#if likedActive}
-            <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-            <!-- svelte-ignore a11y_click_events_have_key_events -->
-            <img class="likeIcon" src={likedIcon} alt="likes" onclick={likeClick}/>
-        {:else}
-        <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-            <!-- svelte-ignore a11y_click_events_have_key_events -->
-            <img class="likeIcon" src={likeIcon} alt="likes" onclick={likeClick}/>
-        {/if}
+     <div class="postMedia">
+         <img class="postPhoto" src={photo} alt="test" />
+     </div>
+     <div class="postBody">
+        <div class="tags">
+            <div class="tag">
+                Traditional
+            </div>
+            <div class="tag">
+                Realism
+            </div>
+        </div>
+        <div class="artistInfo">
+            <div class="artistName">
+                Sarah Martinez
+            </div>
+            <div class="artistShop">
+                Independent
+            </div>
+        </div>
+        <div class="postFooter">
+            <div class="distance">
+                10mi away
+            </div>
+            <div class="bookmarks">
+            {#if likedActive}
+                <button class="bookmark" onclick={likeClick}>
+                    <img class="activeBookmark" src={`${resolve('/icon/active-bookmark-icon.svg')}`} alt="likes" />
+                </button>
+            {:else}
+                <button class="bookmark" onclick={likeClick}>
+                    <img class="inactiveBookmark" src={`${resolve('/icon/bookmark-icon.svg')}`} alt="likes" />
+                </button>
+            {/if}
+            <p>{likes}</p>
+            </div>
+        </div>
+
+        
     </div>
 </div>
 
 <style>
-.postCard {
-        z-index: 1;
+    .bookmark img {
+        width: 75%;
+    }
+    .bookmark {
+        border: none;
+        background: none;
+        cursor: pointer;
+    }
+    .bookmarks {
+        font-size: .6em;
+        font-weight: 900;
         display: flex;
-        flex-direction: column;
-        width: 32%;
-        padding: 5px 5px 5px 5px;
-        border: 2px solid #000;
+        width: 30px;
+        justify-content: space-between;
+    }
+    .distance {
+        font-size: .5em;
+        color: #525b69;
+    }
+    .postFooter {
         display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 5px;
-        margin: 1px;
-        margin-bottom: 4px;
-        margin-right: 4px;
-        background-color: #ff6b6b;
+        justify-content: space-between;
+        align-items: end;
+    }
+    .artistInfo {
+        padding-top: 5px;
+    }
+    .artistShop {
+        color: #525b69;
+        font-size: .7em;
+    }
+    .artistName {
+        font-size: .75em;
+        font-weight: 900;
+        color: #6724a4;
+    }
+    .tags {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .tag {
+        font-size: .6em;
+        padding: 3px;
+        border: 2px solid black;
+        background-color: #fde047;
+        font-weight: bolder;
+        margin-right: 2px;
+	}
+    .postBody {
+        padding:5px;
+    }
+    .postCard {
+        width: 150px;
+        background-color: white;
+        border: 3px solid black;
         box-shadow: 3px 3px black;
     }
-    .postCard .postPhoto {
-        width: 90%;
-        border-radius: 5px;
-        border: 2px solid #000;
-        transform: rotate(-2deg);
-    }
-    .likeContainer {
+    .postPhoto {
         width: 100%;
-        display: flex;
-        justify-content: right;
+        aspect-ratio: 1/1;
     }
 </style>
