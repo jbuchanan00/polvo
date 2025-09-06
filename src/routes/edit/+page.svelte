@@ -5,11 +5,12 @@
 
 	
 	let dropdownVisible = $state(false)
-	let input = $state("")
+	
 	let locations = $state([])
 	const {data} = $props()
 	let {user: userData, profilePicture, pictureExt: ext}: any = data
-	let location = $state(JSON.stringify(userData.location))
+	let location = $state(userData.location ? `${userData.location.name}, ${userData.location.state}` : '')
+	let input = $derived(location)
 	let fileInput: HTMLInputElement | null = null
 	let profileImage: string | null = $state(profilePicture)
 	let pictureExt: string | null = $state(ext)
@@ -142,7 +143,7 @@
 					<label class="sub_title" for="location">LOCATION</label>
 				</div>
 				<div class="itemInput">
-					<input placeholder="Enter your location" class="textInput" type="text" name="location" defaultValue={userData.location || ''} 
+					<input placeholder="Enter your location" class="textInput" type="text" name="location"
 						oninput={() => {
 							debounceWithLocation()
 						}} 

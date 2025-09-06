@@ -12,15 +12,19 @@
             </button>
         </div>
     {/each}
-</div>
+    </div>
 
 <style>
+    .locationButton {
+        border: none;
+        background: none;
+    }
     .listContainer {
         background-color: white;
         width: 290px;
         border: 3px solid black;
         box-shadow: 5px 5px black;
-        position: fixed;
+        position: absolute;
         margin-top: 5px;
     }
     .locationContainer {

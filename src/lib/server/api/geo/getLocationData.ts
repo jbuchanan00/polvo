@@ -2,7 +2,7 @@
 
 export async function getLocationData(coords: Coordinates): Promise<Location | null>{
     try{
-        const res = await fetch(`${process.env.HALO_URL}/resolveCoordinates?latitude=${coords.latitude}&longitude=${coords.longitude}`).then(async (res) => {
+        const res = await fetch(`${process.env.LOCATION_SERVICE_URL}/resolveCoordinates?latitude=${coords.latitude}&longitude=${coords.longitude}`).then(async (res) => {
             let location = await res.json()
             if(location){
                 location.coords = {latitude: location.latitude, longitude: location.longitude}

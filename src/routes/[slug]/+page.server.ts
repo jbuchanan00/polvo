@@ -8,7 +8,7 @@ import editUserBio from "$lib/server/api/users/editUserBio";
 
 export const load: PageServerLoad = async ({locals, params, fetch}: {locals: any, params: any, fetch: any}) => {
     let user;
-    let posts: Location[];
+    let posts: Post[];
     let profilePicture;
     let isSelf = false;
     let pictureExt;
@@ -59,6 +59,7 @@ export const load: PageServerLoad = async ({locals, params, fetch}: {locals: any
     }else {
         throw redirect(303, `${resolve('/welcome/auth')}`)
     }
+    
     return {
         user,
         posts,
