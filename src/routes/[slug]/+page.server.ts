@@ -30,9 +30,15 @@ export const load: PageServerLoad = async ({locals, params, fetch}: {locals: any
                 let data = await fetch(`${resolve(`/avatar?userId=${params.slug}`)}`)
                 data = await data.json()
                 
-                profilePicture = data.profilePictures[0]
-                let datamap = new Map(Object.entries(data.extensions))
-                pictureExt = datamap.get(locals.user.id)
+                if(data.profilePictures[0] !== ""){
+                    profilePicture = data.profilePictures[0]
+                    let datamap = new Map(Object.entries(data.extensions))
+                    pictureExt = datamap.get(locals.user.id)
+                }else{
+                    profilePicture = ""
+                    pictureExt = ""
+                }
+                
             }catch(e){
                 console.log('Error pulling picture', e)
             }
@@ -48,7 +54,7 @@ export const load: PageServerLoad = async ({locals, params, fetch}: {locals: any
                 throw redirect(303, `${resolve('/welcome/auth')}`)
             }
             
-            throw redirect(303, `${resolve('/home')}`)
+            throw redirect(404, `${resolve('/home')}`)
         }
     }else {
         throw redirect(303, `${resolve('/welcome/auth')}`)

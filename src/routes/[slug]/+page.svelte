@@ -49,7 +49,7 @@
     <div class="heading">
         <div class="informational">
             <div class="profilePicture">
-                <img class="profileImage" src={profilePicture ? `data:image/{${pictureExt}};base64, ` + profilePicture : `${resolve('/test/test-profile.jpg')}`} alt="profile" />
+                <img class="profileImage" src={profilePicture !== "" ? `data:image/{${pictureExt}};base64, ` + profilePicture : `${resolve('/icon/empty-profile-pictur.png')}`} alt="profile" />
             </div>
             <div class="personalInfo">
                 <div class="name">

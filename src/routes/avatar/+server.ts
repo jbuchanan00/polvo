@@ -1,7 +1,8 @@
+import { batchProfilePictures } from "$lib/server/api/profilePIctures/batchProfilePictures";
 import { updateUserProfileExtension } from "$lib/server/api/users";
 import { getUsersProfilePictureExtension } from "$lib/server/api/users/getUsersProfilePictureExtensions";
 import type { RequestHandler } from "@sveltejs/kit";
-import { mkdir, writeFile, readFileSync } from 'fs'
+import { mkdir, writeFile, readFile } from 'fs'
 import path from "path";
 
 const BASE_PATH = '/data/avatars/'
@@ -13,7 +14,7 @@ export const GET: RequestHandler = async ({request, url, locals}) => {
     }
 
     const userIds = data
-    let profilePictures: any[] = [];
+    let profilePictures: string[] = [];
     let extensions;
 
     const pool = await locals.db()
@@ -24,11 +25,7 @@ export const GET: RequestHandler = async ({request, url, locals}) => {
         return new Response()
     }
 
-    userIds.forEach((userId) => {
-        const userExt = extensions.get(userId)
-        const pic = readFileSync(`${BASE_PATH}${userId}/avatar.${userExt}`)
-        profilePictures.push(Buffer.from(pic).toString('base64'))
-    })
+    profilePictures = await batchProfilePictures(BASE_PATH, userIds, extensions)
 
     return new Response(JSON.stringify({profilePictures, extensions: Object.fromEntries(extensions)}))
 }
