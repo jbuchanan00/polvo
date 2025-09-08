@@ -25,11 +25,10 @@ export const actions = {
             ...locals.user
         }
 
-        console.log('Locals', locals.user)
-
         try {
             const pool = await locals.db()
             await editExistingUser(pool, locals.user)
+            pool.release()
         }catch(e){
             console.error('FAILED TO EDIT EXISTING USER, ', e)
         }

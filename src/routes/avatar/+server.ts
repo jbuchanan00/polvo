@@ -22,11 +22,12 @@ export const GET: RequestHandler = async ({request, url, locals}) => {
         extensions = await getUsersProfilePictureExtension(pool, data)
     }catch(e){
         console.log('Couldnt get extensions (ROUTE)', e)
+        pool.release()
         return new Response()
     }
 
     profilePictures = await batchProfilePictures(BASE_PATH, userIds, extensions)
-
+    pool.release()
     return new Response(JSON.stringify({profilePictures, extensions: Object.fromEntries(extensions)}))
 }
 
