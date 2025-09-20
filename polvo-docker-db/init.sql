@@ -38,6 +38,11 @@ CREATE TABLE IF NOT EXISTS native_auth (
     salt Text
 );
 
+CREATE TABLE IF NOT EXISTS meta_lltokens (
+    user_id VARCHAR(36) PRIMARY KEY REFERENCES app_user(id),
+    token Text
+)
+
 
 
 INSERT INTO role (role_name) VALUES ('canvas'), ('artist'), ('shop');
