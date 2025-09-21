@@ -1,7 +1,7 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { redirect } from "@sveltejs/kit";
 import { resolve } from "$app/paths";
-import exchangeTokens from "$lib/server/api/oauth/exchangeTokens";
+import exchangeTokens from "$lib/server/api/tokens/exchangeTokens";
 
 
 

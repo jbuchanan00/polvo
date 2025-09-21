@@ -1,5 +1,5 @@
 import { createUser } from '$lib/db/queries/index.js'
-import exchangeTokens from '$lib/server/api/oauth/exchangeTokens.js'
+import exchangeTokens from '$lib/server/api/tokens/exchangeTokens.js'
 import { prepCreateAuthProvider } from '$lib/server/api/authentication/createAuthProvider.js'
 import { createToken } from '$lib/server/api/tokens/jwt.js'
 import { retrieveUserIdBySub } from '$lib/server/api/authentication/getUserIdBySub.js'
