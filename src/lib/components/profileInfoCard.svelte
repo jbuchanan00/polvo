@@ -2,7 +2,6 @@
 	import { onMount } from "svelte";
 
     const {userData} = $props();
-    console.log(userData)
     let locationStr = $state();
 
     onMount(() => {

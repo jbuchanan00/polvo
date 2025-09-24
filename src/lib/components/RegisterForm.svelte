@@ -5,8 +5,6 @@
 
     let {form} = $props()
 
-    console.log(form)
-
     let firstInput = $state()
     let secondInput = $state()
     let doesntMatch = $state(false)
@@ -31,7 +29,6 @@
     
 	<form method='POST' use:enhance action='?/register'>
         {#if form?.error}
-        {console.log(form)}
             <p style={"color: red;"}>Error: {form.error}!</p>
         {/if}
 		<div class="emailContainer">
@@ -77,6 +74,16 @@
 </div>
 
 <style>
+    label {
+        font-size: .75em;
+    }
+    input:focus {
+        outline: none;
+    }
+    input {
+        border: none;
+        height: 25px;
+    }
 	.buttonContainer {
         margin-top: 10px;
         display: flex;
@@ -97,6 +104,7 @@
         border: 3px solid black;
         box-shadow: 3px 3px black;
         border-radius: 5px;
+        font-weight: 900;
     }
     .buttonContainer a {
         margin: 20px;

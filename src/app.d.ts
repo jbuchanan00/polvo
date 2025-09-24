@@ -14,10 +14,10 @@ declare global {
 		interface PageData {
 			error?: boolean,
 			message?: string,
-			user?: User
+			user?: User | string | any
 		}
 		interface PageLoad {
-			user: User
+			user: User | string
 		}
 		// interface PageState {}
 		// interface Platform {}

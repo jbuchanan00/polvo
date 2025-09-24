@@ -3,12 +3,11 @@
     import LoginForm from "$lib/components/LoginForm.svelte";
     import { goto } from '$app/navigation'
 	import { onMount } from "svelte";
-    import {base} from '$app/paths'
+    import {resolve} from '$app/paths'
 
     let mode = $state('login')
 
     const {data, form} = $props()
-    console.log(form, data)
     const {status: authStatus} = data
 
     onMount(() => {
@@ -26,7 +25,7 @@
 <div class="authContainer">
     <div class="headingContainer">
         <div class="logoContainer">
-            <img src={`${base}/icon/square-logo.png`} alt="square-logo" class="logo"/>
+            <img src={`${resolve('/icon/square-logo.png')}`} alt="square-logo" class="logo"/>
         </div>
         <div class="titleContainer">
             <h1>INKED OUT</h1>
@@ -46,8 +45,8 @@
         </div>
     </div>
     <div class="oauthContainer">
-        <a class="googleContainer" href={`${base}/auth/google`}>
-            <img src={`${base}/icon/mail-icon.svg`} alt="mail" /> CONTINUE WITH GOOGLE
+        <a class="googleContainer" href={`${resolve('/auth/google')}`}>
+            <img src={`${resolve('/icon/google-icon.svg')}`} alt="mail" /> CONTINUE WITH GOOGLE
         </a>
     </div>
     <div class="containerSplit">
@@ -83,6 +82,7 @@
         margin-top: 10px;
     }
     .googleContainer {
+        text-decoration: none;
         width: 280px;
         display: flex;
         padding-left: 5px;
@@ -100,9 +100,6 @@
     .googleContainer img {
         -webkit-filter: invert(1);
         filter: invert(1)
-    }
-    .loginButton {
-        border-right: 3px solid black;
     }
     .activeButton {
         background-color: #f472b6;
@@ -125,6 +122,7 @@
         width: 280px;
     }
     .buttonsContainer button {
+        border: none;
         width: 50%;
     }
     .titleContainer {

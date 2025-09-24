@@ -1,15 +1,19 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
 	import Dropdown from "$lib/components/edit/dropdown.svelte";
-	import {base} from '$app/paths'
+	import {base, resolve} from '$app/paths'
 
 	
 	let dropdownVisible = $state(false)
-	let input = $state("")
+	
 	let locations = $state([])
 	const {data} = $props()
-	const {user: userData} = data
-	let location = $state(JSON.stringify(userData.location))
+	let {user: userData, profilePicture, pictureExt: ext}: any = data
+	let location = $state(userData.location ? `${userData.location.name}, ${userData.location.state}` : '')
+	let input = $derived(location)
+	let fileInput: HTMLInputElement | null = null
+	let profileImage: string | null = $state(profilePicture)
+	let pictureExt: string | null = $state(ext)
 
 	const handleLocationChange = async () => {
 		if(input.length > 2 && !input.includes(",")){
@@ -59,6 +63,34 @@
 		defaultForm.append('location', location)
 	}
 
+	function handleProfileImageChange(){
+        fileInput?.click()
+	}
+
+	async function handleImageChange(event: Event){
+		const target = event.target as HTMLInputElement
+		const file = target.files?.[0]
+		
+		if(file){
+			const reader = new FileReader()
+			reader.onload = async () => {
+				profileImage = reader.result as string
+				let [mime, raw] = profileImage.split(',', 2)
+				let [imageType] = mime.split(';', 1)
+				const extension = imageType.split('/')[1]
+				profileImage = raw
+				pictureExt = extension
+
+				await fetch(`${resolve(`/avatar`)}`, {
+					method: "POST",
+					body: JSON.stringify(reader.result)
+				})
+			}
+			reader.readAsDataURL(file)
+			
+		}
+    }
+
 </script>
 
 
@@ -73,10 +105,11 @@
 	</div>
 	<div class="photoChangeContainer">
 		<div class="imageContainer">
-			<img class="profilePic" src={`${base}/testTat.jpg`} alt="profile pic" />
+			<img class="profilePic" src={profileImage ? `data:image/${pictureExt};base64, ` + profileImage : `${resolve('/test/test-profile.jpg')}`} alt="profile pic" />
 		</div>
 		<div class="photoButtonContainer">
-			<button class="changePhotoButton">Change Photo</button>
+			<input id="imgUpload" type="file" style="display:none" bind:this={fileInput} onchange={handleImageChange}/>
+			<button onclick={() => handleProfileImageChange()} class="changePhotoButton">Change Photo</button>
 		</div>
 	</div>
 	<div class="formContainer">
@@ -110,7 +143,7 @@
 					<label class="sub_title" for="location">LOCATION</label>
 				</div>
 				<div class="itemInput">
-					<input placeholder="Enter your location" class="textInput" type="text" name="location" defaultValue={userData.location || ''} 
+					<input placeholder="Enter your location" class="textInput" type="text" name="location"
 						oninput={() => {
 							debounceWithLocation()
 						}} 
@@ -230,8 +263,8 @@
 		background-color: #c084fc;
 		border-bottom: 3px solid black;
 	}
-	.backArrow {
-		width: 25px;
+	.backHeader img {
+		width: 100%;
 	}
 	.backHeader button {
 		background-color: white;
