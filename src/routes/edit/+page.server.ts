@@ -2,7 +2,7 @@ import type { RequestEvent, PageServerLoad } from './$types.js'
 import { redirect } from '@sveltejs/kit'
 import { editExistingUser } from '$lib/server/api/users/editExistingUser.js'
 import { getUserById } from '$lib/db/queries/user/gets/getUserById.js'
-import { resolve } from '$app/paths'
+import {resolve} from '$app/paths'
 import { getLocationData } from '$lib/server/api/geo/getLocationData.js'
 
 export const actions = {

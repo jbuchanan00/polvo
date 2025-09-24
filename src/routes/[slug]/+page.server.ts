@@ -3,7 +3,8 @@ import type { PageServerLoad } from "../edit/$types";
 import { getUserById } from "$lib/db/queries/user/gets/getUserById";
 import { getPostsByUser } from "$lib/server/api/posts/getPostsByUser";
 import { getLocationData } from "$lib/server/api/geo";
-import { resolve } from "$app/paths";
+import {resolve} from '$app/paths'
+
 import editUserBio from "$lib/server/api/users/editUserBio";
 
 export const load: PageServerLoad = async ({locals, params, fetch}: {locals: any, params: any, fetch: any}) => {
