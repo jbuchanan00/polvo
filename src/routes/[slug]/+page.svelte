@@ -11,9 +11,9 @@
     if(data.status === 'fail'){
         status = 'fail'
     }
-    const {user: userData, posts} = data
-
-    let bioEdit = $state(true)
+    const {user: userData, posts, isSelf} = data
+    console.log(isSelf)
+    let bioEdit = $state(false)
     let userBio = $state(userData.bio)
 
     const baseUrl = 'http://localhost:5175'
@@ -82,7 +82,7 @@
             </button>
         </div>
         
-        <div class="numericInfo">
+        <!-- <div class="numericInfo">
             <div class="followersAndFollowing">
                 <div class="numberBox">
                     100
@@ -99,7 +99,7 @@
                     FOLLOWING
                 </div>
             </div>
-        </div>
+        </div> -->
         {#if bioEdit}
         <div class="bioEdit">
                 <form method="POST" action="?/submitBio" use:enhance={() => submitBio()}>
@@ -118,12 +118,15 @@
         </div>
         {/if}
         <div class="buttons">
+            {#if isSelf}
             <div class="button" id="edit">
                 <button onclick={handleEdit}>EDIT PROFILE</button>
             </div>
+            {:else}
             <div class="button" id="message">
                 <button onclick={handleMessage}>MESSAGE</button>
             </div>
+            {/if}
         </div>
     </div>
     <div class="post">
@@ -156,8 +159,10 @@
     .bioEdit form {
         display: flex;
         justify-content: space-between;
+        margin-top: 10px;
     }
     .bioText {
+        margin-top: 10px;
         white-space: pre-line;
     }
     .bio {
@@ -227,7 +232,6 @@
     .buttons{
         margin-top: 10px;
         display: flex;
-        justify-content: space-around;
         align-items: center;
         margin-bottom: 10px;
     }
@@ -236,7 +240,7 @@
         font-size: small;
         font-weight: bolder;
     }
-    .textForNumber {
+    /* .textForNumber {
         font-weight: bolder;
         margin-top: 5px;
     }
@@ -260,7 +264,7 @@
         display: flex;
         justify-content: space-around;
         align-items: center;
-    }
+    } */
     .roleAndLocation {
         font-size: small;
         font-weight: bold;

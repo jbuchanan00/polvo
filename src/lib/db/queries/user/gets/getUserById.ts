@@ -2,7 +2,7 @@ import type { PoolClient } from "pg";
 
 
 export async function getUserById(db: PoolClient, id: string): Promise<FrontEndUser> {
-    const res = await db.query(`SELECT * FROM app_user WHERE id = $1`, [id]).then((res) => {
+    const res = await db.query(`SELECT app_user.*, shop.name, shop.location FROM app_user LEFT JOIN shop ON app_user.shop_id = shop.id WHERE app_user.id = $1`, [id]).then((res) => {
         if(!res.rows[0]){
             console.log('Error getting user by id')
             throw new Error("No User")

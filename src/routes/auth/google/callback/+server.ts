@@ -14,6 +14,7 @@ export const GET: RequestHandler = async ({url, cookies, locals}): Promise<Respo
 
 
     if(!code){
+        console.error('ERROR: no code')
         throw redirect(303, `${base}/welcome/auth?status=fail`)
     }
 
@@ -21,7 +22,7 @@ export const GET: RequestHandler = async ({url, cookies, locals}): Promise<Respo
     try{
          res = exchangeTokens(code, 'register')
     }catch(err){
-        console.error('ERROR', err)
+        console.error('ERROR: exchanging tokens', err)
         throw redirect(303, `${base}/welcome/auth?status=fail`)
     }
 
@@ -29,6 +30,7 @@ export const GET: RequestHandler = async ({url, cookies, locals}): Promise<Respo
         return await res.json()
     })
     if(!json){
+        console.error('ERROR: no json')
         throw redirect(303, `${base}/welcome/auth?status=fail`)
     }
     const payload = JSON.parse(
@@ -49,7 +51,7 @@ export const GET: RequestHandler = async ({url, cookies, locals}): Promise<Respo
         cookies.set('jwt', token, setCookieProperties())
         
     } catch(err) {
-        console.error('ERROR', err)
+        console.error('ERROR: failure with queries', err)
         throw redirect(303, `${base}/welcome/auth?status=fail`)
     }
     throw redirect(303, `${base}/welcome/auth?status=success`)

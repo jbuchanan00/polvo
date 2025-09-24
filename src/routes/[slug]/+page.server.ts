@@ -9,7 +9,7 @@ import editUserBio from "$lib/server/api/users/editUserBio";
 export const load: PageServerLoad = async ({locals, params, fetch}: {locals: any, params: any, fetch: any}) => {
     let user;
     let posts: Location[];
-    let isSelf;
+    let isSelf = false;
     
     if(locals.user){
         if(params.slug === locals.user.id){
@@ -17,7 +17,7 @@ export const load: PageServerLoad = async ({locals, params, fetch}: {locals: any
         }
         try{
             const pool = await locals.db()
-            user = await getUserById(pool, locals.user.id)
+            user = await getUserById(pool, params.slug)
             if(user.location?.coords && !user.location?.name){
                 const userLoc = await getLocationData(user.location.coords)
                 if(userLoc){
@@ -28,6 +28,7 @@ export const load: PageServerLoad = async ({locals, params, fetch}: {locals: any
             posts = []
             pool.release()
         }catch(e){
+            console.log('Catching getting user')
             if(isSelf){
                 await fetch(`${base}/logout`,{
                     method: "DELETE"
@@ -42,7 +43,8 @@ export const load: PageServerLoad = async ({locals, params, fetch}: {locals: any
     }
     return {
         user,
-        posts
+        posts,
+        isSelf
     }
 }
 

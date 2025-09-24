@@ -3,6 +3,12 @@ CREATE TABLE IF NOT EXISTS role (
     role_name varchar(35)
 );
 
+CREATE TABLE IF NOT EXISTS shop (
+    id VARCHAR(36) PRIMARY KEY,
+    name TEXT,
+    location point
+);
+
 CREATE TABLE IF NOT EXISTS app_user (
     id VARCHAR(36) PRIMARY KEY,
     first_name Text,
@@ -13,6 +19,7 @@ CREATE TABLE IF NOT EXISTS app_user (
     role_id int references role(id),
     location point,
     bio Text,
+    shop_id VARCHAR(36) REFERENCES shop(id),
     UNIQUE(email, username)
 );
 
@@ -31,10 +38,6 @@ CREATE TABLE IF NOT EXISTS native_auth (
     salt Text
 );
 
-CREATE TABLE IF NOT EXISTS shop (
-    id VARCHAR(36) PRIMARY KEY,
-    name TEXT,
-    location point
-)
+
 
 INSERT INTO role (role_name) VALUES ('canvas'), ('artist'), ('shop');
