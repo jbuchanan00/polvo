@@ -3,9 +3,10 @@ import { getLLToken } from "$lib/server/api/tokens";
 import type { RequestHandler } from "@sveltejs/kit";
 
 
-export const GET: RequestHandler = async ({params, request, locals}) => {
+export const POST: RequestHandler = async ({params, request, locals}) => {
     const userId = params.slug
     const apiKey = request.headers.get('x-api-key')
+    const {postIds: existingPostIds} = await request.json()
 
     if(!userId){
         return Response.error()
@@ -32,7 +33,7 @@ export const GET: RequestHandler = async ({params, request, locals}) => {
             return Response.error()
         }
 
-        
+
 
     }catch(e){
         console.log('Error gathering instagram posts', e)
