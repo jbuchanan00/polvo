@@ -14,10 +14,10 @@ export const POST: RequestHandler = async ({params, request, locals}) => {
 
     try{
         const pool = await locals.db()
-        const {token, iv, tag, provider_user_id: instaId} = await getLLToken(pool, userId)
+        const {token, iv, provider_user_id: instaId} = await getLLToken(pool, userId)
         pool.release()
 
-        const accessToken = decrypt(token, iv, tag)
+        const accessToken = decrypt(token, iv)
 
         const res = await fetch(`${process.env.INSTAGRAM_GRAPH_BASE}/${instaId}/media?access_token=${accessToken}&after=${after}`)
 

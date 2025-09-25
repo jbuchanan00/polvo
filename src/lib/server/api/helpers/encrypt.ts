@@ -12,7 +12,5 @@ export function encrypt(token: string){
  
     ciphertext += cipher.final('base64');
     
-    const tag = cipher.getAuthTag();
-    
-    return { ciphertext, iv, tag };
+    return { ciphertext, iv};
 }

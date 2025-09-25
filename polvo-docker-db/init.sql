@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS meta_lltokens (
     token Text,
     iv Text,
     tag Text
-)
+);
 
 
 

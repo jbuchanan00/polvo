@@ -2,11 +2,11 @@ import {createClient, type RedisClientType} from 'redis'
 
 let client: RedisClientType | undefined
 
-export async function getRedis(){
+export function getRedis(){
     if(!client){
         client = createClient({url: process.env.REDIS_URL})
         client.on("error", (e: any) => console.error("Redis error", e))
-        await client.connect()
+        client.connect()
     }
     return client
 }

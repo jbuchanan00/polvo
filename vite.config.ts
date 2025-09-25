@@ -46,6 +46,7 @@ export default defineConfig({
 		watch: {
 			usePolling: true,
 			interval: 100
-		}
+		},
+		allowedHosts: ['api.inked-out.com']
 	}
 });
