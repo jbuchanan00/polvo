@@ -4,6 +4,7 @@ import { resolve } from "$app/paths";
 import {exchangeTokens} from "$lib/server/api/tokens";
 import { setLLToken } from "$lib/server/api/tokens";
 import { getRedis } from "$lib/server/redis";
+import { addMetaAuth } from "$lib/server/api/authentication/addMetaAuth";
 
 
 async function getFromRedis(state:string){
@@ -40,7 +41,6 @@ export const GET: RequestHandler = async ({url, locals, cookies}) => {
     const json = await res.json()
     res = await fetch(`https://graph.instagram.com/access_token?grant_type=ig_exchange_token&client_secret=${process.env.META_SECRET}&access_token=${json.access_token}`)
 
-    
 
     const {access_token} = await res.json()
     userId = locals.user?.id || await getFromRedis(state)
@@ -50,10 +50,11 @@ export const GET: RequestHandler = async ({url, locals, cookies}) => {
     }
     try{
         const pool = await locals.db()
+        await addMetaAuth(pool, userId, json.user_id)
         await setLLToken(pool, userId, access_token)
         pool.release()
     }catch(e){
-        console.log(`Could'nt retrieve ll token for ${userId}`, e)
+        console.log(`Couldn't complete meta auth or ll token ${userId}`, e)
         return Response.error()
     }
 

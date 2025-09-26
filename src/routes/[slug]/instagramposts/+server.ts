@@ -1,5 +1,5 @@
 import { decrypt } from "$lib/server/api/helpers";
-import { getLLToken } from "$lib/server/api/tokens";
+import { getLLTokenAndId } from "$lib/server/api/tokens";
 import type { RequestHandler } from "@sveltejs/kit";
 
 
@@ -14,7 +14,7 @@ export const POST: RequestHandler = async ({params, request, locals}) => {
 
     try{
         const pool = await locals.db()
-        const {token, iv, provider_user_id: instaId} = await getLLToken(pool, userId)
+        const {token, iv, provider_user_id: instaId} = await getLLTokenAndId(pool, userId)
         pool.release()
 
         const accessToken = decrypt(token, iv)
