@@ -3,15 +3,23 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-export function decrypt(cipher: string, iv: string){
-    const decipher = crypto.createDecipheriv(
-    "aes-128-gcm", 
-    Buffer.from(process.env.ACCESS_TOKEN_SECRET!, 'base64'),
-    Buffer.from(iv, 'base64')
+export function decrypt(cipher: string, iv: string, tag: string) {
+  const buff   = Buffer.from(cipher, "base64");
+  const ivBuff = Buffer.from(iv, "base64");
+  const tagBuff= Buffer.from(tag, "base64");
+
+  const decipher = crypto.createDecipheriv(
+    "aes-128-gcm",
+    Buffer.from(process.env.ACCESS_TOKEN_SECRET!, "hex"),
+    ivBuff
   );
 
-  let plaintext = decipher.update(cipher, 'base64', 'utf8');
-  plaintext += decipher.final('utf8');
+  decipher.setAuthTag(tagBuff);
 
-  return plaintext;
+  const plaintext = Buffer.concat([
+    decipher.update(buff),
+    decipher.final()
+  ]);
+
+  return plaintext.toString("utf8");
 }
