@@ -1,9 +1,8 @@
 <script lang='ts'>
 	import type { PageData } from "./$types";
 	import { goto } from "$app/navigation";
-	import { base } from "$app/paths";
+	import { base, resolve } from "$app/paths";
 	import { enhance } from "$app/forms";
-	import { isUserAuthed } from "$lib/server/api/authentication";
 
     let status = $state('success')
     let bioHtml
@@ -12,7 +11,7 @@
     if(data.status === 'fail'){
         status = 'fail'
     }
-    const {user: userData, posts, isSelf, userInstagramAuthed} = data
+    const {user: userData, posts, isSelf, userInstagramAuthed, profilePicture, pictureExt} = data
     console.log(isSelf)
     let bioEdit = $state(false)
     let userBio = $state(userData.bio)
@@ -41,6 +40,14 @@
     function submitBio(){
         bioEdit = false;
     }
+
+    function connectToInstagram(){
+        fetch(`${resolve('/auth/meta')}`)
+    }
+
+    function syncWithInstagram(){
+        fetch(`${resolve(`/${userData.id}/instagramposts`)}`)
+    }
 </script>
 
 {#if status === 'fail'}
@@ -51,7 +58,7 @@
     <div class="heading">
         <div class="informational">
             <div class="profilePicture">
-                <img class="profileImage" src="test/test-profile.jpg" alt="profile" />
+                <img class="profileImage" src={profilePicture ? "data:image/jpeg;base64, " + profilePicture : `${resolve('/test/test-profile.jpg')}`} alt="profile" />
             </div>
             <div class="personalInfo">
                 <div class="name">
@@ -123,22 +130,22 @@
             <div class="button" id="edit">
                 <button onclick={handleEdit}>EDIT PROFILE</button>
             </div>
-                {#if userInstagramAuthed}
-                <div class="connectInstagram">
-                    <button>Connect with Instagram</button>
-                </div>
-                {:else}
-                <div class="syncInstagram">
-                    <button>Sync Instagram Posts</button>
-                </div>
-                {/if}
+                
             {:else}
             <div class="button" id="message">
                 <button onclick={handleMessage}>MESSAGE</button>
             </div>
             {/if}
-            
         </div>
+        {#if !userInstagramAuthed}
+        <div class="connectInstagram instagram">
+            <button onclick={() => connectToInstagram()}>Connect with Instagram</button>
+        </div>
+        {:else}
+        <div class="syncInstagram instagram">
+            <button onclick={() => syncWithInstagram()}>Sync Instagram Posts</button>
+        </div>
+        {/if}
     </div>
     <div class="post">
         {#if posts.length < 1}
@@ -149,13 +156,23 @@
                 <a href={`/${post.id}`}><img class="postImg" src={`${baseUrl}/${post.image}`} alt="post" /></a>  
             </div>
             {/each}
-        
         {/if}
     </div>
 </div>
 {/if}
 
 <style>
+    .instagram {
+        border: 3px solid black;
+        box-shadow: 3px 3px;
+        width: 47%;
+        text-align: center;
+        background-color: #3b82f6;
+    }
+    button {
+        border: none;
+        background: none;
+    }
     .checkmark {
         width: 20px;
     }
