@@ -3,6 +3,7 @@
 	import { goto } from "$app/navigation";
 	import { base } from "$app/paths";
 	import { enhance } from "$app/forms";
+	import { isUserAuthed } from "$lib/server/api/authentication";
 
     let status = $state('success')
     let bioHtml
@@ -11,7 +12,7 @@
     if(data.status === 'fail'){
         status = 'fail'
     }
-    const {user: userData, posts, isSelf} = data
+    const {user: userData, posts, isSelf, userInstagramAuthed} = data
     console.log(isSelf)
     let bioEdit = $state(false)
     let userBio = $state(userData.bio)
@@ -122,11 +123,21 @@
             <div class="button" id="edit">
                 <button onclick={handleEdit}>EDIT PROFILE</button>
             </div>
+                {#if userInstagramAuthed}
+                <div class="connectInstagram">
+                    <button>Connect with Instagram</button>
+                </div>
+                {:else}
+                <div class="syncInstagram">
+                    <button>Sync Instagram Posts</button>
+                </div>
+                {/if}
             {:else}
             <div class="button" id="message">
                 <button onclick={handleMessage}>MESSAGE</button>
             </div>
             {/if}
+            
         </div>
     </div>
     <div class="post">
@@ -293,7 +304,7 @@
     .informational {
         display: flex;
     }
-    .profilePicture{
+    .profileImage{
         width: 50px;
         border: 3px solid black;
         box-shadow: 3px 3px black;

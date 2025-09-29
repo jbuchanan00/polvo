@@ -2,6 +2,7 @@ import { fail, redirect, type Action, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "../edit/$types";
 import { getUserById } from "$lib/db/queries/user/gets/getUserById";
 import { getPostsByUser } from "$lib/server/api/posts/getPostsByUser";
+import { isUserAuthed } from "$lib/server/api/authentication";
 import { getLocationData } from "$lib/server/api/geo";
 import {resolve} from '$app/paths'
 
@@ -13,6 +14,7 @@ export const load: PageServerLoad = async ({locals, params, fetch}: {locals: any
     let profilePicture;
     let isSelf = false;
     let pictureExt;
+    let userInstagramAuthed = false;
     
     if(locals.user){
         if(params.slug === locals.user.id){
@@ -21,6 +23,9 @@ export const load: PageServerLoad = async ({locals, params, fetch}: {locals: any
         try{
             const pool = await locals.db()
             user = await getUserById(pool, params.slug)
+            if(isSelf){
+                userInstagramAuthed = await isUserAuthed(pool, user.id, 'instagram')
+            }
             if(user.location?.coords && !user.location?.name){
                 const userLoc = await getLocationData(user.location.coords)
                 if(userLoc){
@@ -66,7 +71,8 @@ export const load: PageServerLoad = async ({locals, params, fetch}: {locals: any
         posts,
         isSelf,
         profilePicture,
-        pictureExt
+        pictureExt,
+        userInstagramAuthed
     }
 }
 
