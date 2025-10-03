@@ -7,8 +7,8 @@ dotenv.config()
 export default async function exchangeTokens(code: string, authCo: string): Promise<Response>{
     let body
 
-    let client_id = authCo === "google" ? process.env.GOOGLE_CLIENT_ID! : process.env.META_CLIENT_ID!
-    let client_secret = authCo === "google" ? process.env.GOOGLE_CLIENT_SECRET! : process.env.META_CLIENT_SECRET!
+    let client_id = authCo === "google" ? process.env.GOOGLE_CLIENT_ID! : process.env.INSTAGRAM_CLIENT_ID!
+    let client_secret = authCo === "google" ? process.env.GOOGLE_CLIENT_SECRET! : process.env.META_SECRET!
     
     body = new URLSearchParams({
         code,
