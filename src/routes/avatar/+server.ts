@@ -25,7 +25,7 @@ export const GET: RequestHandler = async ({request, url, locals}) => {
         pool.release()
         return new Response()
     }
-
+    
     profilePictures = await batchProfilePictures(BASE_PATH, userIds, extensions)
     pool.release()
     return new Response(JSON.stringify({profilePictures, extensions: Object.fromEntries(extensions)}))
@@ -52,7 +52,7 @@ export const POST: RequestHandler = async ({request, locals}) => {
 
     const bytes = Buffer.from(raw, 'base64')
 
-    writeFile(`${BASE_PATH}${locals.user.id}/avatar.${extension}`, bytes, async (err) => {
+    writeFile(path.join(BASE_PATH, locals.user.id, `avatar.${extension}`), bytes, async (err) => {
         if(err){
             console.log('Error saving image', err)
         }else{

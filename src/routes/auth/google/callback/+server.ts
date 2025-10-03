@@ -20,15 +20,13 @@ export const GET: RequestHandler = async ({url, cookies, locals}): Promise<Respo
 
     let res
     try{
-         res = exchangeTokens(code, 'register')
+         res = await exchangeTokens(code, 'google')
     }catch(err){
         console.error('ERROR: exchanging tokens', err)
         throw redirect(303, `${base}/welcome/auth?status=fail`)
     }
 
-    const json = await res.then(async res => {
-        return await res.json()
-    })
+    const json = await res.json()
     if(!json){
         console.error('ERROR: no json')
         throw redirect(303, `${base}/welcome/auth?status=fail`)

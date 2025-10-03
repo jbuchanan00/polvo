@@ -15,6 +15,9 @@ export const handleJwt: Handle = async ({event, resolve}) => {
     }else{
         console.log('No Token')
     }
+    if(process.env.ENVIORNMENT === "dev" && !token){
+        event.locals.user = {id: '11111111-1111-1111-1111-111111111111'}
+    }
     
 
     return resolve(event)

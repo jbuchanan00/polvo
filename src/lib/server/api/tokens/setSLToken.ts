@@ -1,4 +1,4 @@
-import { getRedis } from "$lib/redis";
+import { getRedis } from "$lib/server/redis";
 
 export async function setSLToken(userId: string, token: string){
     const redis = await getRedis()

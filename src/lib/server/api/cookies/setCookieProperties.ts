@@ -7,7 +7,7 @@ export const setCookieProperties = (age = 3600 * 1000 * 24): CookieSerializeOpti
     const props = {
         httpOnly: true,
         secure: process.env.ENVIRONMENT !== 'dev',
-        sameSite: 'strict' as const,
+        sameSite: 'lax' as const,
         maxAge: age,
         path: '/',
     }
