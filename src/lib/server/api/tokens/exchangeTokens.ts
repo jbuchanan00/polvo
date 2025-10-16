@@ -1,5 +1,5 @@
 import dotenv from 'dotenv'
-import { base, resolve } from '$app/paths'
+import { resolve } from '$app/paths'
 
 dotenv.config()
 

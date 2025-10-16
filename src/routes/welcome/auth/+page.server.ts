@@ -3,7 +3,7 @@ import type { Actions, PageServerLoad } from '../../$types.js';
 import { hashAndSalt, prepCreateAuthProvider, authenticateUser } from '$lib/server/api/authentication'
 import { setCookieProperties } from '$lib/server/api/cookies'
 import { createToken } from '$lib/server/api/tokens';
-import { base } from '$app/paths';
+import { resolve } from '$app/paths';
 import { verifyUserExists } from '$lib/server/api/users';
 import {createUser, upsertNativeAuth, getUserByEmail} from '$lib/db/queries'
 
@@ -44,9 +44,9 @@ export const actions: Actions = {
             cookies.set('jwt', token, setCookieProperties())
         }catch(e){
             console.log(`There was an error creating a user: ${JSON.stringify(e)}`)
-            throw redirect(303, `${base}/welcome/auth?status=failed`)
+            throw redirect(303, resolve(`/welcome/auth?status=failed`))
         }
-        throw redirect(303, `${base}/welcome/auth?status=success`)
+        throw redirect(303, resolve(`/welcome/auth?status=success`))
     },
     login: async ({request, locals, cookies}) => {
         const formData = await request.formData()
@@ -70,13 +70,13 @@ export const actions: Actions = {
             }else{
                 pool.release()
                 console.log('Was not authenticated')
-                throw redirect(303, `${base}/welcome/auth?status=failed`)
+                throw redirect(303, resolve(`/welcome/auth?status=failed`))
             }
         }catch(e){
             console.log('Error trying to authenticate', e)
-            throw redirect(303, `${base}/welcome/auth?status=failed`)
+            throw redirect(303, resolve(`/welcome/auth?status=failed`))
         }
-        throw redirect(303, `${base}/welcome/auth?status=success`)
+        throw redirect(303, resolve(`/welcome/auth?status=success`))
     }
 }
 
@@ -84,7 +84,7 @@ export const load: PageServerLoad = async ({url, locals, request}: {url: any, lo
     const status = url.searchParams.get('status')
     const user = locals.user
     if(user?.id){
-        throw redirect(301, `${base}/`)
+        throw redirect(301, resolve(`/`))
     }
     if(status === 'success'){
         return {status}

@@ -1,7 +1,7 @@
 <script lang='ts'>
 	import type { PageData } from "./$types";
 	import { goto } from "$app/navigation";
-	import { base, resolve } from "$app/paths";
+	import { resolve } from "$app/paths";
 	import { enhance } from "$app/forms";
 
     let status = $state('success')
@@ -19,7 +19,7 @@
     const baseUrl = 'http://localhost:5175'
     
     function handleEdit(){
-        goto(`${base}/edit`)
+        goto(resolve(`/edit`))
     }
     
     function handleMessage(){
@@ -27,10 +27,10 @@
     }
 
     async function handleLogout(){
-        await fetch(`${base}/logout`, {
+        await fetch(resolve(`/logout`), {
             method: 'DELETE'
         })
-        goto(`${base}/welcome/auth`)
+        goto(resolve(`/welcome/auth`))
     }
 
     function handleBioEdit(){
@@ -112,7 +112,7 @@
         <div class="bioEdit">
                 <form method="POST" action="?/submitBio" use:enhance={() => submitBio()}>
                     <textarea maxlength=250 rows="3" class="bioTextArea" bind:value={userBio} name="bio"></textarea>
-                    <button type="submit"><img class="checkmark" src={`${base}/icon/checkmark.svg`} alt="edit bio"/></button>
+                    <button type="submit"><img class="checkmark" src={resolve(`/icon/checkmark.svg`)} alt="edit bio"/></button>
                 </form>
         </div>
         {:else}
@@ -121,7 +121,7 @@
                 {userBio}
             </div>
             <div class="bioEdit">
-                <button type="button" onclick={() => handleBioEdit()}><img src={`${base}/icon/edit-pencil-icon.svg`} alt="edit bio" /></button> 
+                <button type="button" onclick={() => handleBioEdit()}><img src={resolve(`/icon/edit-pencil-icon.svg`)} alt="edit bio" /></button> 
             </div>
         </div>
         {/if}
