@@ -1,8 +1,7 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
 	import Dropdown from "$lib/components/edit/dropdown.svelte";
-	import {base, resolve} from '$app/paths'
-
+	import {resolve} from '$app/paths'
 	
 	let dropdownVisible = $state(false)
 	
@@ -17,15 +16,22 @@
 
 	const handleLocationChange = async () => {
 		if(input.length > 2 && !input.includes(",")){
-			await fetch(`http://localhost:8081/autofill`, {
+			console.log('What is being sent to halo', JSON.stringify({
+					location: input,
+					baseLoc: userData.location
+				}))
+			await fetch(`/halo/autofill`, {
 				method: "POST",
 				body: JSON.stringify({
 					location: input,
 					baseLoc: userData.location
 				})
 			}).then(async (res) => {
+				console.log('What is being returned by halo', res)
 				locations = await res.json()
 				dropdownVisible = true;
+			}).catch(e => {
+				console.log('Error getting autofill, ', e)
 			})
 		}else{
 			locations = []
@@ -97,7 +103,7 @@
 <div class="pageContainer">
 	<div class="backHeader">
 		<div class="backButtonContainer">
-			<button type="button" class="backButton" onclick={() => history.back()}><img class="backArrow" src={`${base}/back-arrow.svg`} alt="back arrow" /></button>
+			<button type="button" class="backButton" onclick={() => history.back()}><img class="backArrow" src={resolve(`/back-arrow.svg`)} alt="back arrow" /></button>
 		</div>
 		<div id="editTextContainer">
 			<h3>EDIT PROFILE</h3>
