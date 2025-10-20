@@ -22,7 +22,7 @@ EXPOSE 3000
 
 # healthcheck: note the /profile base path from svelte.config.js
 HEALTHCHECK --interval=10s --timeout=3s --start-period=30s --retries=6 \
-  CMD wget -qO- http://127.0.0.1:3000/profile/health >/dev/null 2>&1 || exit 1
+  CMD wget -qO- http://127.0.0.1:3000/profile/health || exit 1
 
 # Run the adapter-node output
 CMD ["node", "build"]

@@ -24,7 +24,7 @@
 				method: "POST",
 				body: JSON.stringify({
 					location: input,
-					baseLoc: userData.location
+					baseLoc: userData.location || {Id: 0, Name: "", State: "", Latitude: 44.58, Longitude: 103.46}
 				})
 			}).then(async (res) => {
 				console.log('What is being returned by halo', res)
