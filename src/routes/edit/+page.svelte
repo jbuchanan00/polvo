@@ -16,15 +16,11 @@
 
 	const handleLocationChange = async () => {
 		if(input.length > 2 && !input.includes(",")){
-			console.log('What is being sent to halo', JSON.stringify({
-					location: input,
-					baseLoc: userData.location
-				}))
 			await fetch(`/halo/autofill`, {
 				method: "POST",
 				body: JSON.stringify({
 					location: input,
-					baseLoc: userData.location || {Id: 0, Name: "", State: "", Latitude: 44.58, Longitude: 103.46}
+					baseLoc: userData.location ?? {Id: 0, Name: "", State: "", Latitude: 44.58, Longitude: 103.46}
 				})
 			}).then(async (res) => {
 				console.log('What is being returned by halo', res)
