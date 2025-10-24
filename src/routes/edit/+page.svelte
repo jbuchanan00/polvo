@@ -2,28 +2,28 @@
     import { enhance } from "$app/forms";
 	import Dropdown from "$lib/components/edit/dropdown.svelte";
 	import {resolve} from '$app/paths'
+	import {PUBLIC_AUTOFILL_URL} from '$env/static/public'
 	
 	let dropdownVisible = $state(false)
 	
 	let locations = $state([])
 	const {data} = $props()
 	let {user: userData, profilePicture, pictureExt: ext}: any = data
-	let location = $state(userData.location ? `${userData.location.name}, ${userData.location.state}` : '')
-	let input = $derived(location)
+	let location = $state(userData.location)
+	let input = $state(userData.location ? formatLocation(userData.location) : '')
 	let fileInput: HTMLInputElement | null = null
 	let profileImage: string | null = $state(profilePicture)
 	let pictureExt: string | null = $state(ext)
 
 	const handleLocationChange = async () => {
 		if(input.length > 2 && !input.includes(",")){
-			await fetch(`/halo/autofill`, {
+			await fetch(PUBLIC_AUTOFILL_URL, {
 				method: "POST",
 				body: JSON.stringify({
 					location: input,
 					baseLoc: userData.location ?? {Id: 0, Name: "", State: "", Latitude: 44.58, Longitude: 103.46}
 				})
 			}).then(async (res) => {
-				console.log('What is being returned by halo', res)
 				locations = await res.json()
 				dropdownVisible = true;
 			}).catch(e => {
@@ -53,8 +53,7 @@
 		if(event.target != null){
 			const target = event.target as HTMLButtonElement
 			location = target.value
-			const locationObj = JSON.parse(location)
-			input = `${locationObj.name}${locationObj.state ? ', ' + locationObj.state : ''}` 
+			input = formatLocation(JSON.parse(location)) 
 			dropdownVisible = false
 		}
 	}
@@ -92,6 +91,10 @@
 			
 		}
     }
+
+	function formatLocation(loc: Location): string{
+		return `${loc.name}${loc.state ? ', ' + loc.state : ''}`
+	}
 
 </script>
 
