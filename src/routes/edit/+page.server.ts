@@ -11,10 +11,9 @@ export const actions = {
 		const form = Object.fromEntries(formData);
         let submittedLocation: Location | string = ''
         const {username, first_name, last_name, location} = form
-        console.log('Edit form', form)
 
-        if(location !== ''){
-            submittedLocation = JSON.parse(location as string)
+        if(location !== '' && typeof location === 'string'){
+            submittedLocation = JSON.parse(location)
         }
 
         locals.user = {

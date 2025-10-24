@@ -52,8 +52,8 @@
 	const handleNewLocation = async (event: MouseEvent) => {
 		if(event.target != null){
 			const target = event.target as HTMLButtonElement
-			location = target.value
-			input = formatLocation(JSON.parse(location)) 
+			location = JSON.parse(target.value)
+			input = formatLocation(location) 
 			dropdownVisible = false
 		}
 	}
@@ -61,7 +61,7 @@
 	function handleSubmit(event: any){
 		const defaultForm = event.formData
 		defaultForm.delete('location')
-		defaultForm.append('location', location)
+		defaultForm.append('location', JSON.stringify(location))
 	}
 
 	function handleProfileImageChange(){
@@ -102,7 +102,7 @@
 <div class="pageContainer">
 	<div class="backHeader">
 		<div class="backButtonContainer">
-			<button type="button" class="backButton" onclick={() => history.back()}><img class="backArrow" src={resolve(`/back-arrow.svg`)} alt="back arrow" /></button>
+			<button type="button" class="backButton" onmousedown={() => history.back()}><img class="backArrow" src={resolve(`/back-arrow.svg`)} alt="back arrow" /></button>
 		</div>
 		<div id="editTextContainer">
 			<h3>EDIT PROFILE</h3>
@@ -124,7 +124,7 @@
 					<label class="sub_title" for="username">USERNAME</label>
 				</div>
 				<div class="itemInput">
-					<input placeholder="Enter your desired username" class="textInput" type="text" name="username" defaultValue={userData.username}/> 
+					<input placeholder="Enter your desired username" class="textInput" type="text" name="username" defaultValue={userData.username || ''}/> 
 				</div>
 			</div>
 			<div class="itemContainer">

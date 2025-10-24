@@ -8,7 +8,12 @@ export async function editUser(db: PoolClient, userWId: User){
         if(user[key] !== ''){
             if(key === 'location'){
                 if(user[key] != null){
-                    setClauses.push(`location=point(${parseFloat(user[key].latitude)}, ${parseFloat(user[key].longitude)})`)
+                    console.log('Location Lat', typeof user[key])
+                    if(user[key]?.coords !== undefined){
+                        setClauses.push(`location=point(${parseFloat(user[key].coords.latitude)}, ${parseFloat(user[key].coords.longitude)})`)
+                    }else{
+                        setClauses.push(`location=point(${parseFloat(user[key].latitude)}, ${parseFloat(user[key].longitude)})`)
+                    }
                 }
             }else{
                 setClauses.push(`${key}='${user[key]}'`)

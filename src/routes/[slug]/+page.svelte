@@ -121,19 +121,19 @@
                 {userBio}
             </div>
             <div class="bioEdit">
-                <button type="button" onclick={() => handleBioEdit()}><img src={resolve(`/icon/edit-pencil-icon.svg`)} alt="edit bio" /></button> 
+                <button type="button" onmousedown={() => handleBioEdit()}><img src={resolve(`/icon/edit-pencil-icon.svg`)} alt="edit bio" /></button> 
             </div>
         </div>
         {/if}
         <div class="buttons">
             {#if isSelf}
             <div class="button" id="edit">
-                <button onclick={handleEdit}>EDIT PROFILE</button>
+                <button onmousedown={handleEdit}>EDIT PROFILE</button>
             </div>
                 
             {:else}
             <div class="button" id="message">
-                <button onclick={handleMessage}>MESSAGE</button>
+                <button onmousedown={handleMessage}>MESSAGE</button>
             </div>
             {/if}
         </div>
