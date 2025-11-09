@@ -21,7 +21,7 @@
 				method: "POST",
 				body: JSON.stringify({
 					location: input,
-					baseLoc: userData.location ?? {Id: 0, Name: "", State: "", Latitude: 44.58, Longitude: 103.46}
+					baseLoc: userData.location ?? {Id: 0, Name: "", State: "", Latitude: 44.58, Longitude: 103.46, Ranking: 6}
 				})
 			}).then(async (res) => {
 				locations = await res.json()

@@ -43,7 +43,8 @@ interface Location {
     name: string,
     state: string | null,
     country: string | null,
-    coords: Coordinates
+    coords: Coordinates,
+    Ranking?: number | null
 }
 
 interface Post {
