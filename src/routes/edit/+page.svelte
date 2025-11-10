@@ -2,7 +2,6 @@
     import { enhance } from "$app/forms";
 	import Dropdown from "$lib/components/edit/dropdown.svelte";
 	import {resolve} from '$app/paths'
-	import {PUBLIC_AUTOFILL_URL} from '$env/static/public'
 	
 	let dropdownVisible = $state(false)
 	
@@ -17,13 +16,7 @@
 
 	const handleLocationChange = async () => {
 		if(input.length > 2 && !input.includes(",")){
-			await fetch(PUBLIC_AUTOFILL_URL, {
-				method: "POST",
-				body: JSON.stringify({
-					location: input,
-					baseLoc: userData.location ?? {Id: 0, Name: "", State: "", Latitude: 44.58, Longitude: 103.46, Ranking: 6}
-				})
-			}).then(async (res) => {
+			await fetch(`${resolve(`/edit/autofill?text=${input}`)}`).then(async (res) => {
 				locations = await res.json()
 				dropdownVisible = true;
 			}).catch(e => {
