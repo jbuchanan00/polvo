@@ -169,6 +169,10 @@
         text-align: center;
         background-color: #3b82f6;
     }
+    .instagram:active {
+        transform: translateX(3px) translateY(3px);
+        box-shadow: none;
+    }
     button {
         border: none;
         background: none;
