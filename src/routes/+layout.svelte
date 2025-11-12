@@ -13,7 +13,6 @@
                 const topNavElement = document.getElementById('top-nav')
                 const bottomNavElement = document.getElementById('bottom-nav')
                 const remote = await loadRemoteNavbars()
-                console.log('Remote Navbar Result', remote)
                 if(topNavElement) remote.TopNavInstance(topNavElement, {assetBase: PUBLIC_POLESTAR_BASE})
                 if(bottomNavElement) remote.BottomNavInstance(bottomNavElement, {assetBase: PUBLIC_POLESTAR_BASE})
             }
