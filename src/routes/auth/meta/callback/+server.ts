@@ -22,7 +22,7 @@ async function getFromRedis(state:string){
 export const GET: RequestHandler = async ({url, locals, cookies}) => {
     const code = url.searchParams.get("code")
     const state = url.searchParams.get("state")
-
+    console.log('Code', code, '--- State', state, '--- Locals in Callback', locals)
     let userId: string
 
     if(!code || !state){

@@ -3,9 +3,9 @@
 	import { goto } from "$app/navigation";
 	import { resolve } from "$app/paths";
 	import { enhance } from "$app/forms";
+    import { PUBLIC_META_OAUTH } from "$env/static/public";
 
     let status = $state('success')
-    let bioHtml
 
     const { data } = $props<{data: PageData}>();
     if(data.status === 'fail'){
@@ -15,6 +15,8 @@
     console.log(isSelf)
     let bioEdit = $state(false)
     let userBio = $state(userData.bio)
+    let oauthUrl : string = $state(``)
+    configureInstaUrl()
 
     const baseUrl = 'http://localhost:5175'
     
@@ -41,8 +43,11 @@
         bioEdit = false;
     }
 
-    function connectToInstagram(){
-        fetch(`${resolve('/auth/meta')}`)
+    async function configureInstaUrl(){
+        let oauthState = fetch('/profile/auth/meta').then(async res => {
+            return await res.json()
+        })
+        oauthUrl = `${PUBLIC_META_OAUTH}&state=${oauthState}`
     }
 
     function syncWithInstagram(){
@@ -139,7 +144,8 @@
         </div>
         {#if !userInstagramAuthed}
         <div class="connectInstagram instagram">
-            <button onclick={() => connectToInstagram()}>Connect with Instagram</button>
+            <!-- <button onclick={() => connectToInstagram()}>Connect with Instagram</button> -->
+            <button><a href={oauthUrl}>Connect with Instagram</a></button>
         </div>
         {:else}
         <div class="syncInstagram instagram">

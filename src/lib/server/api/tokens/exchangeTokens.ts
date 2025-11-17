@@ -10,7 +10,7 @@ export async function exchangeTokens(code: string, authCo: string): Promise<Resp
     let client_id = authCo === "google" ? process.env.GOOGLE_CLIENT_ID! : process.env.INSTAGRAM_CLIENT_ID!
     let client_secret = authCo === "google" ? process.env.GOOGLE_CLIENT_SECRET! : process.env.META_SECRET!
 
-    const redirect_uri = authCo === "google" ? `${process.env.OAUTH_REDIRECT_BASE}${resolve(`/auth/${authCo}/callback`)}` : `https://api.inked-out.com/auth/instagram/callback`
+    const redirect_uri = authCo === "google" ? `${process.env.OAUTH_REDIRECT_BASE}${resolve(`/auth/${authCo}/callback`)}` : `https://app.inked-out.com/profile/auth/meta/callback`
     
     body = new URLSearchParams({
         code,
