@@ -11,12 +11,10 @@
     if(data.status === 'fail'){
         status = 'fail'
     }
-    const {user: userData, posts, isSelf, userInstagramAuthed, profilePicture, pictureExt} = data
+    const {user: userData, posts, isSelf, userInstagramAuthed, profilePicture, pictureExt, oauthUrl} = data
     console.log(isSelf)
     let bioEdit = $state(false)
     let userBio = $state(userData.bio)
-    let oauthUrl : string = $state(``)
-    configureInstaUrl()
 
     const baseUrl = 'http://localhost:5175'
     
@@ -41,13 +39,6 @@
 
     function submitBio(){
         bioEdit = false;
-    }
-
-    async function configureInstaUrl(){
-        let oauthState = fetch('/profile/auth/meta').then(async res => {
-            return await res.json()
-        })
-        oauthUrl = `${PUBLIC_META_OAUTH}&state=${oauthState}`
     }
 
     function syncWithInstagram(){

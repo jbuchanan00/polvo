@@ -6,10 +6,8 @@ import {randomBytes} from 'node:crypto'
 dotenv.config()
 
 export const GET: RequestHandler = async ({locals}) => {
-    console.log('Locals in initial get-----', locals)
     const userId = locals.user.id
     const state = randomBytes(16).toString('hex')
-
     const r = getRedis()
     await r.set(`ig:state:${state}`, JSON.stringify({userId, state}), {EX: 600})
 

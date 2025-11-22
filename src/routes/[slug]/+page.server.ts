@@ -15,6 +15,7 @@ export const load: PageServerLoad = async ({locals, params, fetch}: {locals: any
     let isSelf = false;
     let pictureExt;
     let userInstagramAuthed = false;
+    let oauthUrl = ''
     
     if(locals.user){
         if(params.slug === locals.user.id){
@@ -25,6 +26,11 @@ export const load: PageServerLoad = async ({locals, params, fetch}: {locals: any
             user = await getUserById(pool, params.slug)
             if(isSelf){
                 userInstagramAuthed = await isUserAuthed(pool, user.id, 'instagram')
+                if(!userInstagramAuthed){
+                    let res = await fetch(resolve('/auth/meta'))
+                    let oauthState = await res.json()
+                    oauthUrl = `${process.env.META_OAUTH}&state=${oauthState.state}`
+                }
             }
             if(user.location?.coords && !user.location?.name){
                 const userLoc = await getLocationData(user.location.coords)
@@ -72,7 +78,8 @@ export const load: PageServerLoad = async ({locals, params, fetch}: {locals: any
         isSelf,
         profilePicture,
         pictureExt,
-        userInstagramAuthed
+        userInstagramAuthed,
+        oauthUrl
     }
 }
 
