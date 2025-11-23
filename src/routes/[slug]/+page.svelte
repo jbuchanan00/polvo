@@ -3,7 +3,6 @@
 	import { goto } from "$app/navigation";
 	import { resolve } from "$app/paths";
 	import { enhance } from "$app/forms";
-    import { PUBLIC_META_OAUTH } from "$env/static/public";
 
     let status = $state('success')
 
@@ -41,8 +40,8 @@
         bioEdit = false;
     }
 
-    function syncWithInstagram(){
-        fetch(`${resolve(`/${userData.id}/instagramposts`)}`)
+    async function syncWithInstagram(){
+        await fetch(`${resolve(`/${userData.id}/instagramposts`)}`)
     }
 </script>
 
@@ -159,6 +158,9 @@
 {/if}
 
 <style>
+    .connectInstagram a {
+        text-decoration: none;
+    }
     .instagram {
         border: 3px solid black;
         box-shadow: 3px 3px;

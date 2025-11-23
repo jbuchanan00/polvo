@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS auth_provider (
     provider TEXT NOT NULL,
     provider_user_id TEXT,
     email TEXT,
-    UNIQUE(provider, provider_user_id)
+    UNIQUE(provider, user_id)
 );
 
 CREATE TABLE IF NOT EXISTS native_auth (

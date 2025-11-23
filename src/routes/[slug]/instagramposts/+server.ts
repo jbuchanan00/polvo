@@ -8,6 +8,7 @@ export const GET: RequestHandler = async ({params, request, locals, url, fetch})
     const userId = params.slug
     const apiKey = request.headers.get('x-api-key')
     const before = url.searchParams.get('before')
+    console.log('Calling Instagram Posts')
 
     if(!userId){
         throw error(400, {message: 'No User Id'})
@@ -51,7 +52,7 @@ export const GET: RequestHandler = async ({params, request, locals, url, fetch})
         const ok = settled
             .filter((s): s is PromiseFulfilledResult<unknown> => s.status === "fulfilled")
             .map(s => s.value);
-
+        console.log('Posts data: ', JSON.stringify(ok))
         return new Response(JSON.stringify({posts: ok, cursor: paging.cursors.before}))
 
     }catch(e){

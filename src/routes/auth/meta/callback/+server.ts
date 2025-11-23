@@ -22,7 +22,6 @@ async function getFromRedis(state:string){
 export const GET: RequestHandler = async ({url, locals, cookies}) => {
     const code = url.searchParams.get("code")
     const state = url.searchParams.get("state")
-    console.log('Code', code, '--- State', state, '--- Locals in Callback', locals)
     let userId: string
 
     if(!code || !state){
@@ -57,6 +56,6 @@ export const GET: RequestHandler = async ({url, locals, cookies}) => {
         console.log(`Couldn't complete meta auth or ll token ${userId}`, e)
         return Response.error()
     }
-
-    throw redirect(300, `${resolve(`/${userId}`)}`)
+    
+    throw redirect(308, `${resolve(`/${userId}`)}`)
 }
