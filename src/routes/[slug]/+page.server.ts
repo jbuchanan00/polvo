@@ -54,8 +54,12 @@ export const load: PageServerLoad = async ({locals, params, fetch}: {locals: any
             }catch(e){
                 console.log('Error pulling picture', e)
             }
-            // posts = await getPostsByUser(user.id)
-            posts = []
+            try{
+                posts = await getPostsByUser(user.id, 0, 15)
+            }catch(e){
+                console.log('Error getting posts for user', e)
+                posts = []
+            }
             pool.release()
         }catch(e){
             console.log('Catching getting user')

@@ -4,7 +4,7 @@
 export const getPostData = async (postId: number | string): Promise<Post> => {
     let post
     try{
-        const res = await fetch(`http://localhost:5175/posts/${postId}`, {
+        const res = await fetch(`${process.env.NECTAR_URL}/post?${postId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -22,7 +22,7 @@ export const getPostData = async (postId: number | string): Promise<Post> => {
         console.log(`ERROR, SETTING DEFAULT`)
     }
 
-    post = {id: postId, description: 'This is a quick temporary description for tattoos #test', image: 'null', date: new Date()} 
+    // post = {id: postId, description: 'This is a quick temporary description for tattoos #test', image: 'null', date: new Date()} 
 
     return post
 }
