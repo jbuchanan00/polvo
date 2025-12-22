@@ -11,11 +11,9 @@
         status = 'fail'
     }
     const {user: userData, posts, isSelf, userInstagramAuthed, profilePicture, pictureExt, oauthUrl} = data
-    console.log(isSelf)
+    console.log('IsSelf:', isSelf, 'User Data:', userData, 'Posts:', posts)
     let bioEdit = $state(false)
     let userBio = $state(userData.bio)
-
-    const baseUrl = 'http://localhost:5175'
     
     function handleEdit(){
         goto(resolve(`/edit`))
@@ -149,7 +147,7 @@
         {:else}
             {#each posts as post}
             <div class="postPicture">
-                <a href={`/${post.id}`}><img class="postImg" src={`${baseUrl}/${post.image}`} alt="post" /></a>  
+                <a href={`/${post.id}`}><img class="postImg" src={`${post.image}`} alt="post" /></a>  
             </div>
             {/each}
         {/if}

@@ -56,6 +56,7 @@ export const load: PageServerLoad = async ({locals, params, fetch}: {locals: any
             }
             try{
                 posts = await getPostsByUser(user.id, 0, 15)
+                console.log('Posts for User:', posts)
             }catch(e){
                 console.log('Error getting posts for user', e)
                 posts = []
