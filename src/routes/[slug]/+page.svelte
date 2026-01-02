@@ -147,7 +147,7 @@
         {:else}
             {#each posts as post}
             <div class="postPicture">
-                <a href={`/${post.id}`}><img class="postImg" src={`${post.image}`} alt="post" /></a>  
+                <a href={`/${post.id}`}><img class="postImg" src={`https://app.inked-out.com/nectar/imagerequest?imageid=${post.image_id}`} alt="post" /></a>  
             </div>
             {/each}
         {/if}
