@@ -4,11 +4,11 @@ import type { PoolClient } from "pg";
 export async function editUser(db: PoolClient, userWId: User){
     let setClauses = []
     const {id, ...user} = userWId
+    console.log('Editing User:', id)
     for(const key in user){
         if(user[key] !== ''){
             if(key === 'location'){
                 if(user[key] != null){
-                    console.log('Location Lat', typeof user[key])
                     if(user[key]?.coords !== undefined){
                         setClauses.push(`location=point(${parseFloat(user[key].coords.latitude)}, ${parseFloat(user[key].coords.longitude)})`)
                     }else{
