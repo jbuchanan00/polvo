@@ -9,14 +9,14 @@ export const GET: RequestHandler = async ({url, fetch, locals}) => {
         return new Response('No locations in url')
     }
 
-    console.log('locations:', locations)
-
     const formattedLocations = locations.map(loc => {
         const arr = loc.split(',')
-        return {lat: parseInt(arr[0]), lng: parseInt(arr[1])}
+        return {lat: parseFloat(arr[0]), lng: parseFloat(arr[1])}
     })
 
     const pool = await locals.db()
+
+    console.log('locations:', formattedLocations)
 
     try{
         let usersInLocations = await getUsersByLocations(pool, formattedLocations)
@@ -29,6 +29,25 @@ export const GET: RequestHandler = async ({url, fetch, locals}) => {
     }
 }
 
-export const POST = () => {
+//{locations: [{lat: float, lng: float}]}
+export const POST = async ({request, locals}) => {
+    const {locations} = await request.json()
 
+    if(!locations || locations.length < 1){
+        return new Response('No locations in url')
+    }
+
+    const pool = await locals.db()
+
+    console.log('locations:', locations)
+
+    try{
+        let usersInLocations = await getUsersByLocations(pool, locations)
+        pool.release()
+        return new Response(JSON.stringify(usersInLocations))
+    }catch(e){
+        console.log('Error getting users in locations:', e)
+        pool.release()
+        return new Response('Error in fetching')
+    }
 }
