@@ -30,8 +30,13 @@ export const GET: RequestHandler = async ({url, fetch, locals}) => {
 }
 
 //{locations: [{lat: float, lng: float}]}
-export const POST = async ({request, locals}) => {
-    const {locations} = await request.json()
+export const POST: RequestHandler = async ({request, locals}) => {
+    // const {locations} = await request.json()
+    const req = await request.json();
+
+    console.log('Post Request: ', req)
+
+    const locations = req.locations;
 
     if(!locations || locations.length < 1){
         return new Response('No locations in url')

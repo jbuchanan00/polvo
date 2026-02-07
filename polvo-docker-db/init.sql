@@ -51,9 +51,9 @@ INSERT INTO role (role_name) VALUES ('canvas'), ('artist'), ('shop');
 
 -- Users
 INSERT INTO app_user (id, first_name, last_name, email, username, avatar_extension, role_id, location, bio) VALUES
-    ('11111111-1111-1111-1111-111111111111', 'Ava', 'Smith', 'ava.smith@example.com', 'ava_s', 'png', 1, POINT(-111.876183, 40.758701), 'Tattoo enthusiast, always looking for new ink.'),
-    ('22222222-2222-2222-2222-222222222222', 'Leo', 'Garcia', 'leo.garcia@example.com', 'inkedbyleo', 'png', 2, POINT(-118.243683, 34.052235), 'Blackwork artist specializing in geometric designs.'),
-    ('33333333-3333-3333-3333-333333333333', 'Maya', 'Kim', 'maya.kim@example.com', 'maya_k', 'png', 3, POINT(-73.935242, 40.730610), 'Shop owner and piercer based in NYC.');
+    ('11111111-1111-1111-1111-111111111111', 'Ava', 'Smith', 'ava.smith@example.com', 'ava_s', 'png', 1, POINT(40.4136, -111.8725), 'Tattoo enthusiast, always looking for new ink.'),
+    ('22222222-2222-2222-2222-222222222222', 'Leo', 'Garcia', 'leo.garcia@example.com', 'inkedbyleo', 'png', 2, POINT(40.2457, -111.6457), 'Blackwork artist specializing in geometric designs.'),
+    ('33333333-3333-3333-3333-333333333333', 'Maya', 'Kim', 'maya.kim@example.com', 'maya_k', 'png', 3, POINT(40.7776, -111.9311), 'Shop owner and piercer based in NYC.');
 
 -- Auth providers (Google + GitHub)
 INSERT INTO auth_provider (id, user_id, provider, provider_user_id, email) VALUES
@@ -66,5 +66,5 @@ INSERT INTO native_auth (user_id, hash, salt) VALUES
 
 -- Shops
 INSERT INTO shop (id, name, location) VALUES
-    ('44444444-4444-4444-4444-444444444444', 'Downtown Ink Collective', POINT(-87.629799, 41.878113)),
-    ('55555555-5555-5555-5555-555555555555', 'Silverline Tattoos', POINT(-122.419418, 37.774929));
+    ('44444444-4444-4444-4444-444444444444', 'Downtown Ink Collective', POINT(40.7776, -111.9311)),
+    ('55555555-5555-5555-5555-555555555555', 'Silverline Tattoos', POINT(40.7776, -111.9311));

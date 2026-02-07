@@ -9,7 +9,10 @@ const config = {
 		noExternal: ['pg']
 	},
 	kit: { adapter: adapter(),
-		paths: {base: '/profile'}
+		paths: {base: '/profile'},
+		csrf: {
+			trustedOrigins: ['*']
+		}
 	 }
 };
 
