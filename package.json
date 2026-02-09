@@ -19,7 +19,7 @@
 		"dev:net:reset": "docker network rm shared && docker network create shared",
 		"dev:net:up": "docker network create shared",
 		"dev:up": "docker compose -f docker-compose.dev.yml up -d --build",
-		"dev:reset": "docker compose -f docker-compose.dev.yml down --volumes --remove-orphans && docker-compose -f polvo-docker-db/docker-compose.yml down --volumes --remove-orphans && docker-compose -f polvo-docker-db/docker-compose.yml up -d && docker compose -f docker-compose.dev.yml up -d --build",
+		"dev:reset": "docker compose -f docker-compose.dev.yml down --volumes --remove-orphans && docker compose -f polvo-docker-db/docker-compose.yml down --volumes --remove-orphans && docker compose -f polvo-docker-db/docker-compose.yml up -d && docker compose -f docker-compose.dev.yml up -d --build",
 		"prod:up": "docker compose -f docker-compose.yml up --build",
 		"prod:reset": "docker compose -f docker-compose.yml down --volumes --remove-orphans && docker compose -f docker-compose.yml up --build",
 		"seed": "vite-node src/lib/adhocs/token.ts"
