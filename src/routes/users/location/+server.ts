@@ -1,8 +1,9 @@
+import { getUsersBetweenLocations } from "$lib/db/queries/user/gets/getUsersBetweenLocations"
 import { getUsersByLocations } from "$lib/db/queries/user/gets/getUsersByLocations"
 import type { RequestHandler } from "@sveltejs/kit"
 
 
-export const GET: RequestHandler = async ({url, fetch, locals}) => {
+export const GET: RequestHandler = async ({url, locals}) => {
     const locations = url.searchParams.getAll('loc')
 
     if(!locations || locations.length < 1){
@@ -29,25 +30,22 @@ export const GET: RequestHandler = async ({url, fetch, locals}) => {
     }
 }
 
-//{locations: [{lat: float, lng: float}]}
+//{coords: {maxLat: float, minLat: float, maxLong: float, minLong: float}}
 export const POST: RequestHandler = async ({request, locals}) => {
-    // const {locations} = await request.json()
-    const req = await request.json();
+    const {coords} = await request.json()
 
-    console.log('Post Request: ', req)
+    console.log('Post Request: ', coords)
 
-    const locations = req.locations;
-
-    if(!locations || locations.length < 1){
+    if(!coords){
         return new Response('No locations in url')
     }
 
     const pool = await locals.db()
 
-    console.log('locations:', locations)
+    console.log('coords:', coords)
 
     try{
-        let usersInLocations = await getUsersByLocations(pool, locations)
+        let usersInLocations = await getUsersBetweenLocations(pool, {maxLat: coords.maxLat, minLat: coords.minLat}, {maxLong: coords.maxLong, minLong: coords.minLong})
         pool.release()
         return new Response(JSON.stringify(usersInLocations))
     }catch(e){
