@@ -6,7 +6,13 @@ import {randomBytes} from 'node:crypto'
 dotenv.config()
 
 export const GET: RequestHandler = async ({locals}) => {
-    const userId = locals.user.id
+    console.log("Environment:", process.env.ENVIRONMENT)
+    let userId
+    if(process.env.ENVIRONMENT === 'dev'){
+        userId = '11111111-1111-1111-1111-111111111111'
+    }else{
+        userId = locals.user.id
+    }
     console.log("Locals:", locals)
     const state = randomBytes(16).toString('hex')
     const r = getRedis()
