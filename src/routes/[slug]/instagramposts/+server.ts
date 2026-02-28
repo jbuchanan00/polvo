@@ -11,7 +11,7 @@ export const GET: RequestHandler = async ({params, request, locals, url, fetch})
     console.log('Calling Instagram Posts')
 
     if(!userId){
-        throw error(400, {message: 'No User Id'})
+        return new Response('No User Id', {status: 400})
     }
 
     try{
@@ -28,14 +28,14 @@ export const GET: RequestHandler = async ({params, request, locals, url, fetch})
 
         if(!res.ok){
             console.log('Error retrieving posts from instagram')
-            throw error(500, {message: 'Error retrieving post ids'})
+            return new Response('Error retrieving post ids', {status: 500})
         }
 
         const {data, paging} = await res.json()
 
         if(!data || !paging){
             console.log('Error with getting data from response')
-            throw error(500, {message: `Couldn't find the posts or paging data`})
+            return new Response(`Couldn't find the posts or paging data`, {status: 500})
         }
 
         let idsToCall: Promise<Response>[] = []

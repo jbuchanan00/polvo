@@ -1,90 +1,45 @@
-import { fail, redirect, type Action, type Actions } from "@sveltejs/kit";
+import { redirect, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "../edit/$types";
-import { getUserById } from "$lib/db/queries/user/gets/getUserById";
-import { getPostsByUser } from "$lib/server/api/posts/getPostsByUser";
-import { isUserAuthed } from "$lib/server/api/authentication";
-import { getLocationData } from "$lib/server/api/geo";
 import {resolve} from '$app/paths'
 
 import editUserBio from "$lib/server/api/users/editUserBio";
+import { setupProfilePage } from "$lib/server/api/pages/profilePage";
 
 export const load: PageServerLoad = async ({locals, params, fetch}: {locals: any, params: any, fetch: any}) => {
-    let user;
-    let posts: Post[];
-    let profilePicture;
-    let isSelf = false;
-    let pictureExt;
-    let userInstagramAuthed = false;
-    let oauthUrl = ''
+    let profilePage: ProfileDto | string
+    let isSelf = false
     
     if(locals.user){
         if(params.slug === locals.user.id){
             isSelf = true
         }
-        try{
-            const pool = await locals.db()
-            user = await getUserById(pool, params.slug)
-            if(isSelf){
-                userInstagramAuthed = await isUserAuthed(pool, user.id, 'instagram')
-                if(!userInstagramAuthed){
-                    let res = await fetch(resolve('/auth/meta'))
-                    let oauthState = await res.json()
-                    oauthUrl = `${process.env.META_OAUTH}&state=${oauthState.state}`
-                }
-            }
-            if(user.location?.coords && !user.location?.name){
-                const userLoc = await getLocationData(user.location.coords)
-                if(userLoc){
-                    user.location = userLoc
-                }
-            }
-            try{
-                let data = await fetch(`${resolve(`/avatar?userId=${params.slug}`)}`)
-                data = await data.json()
-                
-                if(data.profilePictures[0] !== ""){
-                    profilePicture = data.profilePictures[0]
-                    let datamap = new Map(Object.entries(data.extensions))
-                    pictureExt = datamap.get(locals.user.id)
-                }else{
-                    profilePicture = ""
-                    pictureExt = ""
-                }
-                
-            }catch(e){
-                console.log('Error pulling picture', e)
-            }
-            try{
-                posts = await getPostsByUser(user.id, 0, 15)
-                console.log('Posts for User:', posts)
-            }catch(e){
-                console.log('Error getting posts for user', e)
-                posts = []
-            }
-            pool.release()
-        }catch(e){
-            console.log('Catching getting user')
-            if(isSelf){
-                await fetch(`${resolve('/logout')}`,{
-                    method: "DELETE"
-                })
-                throw redirect(303, `${resolve('/welcome/auth')}`)
-            }
-            
+
+        const pool = await locals.db()
+
+        profilePage = await setupProfilePage(pool, {userId: locals.user.id, isSelf})
+
+        if(profilePage === "logout"){
+            await fetch(`${resolve('/logout')}`,{
+                method: "DELETE"
+            })
+            throw redirect(303, `${resolve('/welcome/auth')}`)
+        }else if(profilePage === "Failed getting user"){
             throw redirect(404, `${resolve('/home')}`)
         }
+
+        profilePage = profilePage as ProfileDto
     }else {
         throw redirect(303, `${resolve('/welcome/auth')}`)
     }
     
     return {
-        user,
-        posts,
-        isSelf,
-        profilePicture,
-        pictureExt,
-        userInstagramAuthed,
-        oauthUrl
+        user: profilePage.user,
+        posts: profilePage.posts,
+        isSelf: profilePage.isSelf,
+        profilePicture: profilePage.profilePicture,
+        pictureExt: profilePage.pictureExt,
+        userInstagramAuthed: profilePage.userInstagramAuthed,
+        oauthUrl: profilePage.oauthUrl
     }
 }
 

@@ -62,5 +62,16 @@ interface AuthProvider {
     email: string
 }
 
+interface ProfileDto {
+    user: User,
+    posts: Post[],
+    profilePicture: string,
+    isSelf: boolean,
+    pictureExt: string,
+    userInstagramAuthed: boolean,
+    oauthUrl: string
+    
+}
+
 type Providers = 'google' | 'native'
 

@@ -16,16 +16,16 @@ CREATE TABLE IF NOT EXISTS app_user (
     email Text,
     username varchar(35),
     avatar_extension TEXT,
-    role_id int references role(id),
+    role_id int references role(id) ON DELETE CASCADE,
     location point,
     bio Text,
-    shop_id VARCHAR(36) REFERENCES shop(id),
+    shop_id VARCHAR(36) REFERENCES shop(id) ON DELETE CASCADE,
     UNIQUE(email, username)
 );
 
 CREATE TABLE IF NOT EXISTS auth_provider (
     id VARCHAR(36) PRIMARY KEY, 
-    user_id VARCHAR(36) REFERENCES app_user(id) NOT NULL,
+    user_id VARCHAR(36) REFERENCES app_user(id) NOT NULL ON DELETE CASCADE,
     provider TEXT NOT NULL,
     provider_user_id TEXT,
     email TEXT,
@@ -33,13 +33,13 @@ CREATE TABLE IF NOT EXISTS auth_provider (
 );
 
 CREATE TABLE IF NOT EXISTS native_auth (
-    user_id VARCHAR(36) PRIMARY KEY REFERENCES app_user(id),
+    user_id VARCHAR(36) PRIMARY KEY REFERENCES app_user(id) ON DELETE CASCADE,
     hash Text,
     salt Text
 );
 
 CREATE TABLE IF NOT EXISTS meta_lltokens (
-    user_id VARCHAR(36) PRIMARY KEY REFERENCES app_user(id),
+    user_id VARCHAR(36) PRIMARY KEY REFERENCES app_user(id) ON DELETE CASCADE,
     token Text,
     iv Text,
     tag Text
