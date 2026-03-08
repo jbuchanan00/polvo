@@ -1,7 +1,7 @@
+import { insertMetaCall } from "$lib/db/queries";
 import { decrypt } from "$lib/server/api/helpers";
 import { getLLTokenAndId } from "$lib/server/api/tokens";
 import type { RequestHandler } from "@sveltejs/kit";
-import { error } from "@sveltejs/kit";
 
 
 export const GET: RequestHandler = async ({params, request, locals, url, fetch}) => {
@@ -36,6 +36,16 @@ export const GET: RequestHandler = async ({params, request, locals, url, fetch})
         if(!data || !paging){
             console.log('Error with getting data from response')
             return new Response(`Couldn't find the posts or paging data`, {status: 500})
+        }
+
+        if(data.length < 1){
+            return new Response('No new posts discovered')
+        }
+
+        try{
+            await insertMetaCall(pool, {ids: data, cursors: {before: paging.before, after: paging.after}}, '')
+        }catch(e){
+            console.log("Error inserting meta api call:", e)
         }
 
         let idsToCall: Promise<Response>[] = []

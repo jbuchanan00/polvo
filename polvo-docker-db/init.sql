@@ -45,6 +45,18 @@ CREATE TABLE IF NOT EXISTS meta_lltokens (
     tag Text
 );
 
+CREATE TABLE IF NOT EXISTS meta_media_call (
+    id VARCHAR(36) PRIMARY KEY,
+    user_id VARCHAR(36) REFERENCES app_user(id) ON DELETE CASCADE,
+    before_cursor TEXT,
+    after_cursor TEXT
+);
+
+CREATE TABLE IF NOT EXISTS meta_media_result (
+    id TEXT PRIMARY KEY,
+    call_id VARCHAR(36) REFERENCES meta_media_calls(id) ON DELETE CASCADE
+);
+
 
 
 INSERT INTO role (role_name) VALUES ('canvas'), ('artist'), ('shop');
