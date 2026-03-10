@@ -1,18 +1,20 @@
 import type { PoolClient } from "pg";
 
 
-export async function insertMetaCall(db: PoolClient, payload: {ids: string[], cursors: {before: string, after: string}}, userId: string){
+export async function insertMetaCall(db: PoolClient, payload: {ids: {id: string}[], cursors: {before: string, after: string}}, userId: string){
     const callId = crypto.randomUUID()
     try{
         await db.query('BEGIN')
         
-        const query = `INSERT INTO meta_media_call (id, user_id, before, after) VALUES 
+        const query = `INSERT INTO meta_media_call (id, user_id, before_cursor, after_cursor) VALUES 
             ($1, $2, $3, $4)`
 
         await db.query(query, [callId, userId, payload.cursors.before, payload.cursors.after])
 
-        const valuesList = payload.ids.map(id => {
-            return [id, callId]
+        let valuesList: string[] = []
+        payload.ids.map(id => {
+            valuesList.push(id.id)
+            valuesList.push(callId)
         })
 
         let valuesParameterazation = ''

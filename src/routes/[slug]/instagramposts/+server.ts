@@ -32,6 +32,7 @@ export const GET: RequestHandler = async ({params, request, locals, url, fetch})
         }
 
         const {data, paging} = await res.json()
+        const {cursors} = paging
 
         if(!data || !paging){
             console.log('Error with getting data from response')
@@ -42,8 +43,14 @@ export const GET: RequestHandler = async ({params, request, locals, url, fetch})
             return new Response('No new posts discovered')
         }
 
+        let devUserId = ''
+
+        if(!locals.user.id && process.env.ENVIRONMENT === 'dev'){
+            devUserId = '11111111-1111-1111-1111-111111111111'
+        }
+
         try{
-            await insertMetaCall(pool, {ids: data, cursors: {before: paging.before, after: paging.after}}, '')
+            await insertMetaCall(pool, {ids: data, cursors: {before: cursors.before, after: cursors.after}}, locals.user.id || devUserId)
         }catch(e){
             console.log("Error inserting meta api call:", e)
         }

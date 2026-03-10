@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS app_user (
 
 CREATE TABLE IF NOT EXISTS auth_provider (
     id VARCHAR(36) PRIMARY KEY, 
-    user_id VARCHAR(36) REFERENCES app_user(id) NOT NULL ON DELETE CASCADE,
+    user_id VARCHAR(36) REFERENCES app_user(id) ON DELETE CASCADE,
     provider TEXT NOT NULL,
     provider_user_id TEXT,
     email TEXT,
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS meta_media_call (
 
 CREATE TABLE IF NOT EXISTS meta_media_result (
     id TEXT PRIMARY KEY,
-    call_id VARCHAR(36) REFERENCES meta_media_calls(id) ON DELETE CASCADE
+    call_id VARCHAR(36) REFERENCES meta_media_call(id) ON DELETE CASCADE
 );
 
 
