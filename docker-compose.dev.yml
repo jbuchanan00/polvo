@@ -11,6 +11,7 @@ services:
     environment:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=1
+      - REDIS_URL=redis://redis:6379
     volumes:
       # IMPORTANT: run `docker compose` from WSL in the WSL repo path so '.'
       # is the Linux filesystem, not C:\.
