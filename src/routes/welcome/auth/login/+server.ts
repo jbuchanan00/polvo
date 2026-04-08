@@ -6,6 +6,8 @@ import type { RequestHandler } from "@sveltejs/kit";
 export const POST: RequestHandler = async ({request, locals}) => {
     const {form} = await request.json()
 
+    console.log('Login Form: ', form)
+
     const { email, password } = form as {
         email: string;
         password: string;
