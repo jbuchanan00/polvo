@@ -8,19 +8,13 @@ import { getUserById } from "$lib/db/queries/user/gets/getUserById";
 
 export const POST: RequestHandler = async ({request, locals}) => {
     const {form} = await request.json()
-    const { firstName, lastName, email, password, passwordConfirm } = form as {
-        firstName: string;
-        lastName: string;
+    const { username, email, password} = form as {
+        username: string;
         email: string;
         password: string;
-        passwordConfirm: string;
     };
 
     let user;
-
-    if(password !== passwordConfirm){
-        return new Response("Passwords do not match", {status: 400})
-    }
 
     if(password.length < 8){
         return new Response("Password is too short", {status: 400})
@@ -33,7 +27,7 @@ export const POST: RequestHandler = async ({request, locals}) => {
         if(userExists){
             return new Response("Email already exists", {status: 400})
         }
-        const user_id = await createUser(pool, {givenName: firstName, familyName: lastName, email, role: 1})
+        const user_id = await createUser(pool, {username, email})
         await upsertNativeAuth(pool, crypted, user_id)
         await prepCreateAuthProvider(pool, {userId: user_id, provider: 'native', email})
         user = await getUserById(pool, user_id)

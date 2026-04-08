@@ -4,9 +4,10 @@ import type { RequestHandler } from "@sveltejs/kit";
 
 
 
-export const GET: RequestHandler = async ({url, locals, params}) => {
+export const GET: RequestHandler = async ({url, locals, params, request}) => {
     let profilePage: ProfileDto | string
     let isSelf = false
+    let jwt = request.headers.get('Authorization')
     
     if(locals.user.id){
         if(params.slug === locals.user.id){

@@ -19,7 +19,7 @@ services:
       - vite_cache:/app/.vite
       - svelte_kit:/app/.svelte-kit
       - media_data:/data/avatars
-      - /mnt/c/Users/joshb/Documents/media_backup:/backup
+      # - /mnt/c/Users/joshb/Documents/media_backup:/backup
     networks:
     - shared
     # make sure host.docker.internal resolves in Linux containers

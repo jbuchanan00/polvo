@@ -19,6 +19,7 @@ export const POST: RequestHandler = async ({request, locals}) => {
             const userResponse = await getUserByEmail(pool, email)
             locals.user = userResponse
             pool.release()
+            return new Response(JSON.stringify(locals.user))
         }else{
             pool.release()
             console.log('Was not authenticated')
@@ -28,5 +29,5 @@ export const POST: RequestHandler = async ({request, locals}) => {
         console.log('Error trying to authenticate', e)
         return new Response("Error trying to authenticate", {status: 500})
     }
-    return new Response(JSON.stringify(locals.user))
+    
 }

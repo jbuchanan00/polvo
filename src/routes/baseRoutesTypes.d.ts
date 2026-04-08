@@ -1,9 +1,7 @@
 
 interface RegisteringUser {
     email: string,
-    role: number,
-    givenName: string,
-    familyName: string
+    username: string
 }
 
 interface HashAndSalt {
