@@ -11,7 +11,7 @@ export const POST: RequestHandler = async ({request, locals}) => {
         const formData = await request.json()
         const form = Object.fromEntries(formData);
         let submittedLocation: Location | string = ''
-        const {username, description, location, user} = form
+        const {username, description, location, user, role} = form
 
         if(location !== '' && typeof location === 'string'){
             submittedLocation = JSON.parse(location)
@@ -21,6 +21,7 @@ export const POST: RequestHandler = async ({request, locals}) => {
         user.username = username;
         user.description = description;
         user.location = submittedLocation;
+        user.roleId = role;
 
         try {
             const pool = await locals.db()

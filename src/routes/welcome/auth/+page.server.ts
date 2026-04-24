@@ -13,8 +13,8 @@ export const actions: Actions = {
         const formData = await request.formData()
         const form = Object.fromEntries(formData);
 
-        const { fullname, email, password, passwordConfirm } = form as {
-            fullname: string;
+        const { username, email, password, passwordConfirm } = form as {
+            username: string;
             email: string;
             password: string;
             passwordConfirm: string;
@@ -28,7 +28,7 @@ export const actions: Actions = {
             return fail(400, {error: "Password is too short"})
         }
         
-        const [givenName, familyName] = fullname.split(" ", 2)
+       
         const crypted: HashAndSalt = await hashAndSalt(password)
         try{
             const pool = await locals.db()
@@ -36,7 +36,7 @@ export const actions: Actions = {
             if(userExists){
                 return fail(400, {error: "Email already exists"})
             }
-            const user_id = await createUser(pool, {givenName, familyName, email, role: 1})
+            const user_id = await createUser(pool, {username, email})
             await upsertNativeAuth(pool, crypted, user_id)
             await prepCreateAuthProvider(pool, {userId: user_id, provider: 'native', email})
             pool.release()

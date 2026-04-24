@@ -3,16 +3,19 @@ import { verifyUserExists } from "$lib/server/api/users";
 import { createUser, upsertNativeAuth } from "$lib/db/queries";
 import type { RequestHandler } from "@sveltejs/kit";
 import { getUserById } from "$lib/db/queries/user/gets/getUserById";
+import { createToken } from "$lib/server/api/tokens";
 
 
 
 export const POST: RequestHandler = async ({request, locals}) => {
-    const {form} = await request.json()
+    const form = await request.json()
     const { username, email, password} = form as {
         username: string;
         email: string;
         password: string;
     };
+
+    console.log("Pass", password, "email", email, "user", username)
 
     let user;
 
@@ -32,9 +35,11 @@ export const POST: RequestHandler = async ({request, locals}) => {
         await prepCreateAuthProvider(pool, {userId: user_id, provider: 'native', email})
         user = await getUserById(pool, user_id)
         pool.release()
+        const token = createToken({user_id})
+        return new Response(JSON.stringify({user, token}))
     }catch(e){
         console.log(`There was an error creating a user: ${JSON.stringify(e)}`)
         return new Response(`Error creating user ${e}`, {status: 400})
     }
-    return new Response(JSON.stringify(user))
+    
 }
