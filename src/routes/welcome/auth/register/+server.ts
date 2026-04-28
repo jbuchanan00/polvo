@@ -35,8 +35,7 @@ export const POST: RequestHandler = async ({request, locals}) => {
         await prepCreateAuthProvider(pool, {userId: user_id, provider: 'native', email})
         user = await getUserById(pool, user_id)
         pool.release()
-        const token = createToken({user_id})
-        return new Response(JSON.stringify({user, token}))
+        return new Response(JSON.stringify({user}))
     }catch(e){
         console.log(`There was an error creating a user: ${JSON.stringify(e)}`)
         return new Response(`Error creating user ${e}`, {status: 400})

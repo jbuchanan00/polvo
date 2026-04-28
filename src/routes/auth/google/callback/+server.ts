@@ -32,24 +32,26 @@ export const GET: RequestHandler = async ({url, cookies, locals}): Promise<Respo
         console.error('ERROR: no json')
         return new Response('Failed to get json', {status: 500})
     }
-    const payload = JSON.parse(
+        const payload = JSON.parse(
         Buffer.from(json.id_token.split('.')[1], 'base64').toString('utf8')
     );
     
 
     try {
         const pool: PoolClient = await locals.db()
-        const {email, givenName, familyName, sub} = payload
+        const {email, given_name, family_name, sub} = payload
         let userId = await retrieveUserIdBySub(pool, sub)
         let user;
         if(!userId){
-            userId = await createUser(pool, {username: `${givenName}${familyName}`, email})
+            userId = await createUser(pool, {username: `${given_name}${family_name}`, email})
             await prepCreateAuthProvider(pool, {email, userId, provider: 'google', providerUserId: sub})
-            user = await getUserById(pool, userId)
+            
         }
+        user = await getUserById(pool, userId)
         pool.release()
         const token = await createToken({user_id: userId})
         cookies.set('jwt', token, setCookieProperties())
+        console.log("Returned user:", JSON.stringify(user))
         return new Response(JSON.stringify({user, token}))
     } catch(err) {
         console.error('ERROR: failure with queries', err)

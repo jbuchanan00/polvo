@@ -1,5 +1,5 @@
 import type { PoolClient } from "pg";
-import { encrypt } from "../helpers/encrypt";
+import { encrypt } from "../../helpers/encrypt";
 
 export async function setLLToken(db: PoolClient, userId: string, token: string){
     const {ciphertext, iv, tag} = encrypt(token)

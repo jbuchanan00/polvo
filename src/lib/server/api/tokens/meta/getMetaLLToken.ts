@@ -1,4 +1,4 @@
-import { decrypt } from "../helpers";
+import { decrypt } from "../../helpers";
 import type { PoolClient } from "pg";
 
 export async function getLLTokenAndId(db: PoolClient, userId: string, provider: string): Promise<{token: string, iv: string, tag: string, provider_user_id: string}>{

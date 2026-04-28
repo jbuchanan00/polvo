@@ -31,6 +31,7 @@ export async function exchangeTokens(code: string, authCo: string): Promise<Resp
     
     if(!response.ok) {
         const error = await response.json()
+        console.log(JSON.stringify(error))
         throw new Error(`Token exchange failed: ${error.error_description || error.error}`)
     };
     return response;

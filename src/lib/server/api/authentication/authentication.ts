@@ -7,6 +7,7 @@ import { verifyUserExistsByEmail } from "../../../db/queries/user/gets/verifyUse
 
 export async function authenticateUser(db: PoolClient, email: string, password: string): Promise<boolean>{
     const exists = await verifyUserExistsByEmail(db, email)
+    console.log("Exists:", exists)
     if(!exists) return false
     const salt = await getSaltByUser(db, email)
     const hashedPass = await hashAndSalt(password, salt)

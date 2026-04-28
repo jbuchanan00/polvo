@@ -1,5 +1,5 @@
 import type { PoolClient } from "pg"
-import { setLLToken } from "./setLLToken"
+import { setLLToken } from "./meta/setMetaLLToken"
 
 
 export async function refreshLLToken(db: PoolClient, userId: string, token: string){
