@@ -57,6 +57,8 @@ CREATE TABLE IF NOT EXISTS meta_media_result (
     call_id VARCHAR(36) REFERENCES meta_media_call(id) ON DELETE CASCADE
 );
 
+CREATE INDEX idx_user_id ON app_user (id);
+CREATE INDEX idx_user_location ON app_user(location);
 
 
 INSERT INTO role (role_name) VALUES ('canvas'), ('artist'), ('shop');

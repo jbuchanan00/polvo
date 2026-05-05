@@ -14,16 +14,20 @@ declare type Coordinates = {
     longitude: number
 }
 
-type User = {[key: string]: any}
+declare type XYCoordinates = {
+    x: number,
+    y: number
+}
 
-interface User {
+interface UserInterface {
     id: string,
     firstName: string | null,
     lastName: string | null,
     username: string,
-    role: number,
-    location: Location | null,
-    shopName?: string | null
+    roleId: number,
+    location: Location | string | XYCoordinates | null,
+    shopName?: string | null,
+    description: string | null
 }
 
 interface FrontEndUser {
@@ -41,7 +45,7 @@ interface Location {
     name: string,
     state: string | null,
     country: string | null,
-    coords: Coordinates,
+    coords: Coordinates | XYCoordinates,
     Ranking?: number | null
 }
 

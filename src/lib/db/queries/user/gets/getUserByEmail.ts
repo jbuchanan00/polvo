@@ -1,3 +1,4 @@
+import type User from '$lib/entities/user';
 import { type PoolClient } from 'pg'
 
 export async function getUserByEmail(db: PoolClient, email: string): Promise<User>{
