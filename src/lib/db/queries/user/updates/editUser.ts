@@ -38,10 +38,9 @@ export async function editUser(db: PoolClient, userWId: Record<string, any>){
             ${setStr}
             WHERE id=$${index}
             RETURNING *`
-            console.log(queryText, 'and,', paramVals)
         const res = await db.query(queryText, [...paramVals, id])
-        console.log(res)
         await db.query('COMMIT')
+        return res.rows[0]
     }catch(e){
         await db.query('ROLLBACK')
         throw e

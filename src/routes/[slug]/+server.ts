@@ -1,20 +1,23 @@
 import { resolve } from "$app/paths";
 import { setupProfilePage } from "$lib/server/api/pages/profilePage";
 import type { RequestHandler } from "@sveltejs/kit";
+import { chownSync } from "node:fs";
 
 
 
 export const GET: RequestHandler = async ({url, locals, params, request}) => {
+    console.log("Began Get Profile")
+    let i = +Date.now()
     let profilePage: ProfileDto | string
     let isSelf = false
     let jwt = request.headers.get('Authorization')
     
+    const pool = await locals.db()
     if(locals.user.id){
         if(params.slug === locals.user.id){
             isSelf = true
         }
 
-        const pool = await locals.db()
 
         profilePage = await setupProfilePage(pool, {userId: locals.user.id, isSelf})
 
@@ -24,8 +27,12 @@ export const GET: RequestHandler = async ({url, locals, params, request}) => {
 
         profilePage = profilePage as ProfileDto
     }else {
+        pool.release()
         return new Response("Failed to see locals", {status: 400})
     }
+    pool.release()
+
+    console.log("Succesfully Got Profile in:", +Date.now()-i)
     
     return new Response(JSON.stringify({
         user: profilePage.user,

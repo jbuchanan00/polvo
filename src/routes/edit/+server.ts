@@ -9,6 +9,8 @@ export const GET: RequestHandler = ({locals}) => {
 }
 
 export const POST: RequestHandler = async ({request, locals}) => {
+        console.log("Beginning Saving Edit for User")
+        let i = +Date.now()
         if(request === null) 
             return new Response("No request", {status: 400})
         const formData = await request.json()
@@ -37,13 +39,17 @@ export const POST: RequestHandler = async ({request, locals}) => {
             submittedLocation = JSON.parse(location)
         }
         inputUser.location = submittedLocation ?? location
+        const pool = await locals.db()
         try {
-            const pool = await locals.db()
-            await editExistingUser(pool, inputUser)
-            pool.release()
-            return new Response(JSON.stringify(inputUser))
+            const user = await editExistingUser(pool, inputUser)
+            // pool.release()
+            console.log("Successfully edited User in:", +Date.now()-i)
+            return new Response(JSON.stringify(user))
+
         }catch(e){
             console.error('FAILED TO EDIT EXISTING USER, ', e)
             return new Response("Error editing user " + e, {status: 500})
+        }finally{
+            pool.release()
         }
 }

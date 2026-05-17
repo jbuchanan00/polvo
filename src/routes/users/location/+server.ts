@@ -4,6 +4,8 @@ import type { RequestHandler } from "@sveltejs/kit"
 
 
 export const GET: RequestHandler = async ({url, locals}) => {
+    console.log("Using Get to Get Locations for Users")
+    let i = 0
     const locations = url.searchParams.getAll('loc')
 
     if(!locations || locations.length < 1){
@@ -22,19 +24,22 @@ export const GET: RequestHandler = async ({url, locals}) => {
     try{
         let usersInLocations = await getUsersByLocations(pool, formattedLocations)
         pool.release()
+        console.log("Successfully got Users in Locations in:", +Date.now()-i)
         return new Response(JSON.stringify(usersInLocations))
     }catch(e){
         console.log('Error getting users in locations:', e)
         pool.release()
         return new Response('Error in fetching')
+    }finally{
+        pool.release()
     }
 }
 
 //{coords: {maxLat: float, minLat: float, maxLong: float, minLong: float}}
 export const POST: RequestHandler = async ({request, locals}) => {
-    const {coords} = await request.json()
-
-    console.log('Post Request: ', coords)
+    console.log("Using Post to Get Users in Locations")
+    let i = +Date.now()
+    const {coords} = await request.json();
 
     if(!coords){
         return new Response('No locations in url')
@@ -45,12 +50,15 @@ export const POST: RequestHandler = async ({request, locals}) => {
     console.log('coords:', coords)
 
     try{
-        let usersInLocations = await getUsersBetweenLocations(pool, {maxLat: coords.maxLat, minLat: coords.minLat}, {maxLong: coords.maxLong, minLong: coords.minLong})
-        pool.release()
+        let usersInLocations = await getUsersBetweenLocations(pool, {maxLat: coords.MaxLat, minLat: coords.MinLat}, {maxLong: coords.MaxLong, minLong: coords.MinLong})
+        // pool.release()
+        console.log("Successfully used Post to Get Users Between Locations in:", +Date.now()-i)
         return new Response(JSON.stringify(usersInLocations))
     }catch(e){
         console.log('Error getting users in locations:', e)
-        pool.release()
+        // pool.release()
         return new Response('Error in fetching')
+    }finally{
+        pool.release()
     }
 }

@@ -11,6 +11,8 @@ import { getUserById } from '$lib/db/queries/user/gets/getUserById'
 
 
 export const GET: RequestHandler = async ({url, cookies, locals}): Promise<Response> => {
+    console.log("Getting google Callback")
+    let i = +Date.now()
     const code = url.searchParams.get('code')
 
 
@@ -37,8 +39,8 @@ export const GET: RequestHandler = async ({url, cookies, locals}): Promise<Respo
     );
     
 
+    const pool: PoolClient = await locals.db()
     try {
-        const pool: PoolClient = await locals.db()
         const {email, given_name, family_name, sub} = payload
         let userId = await retrieveUserIdBySub(pool, sub)
         let user;
@@ -48,13 +50,15 @@ export const GET: RequestHandler = async ({url, cookies, locals}): Promise<Respo
             
         }
         user = await getUserById(pool, userId)
-        pool.release()
+        // pool.release()
         const token = await createToken({user_id: userId})
         cookies.set('jwt', token, setCookieProperties())
-        console.log("Returned user:", JSON.stringify(user))
+        console.log("Successfully completed google callback in: ", +Date.now()-i)
         return new Response(JSON.stringify({user, token}))
     } catch(err) {
         console.error('ERROR: failure with queries', err)
         return new Response('Error creating user', {status: 500})
+    }finally{
+        pool.release()
     }
 }

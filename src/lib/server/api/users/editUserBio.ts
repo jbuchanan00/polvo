@@ -1,4 +1,5 @@
 import { editUser } from "$lib/db/queries";
+import type User from "$lib/entities/user";
 import type { PoolClient } from "pg";
 
 
