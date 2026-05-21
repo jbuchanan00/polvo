@@ -8,15 +8,16 @@ RUN npm ci
 
 COPY . .
 RUN npm run build
+RUN npm prune --production
 
 # --- Runtime stage ---
 FROM node:alpine3.20
 WORKDIR /app
-
 # Only what runtime needs
-COPY --from=builder /app/package.json ./
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/build ./build
+COPY --from=builder /app/package.json .
+COPY --from=builder /app/node_modules node_modules/
+COPY --from=builder /app/build build/
+RUN ls
 
 EXPOSE 3000
 

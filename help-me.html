@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polvo API Routes</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: #f5f7fa;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 2rem;
+        }
+        .table-container {
+            overflow-x: auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+        th {
+            background-color: #2c3e50;
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid #e1e4e8;
+            vertical-align: top;
+        }
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        .method {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.85em;
+            min-width: 60px;
+            text-align: center;
+        }
+        .GET { background-color: #61affe; color: #000; }
+        .POST { background-color: #49cc90; color: #fff; }
+        .PUT { background-color: #fca130; color: #000; }
+        .DELETE { background-color: #f93e3e; color: #fff; }
+        .PATCH { background-color: #50e3c2; color: #000; }
+        .path {
+            font-family: 'Courier New', monospace;
+            color: #e67e22;
+            font-weight: 500;
+        }
+        code {
+            background-color: #f1f2f3;
+            padding: 1px 4px;
+            border-radius: 3px;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            font-size: 0.9em;
+        }
+        pre {
+            margin: 0.5em 0;
+            padding: 8px 12px;
+            background-color: #f6f8fa;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        .notes {
+            color: #72767d;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <h1>Polvo API Routes Documentation</h1>
+    
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>Route</th>
+                    <th>Request Info (Inputs)</th>
+                    <th>Response Info (Outputs)</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="method GET">GET</span></td>
+                    <td><code class="path">/</code></td>
+                    <td>No input</td>
+                    <td><strong>Redirect</strong><br>to <code>/:id</code> (if logged in)<br>or <code>/welcome/auth</code></td>
+                    <td class="notes">Checks if user is logged in and redirects accordingly</td>
+                </tr>
+                
+                <tr>
+                    <td><span class="method GET">GET</span></td>
+                    <td><code class="path">/[slug]</code></td>
+                    <td>
+                        <strong>Params:</strong><br>
+                        <code>slug: string</code>
+                    </td>
+                    <td>
+                        <strong>JSON Response:</strong>
+                        <pre>{
+  user: {
+    id: string,
+    first_name: string,
+    last_name: string,
+    username: string,
+    role: number,
+    location: object | null,
+    shop_name: string | null
+  },
+  posts: array,
+  isSelf: boolean,
+  profilePicture: string | null,
+  pictureExt: string,
+  userInstagramAuthed: boolean,
+  oauthUrl: string | null
+}</pre>
+                    </td>
+                    <td class="notes">Fetches profile page data for a specific user</td>
+                </tr>
+                <tr>
+                    <td><span class="method POST">POST</span></td>
+                    <td><code class="path">/welcome/auth/login</code></td>
+                    <td>
+                        <strong>Form Data:</strong><br>
+                        <code>email: string</code><br>
+                        <code>password: string</code>
+                    </td>
+                    <td><strong>Redirect</strong><br>to <code>/welcome/auth?status=success</code> or <code>/welcome/auth?status=failed</code></td>
+                    <td class="notes">Logs a user into native authentication</td>
+                </tr>
+                <tr>
+                    <td><span class="method POST">POST</span></td>
+                    <td><code class="path">/welcome/auth/register</code></td>
+                    <td>
+                        <strong>Form Data:</strong><br>
+                        <code>username: string</code><br>
+                        <code>email: string</code><br>
+                        <code>password: string</code><br>
+                        <code>passwordConfirm: string</code>
+                    </td>
+                    <td><strong>Redirect</strong><br>to <code>/welcome/auth?status=success</code> or <code>/welcome/auth?status=failed</code></td>
+                    <td class="notes">Registers a new user with native auth</td>
+                </tr>
+                <tr>
+                    <td><span class="method GET">GET</span></td>
+                    <td><code class="path">/welcome/auth</code></td>
+                    <td>
+                        <strong>Query Params:</strong><br>
+                        <code>status: string</code>
+                    </td>
+                    <td>
+                        <strong>JSON Response:</strong>
+                        <pre>{
+  status: string
+}</pre>
+                    </td>
+                    <td class="notes">Handles authentication status display page</td>
+                </tr>
+                <tr>
+                    <td><span class="method GET">GET</span></td>
+                    <td><code class="path">/edit</code></td>
+                    <td>No input</td>
+                    <td>
+                        <strong>JSON Response:</strong>
+                        <pre>{
+  user: {
+    id: string,
+    username: string,
+    description: string,
+    location: object | null
+  },
+  profilePicture: string | null,
+  pictureExt: string
+}</pre>
+                    </td>
+                    <td class="notes">Returns currently logged-in user's data for editing</td>
+                </tr>
+                <tr>
+                    <td><span class="method POST">POST</span></td>
+                    <td><code class="path">/edit</code></td>
+                    <td>
+                        <strong>JSON Body:</strong><br>
+                        <code>username: string</code><br>
+                        <code>description: string</code><br>
+                        <code>location: string | object</code><br>
+                        <code>role: string</code>
+                    </td>
+                    <td><strong>Redirect</strong><br>to <code>/:id?status=success</code> or <code>?status=failed</code></td>
+                    <td class="notes">Updates the current user's profile information</td>
+                </tr>
+                <tr>
+                    <td><span class="method GET">GET</span></td>
+                    <td><code class="path">/edit/autofill</code></td>
+                    <td>
+                        <strong>Query Params:</strong><br>
+                        <code>text: string</code>
+                    </td>
+                    <td>
+                        <strong>JSON Response:</strong><br>
+                        Autofill location suggestions from external service
+                    </td>
+                    <td class="notes">Calls external autofill service to complete location names</td>
+                </tr>
+                <tr>
+                    <td><span class="method GET">GET</span></td>
+                    <td><code class="path">/users/ids</code></td>
+                    <td>
+                        <strong>Query Params:</strong><br>
+                        <code>id: string[]</code> (multiple)
+                    </td>
+                    <td>
+                        <strong>JSON Response:</strong><br>
+                        Array of user objects
+                        <pre>[
+  {
+    id: string,
+    username: string,
+    ...
+  }
+]</pre>
+                    </td>
+                    <td class="notes">Fetches multiple users by their IDs</td>
+                </tr>
+                <tr>
+                    <td><span class="method GET">GET</span></td>
+                    <td><code class="path">/users/email</code></td>
+                    <td>
+                        <strong>Query Params:</strong><br>
+                        <code>email: string</code>
+                    </td>
+                    <td>
+                        <strong>JSON Response:</strong><br>
+                        Single user object
+                        <pre>{
+  id: string,
+  username: string,
+  email: string,
+  ...
+}</pre>
+                    </td>
+                    <td class="notes">Fetches a user by their email address</td>
+                </tr>
+                <tr>
+                    <td><span class="method GET">GET</span></td>
+                    <td><code class="path">/users/location</code></td>
+                    <td>
+                        <strong>Query Params:</strong><br>
+                        <code>loc: string[]</code> (multiple, format: "lat,lng")
+                    </td>
+                    <td>
+                        <strong>JSON Response:</strong><br>
+                        Array of user objects at those locations
+                    </td>
+                    <td class="notes">Fetches users at exact specified locations</td>
+                </tr>
+                <tr>
+                    <td><span class="method POST">POST</span></td>
+                    <td><code class="path">/users/location</code></td>
+                    <td>
+                        <strong>JSON Body:</strong><br>
+                        <code>{
+  coords: {
+    MaxLat: number,
+    MinLat: number,
+    MaxLong: number,
+    MinLong: number
+  }
+}</code>
+                    </td>
+                    <td>
+                        <strong>JSON Response:</strong><br>
+                        Array of user objects within the bounding box
+                    </td>
+                    <td class="notes">Fetches users within geographical coordinates (bounding box)</td>
+                </tr>
+                <tr>
+                    <td><span class="method POST">POST</span></td>
+                    <td><code class="path">/avatar</code></td>
+                    <td>
+                        <strong>JSON Body:</strong><br>
+                        <code>extension: string</code><br>
+                        <code>userid: string</code>
+                    </td>
+                    <td><strong>Plain Text</strong><br><code>"Updated extension"</code></td>
+                    <td class="notes">Updates a user's avatar file extension</td>
+                </tr>
+                <tr>
+                    <td><span class="method PUT">PUT</span></td>
+                    <td><code class="path">/avatar</code></td>
+                    <td>No input</td>
+                    <td>Empty Response</td>
+                    <td class="notes">No-op placeholder endpoint</td>
+                </tr>
+                <tr>
+                    <td><span class="method DELETE">DEL</span></td>
+                    <td><code class="path">/avatar</code></td>
+                    <td>No input</td>
+                    <td>Empty Response</td>
+                    <td class="notes">No-op placeholder endpoint</td>
+                </tr>
+                <tr>
+                    <td><span class="method GET">GET</span></td>
+                    <td><code class="path">/userforpost</code></td>
+                    <td>
+                        <strong>Query Params:</strong><br>
+                        <code>userId: string</code>
+                    </td>
+                    <td>
+                        <strong>JSON Response:</strong><br>
+                        Single user object for posting context
+                    </td>
+                    <td class="notes">Fetches a user's data to pre-fill post forms</td>
+                </tr>
+                <tr>
+                    <td><span class="method GET">GET</span></td>
+                    <td><code class="path">/auth/meta</code></td>
+                    <td>No input</td>
+                    <td>
+                        <strong>JSON Response:</strong>
+                        <pre>{
+  state: string
+}</pre>
+                    </td>
+                    <td class="notes">Generates a random state token for Meta OAuth flow</td>
+                </tr>
+                <tr>
+                    <td><span class="method GET">GET</span></td>
+                    <td><code class="path">/auth/meta/callback</code></td>
+                    <td>
+                        <strong>Query Params:</strong><br>
+                        <code>code: string</code><br>
+                        <code>state: string</code>
+                    </td>
+                    <td><strong>Redirect</strong><br>to <code>/:userId</code></td>
+                    <td class="notes">Completes Meta (Instagram) OAuth authentication</td>
+                </tr>
+                <tr>
+                    <td><span class="method GET">GET</span></td>
+                    <td><code class="path">/auth/google</code></td>
+                    <td>No input</td>
+                    <td><strong>Redirect</strong><br>to Google Auth URL</td>
+                    <td class="notes">Initiates Google OAuth sign-in flow</td>
+                </tr>
+                <tr>
+                    <td><span class="method GET">GET</span></td>
+                    <td><code class="path">/auth/google/callback</code></td>
+                    <td>
+                        <strong>Query Params:</strong><br>
+                        <code>code: string</code>
+                    </td>
+                    <td><strong>JSON Response:</strong><br>
+                    <code>{ id, first_name, last_name, email }</code></td>
+                    <td class="notes">Completes Google OAuth authentication</td>
+                </tr>
+                <tr>
+                    <td><span class="method GET">GET</span></td>
+                    <td><code class="path">/[slug]/instagramposts</code></td>
+                    <td>
+                        <strong>Params:</strong><br>
+                        <code>slug: string</code>
+                        <br><strong>Query:</strong><br>
+                        <code>before: string | null</code>
+                        <br><strong>Header:</strong><br>
+                        <code>x-api-key: string</code>
+                    </td>
+                    <td>
+                        <strong>JSON Response:</strong>
+                        <pre>{
+  posts: [
+    {
+      id: string,
+      caption: string,
+      media_type: string,
+      media_url: string,
+      permalink: string,
+      timestamp: string
+    }
+  ],
+  cursor: string
+}</pre>
+                    </td>
+                    <td class="notes">Fetches Instagram posts for a user</td>
+                </tr>
+                <tr>
+                    <td><span class="method GET">GET</span></td>
+                    <td><code class="path">/[slug]/instagramposts/test</code></td>
+                    <td>No input</td>
+                    <td>Empty Response</td>
+                    <td class="notes">No-op placeholder endpoint</td>
+                </tr>
+                <tr>
+                    <td><span class="method GET">GET</span></td>
+                    <td><code class="path">/avatar</code></td>
+                    <td>
+                        <strong>Query Params:</strong><br>
+                        <code>userId: string[]</code> (multiple)
+                    </td>
+                    <td>
+                        <strong>JSON Response:</strong>
+                        <pre>{
+  profilePictures: [string],
+  extensions: {
+    [userId]: string
+  }
+}</pre>
+                    </td>
+                    <td class="notes">Fetches avatar profiles and file extensions for multiple users</td>
+                </tr>
+                <tr>
+                    <td><span class="method DELETE">DEL</span></td>
+                    <td><code class="path">/logout</code></td>
+                    <td>No input</td>
+                    <td><strong>Plain Text</strong><br><code>"Logged Out"</code></td>
+                    <td class="notes">Clears the authentication cookie and logs user out</td>
+                </tr>
+                <tr>
+                    <td><span class="method GET">GET</span></td>
+                    <td><code class="path">/health</code></td>
+                    <td>No input</td>
+                    <td><strong>Plain Text</strong><br><code>"ok"</code></td>
+                    <td class="notes">Health check endpoint for monitoring</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -16,10 +16,10 @@ CREATE TABLE IF NOT EXISTS app_user (
     email Text,
     username varchar(35),
     avatar_extension TEXT,
-    role_id int references role(id) ON DELETE CASCADE,
+    role_id int references role(id),
     location point,
     bio Text,
-    shop_id VARCHAR(36) REFERENCES shop(id) ON DELETE CASCADE,
+    shop_id VARCHAR(36) REFERENCES shop(id),
     UNIQUE(email, username)
 );
 
