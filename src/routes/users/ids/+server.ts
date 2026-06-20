@@ -4,7 +4,7 @@ import type { RequestHandler } from "@sveltejs/kit";
 
 export const GET: RequestHandler = async ({url, locals}) => {
     console.log("Getting Users By Ids")
-    let i = 0;
+    let i = Date.now();
     const ids = url.searchParams.getAll('id')
     console.log("Called to get user information")
     

@@ -35,6 +35,27 @@ services:
       - "6379:6379"
     networks:
       - shared
+  
+  postgres_polvo:
+    image: postgres:16
+    container_name: mydb
+    restart: always
+    ports:
+      - '5432:5432'
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER_POLVO}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_POLVO}
+      POSTGRES_DB: ${POSTGRES_DB_POLVO}
+    volumes:
+      - pgdata_polvo:/var/lib/postgresql/data
+      - ./polvo-docker-db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    entrypoint: ['/bin/sh', '-c', 'rm -rf /var/run/postgresql/* && docker-entrypoint.sh postgres']
+    networks:
+      - shared
+
+
 
 
 volumes:
@@ -42,6 +63,7 @@ volumes:
   node_modules:
   vite_cache:
   svelte_kit:
+  pgdata_polvo:
 
 networks:
   shared:
