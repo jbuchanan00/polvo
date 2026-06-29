@@ -11,7 +11,6 @@ export async function exchangeTokens(code: string, authCo: string): Promise<Resp
     let client_secret = authCo === "google" ? process.env.GOOGLE_CLIENT_SECRET! : process.env.META_SECRET!
 
     const redirect_uri = authCo === "google" ? `${process.env.OAUTH_REDIRECT_BASE}${resolve(`/auth/${authCo}/callback`)}` : `https://app.inked-out.com/profile/auth/meta/callback`
-    
     body = new URLSearchParams({
         code,
         client_id,

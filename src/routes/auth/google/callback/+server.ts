@@ -51,10 +51,8 @@ export const GET: RequestHandler = async ({url, cookies, locals}): Promise<Respo
         }
         user = await getUserById(pool, userId)
         // pool.release()
-        const token = await createToken({user_id: userId})
-        cookies.set('jwt', token, setCookieProperties())
         console.log("Successfully completed google callback in: ", +Date.now()-i)
-        return new Response(JSON.stringify({user, token}))
+        return new Response(JSON.stringify({user}))
     } catch(err) {
         console.error('ERROR: failure with queries', err)
         return new Response('Error creating user', {status: 500})
