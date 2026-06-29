@@ -19,22 +19,24 @@ async function getFromRedis(state:string){
 }
 
 
-export const GET: RequestHandler = async ({url, locals, cookies}) => {
+export const GET: RequestHandler = async ({url, locals}) => {
     const code = url.searchParams.get("code")
     const state = url.searchParams.get("state")
     let userId: string
 
     if(!code || !state){
         console.error('ERROR: no code')
-        throw redirect(303, `${resolve(`/${locals.user.id}?status=fail`)}`)
+        return new Response(JSON.stringify({message: "Couldn't get code or state"}));
     }
-
+    if(process.env.ENVIRONMENT == "dev"){
+        return new Response("All good");
+    }
     let res
     try{
         res = await exchangeTokens(code, 'meta')
     }catch(err){
         console.error('ERROR: exchanging tokens', err)
-        throw redirect(303, `${resolve(`/${locals.user.id}?status=fail`)}`)
+        return new Response(JSON.stringify({message: "Error exchanging tokens for meta"}))
     }
 
     const json = await res.json()
@@ -42,7 +44,7 @@ export const GET: RequestHandler = async ({url, locals, cookies}) => {
 
 
     const {access_token} = await res.json()
-    userId = locals.user?.id || await getFromRedis(state)
+    userId = await getFromRedis(state)
     
     if(userId === ''){
         return Response.error()
@@ -57,5 +59,5 @@ export const GET: RequestHandler = async ({url, locals, cookies}) => {
         return Response.error()
     }
     
-    throw redirect(308, `${resolve(`/${userId}`)}`)
+    return new Response(JSON.stringify({message: "Successfully retrieved and saved access token"}))
 }

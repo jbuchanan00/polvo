@@ -12,7 +12,6 @@ export const GET: RequestHandler = async ({locals, url}) => {
     const pool = await locals.db();
 
     try{
-        console.log("This is the id", id)
         const res = await deleteUser(pool, "id", id)
         if(res == 'ok'){
             return new Response("OK", {status: 200})
@@ -22,7 +21,6 @@ export const GET: RequestHandler = async ({locals, url}) => {
     }catch(e){
         return new Response("Error Deleting User", {status: 500})
     }finally{
-        pool.release()
+       pool.release()
     }
 }
-

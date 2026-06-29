@@ -50,7 +50,6 @@ export const GET: RequestHandler = async ({url, cookies, locals}): Promise<Respo
             
         }
         user = await getUserById(pool, userId)
-        // pool.release()
         console.log("Successfully completed google callback in: ", +Date.now()-i)
         return new Response(JSON.stringify({user}))
     } catch(err) {

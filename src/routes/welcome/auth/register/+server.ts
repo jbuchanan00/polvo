@@ -3,7 +3,6 @@ import { verifyUserExists } from "$lib/server/api/users";
 import { createUser, upsertNativeAuth } from "$lib/db/queries";
 import type { RequestHandler } from "@sveltejs/kit";
 import { getUserById } from "$lib/db/queries/user/gets/getUserById";
-import { createToken } from "$lib/server/api/tokens";
 
 
 
@@ -27,6 +26,7 @@ export const POST: RequestHandler = async ({request, locals}) => {
     const pool = await locals.db()
     try{
         const userExists = await verifyUserExists(pool, email)
+        console.log("Email Already exists: ", email)
         if(userExists){
             return new Response("Email already exists", {status: 400})
         }

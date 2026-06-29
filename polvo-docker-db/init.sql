@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS meta_media_result (
 );
 
 CREATE INDEX idx_user_id ON app_user (id);
-CREATE INDEX idx_user_location ON app_user(location);
+CREATE INDEX idx_user_location ON app_user USING gist (location);
 
 
 INSERT INTO role (role_name) VALUES ('canvas'), ('artist'), ('shop');
