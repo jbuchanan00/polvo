@@ -82,3 +82,5 @@ INSERT INTO native_auth (user_id, hash, salt) VALUES
 INSERT INTO shop (id, name, location) VALUES
     ('44444444-4444-4444-4444-444444444444', 'Downtown Ink Collective', POINT(40.7776, -111.9311)),
     ('55555555-5555-5555-5555-555555555555', 'Silverline Tattoos', POINT(40.7776, -111.9311));
+
+
