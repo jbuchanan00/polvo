@@ -1,36 +1,17 @@
 <script lang="ts">
 	import '../app.css';
 	import { onMount } from 'svelte';
-	import { loadRemoteNavbars } from "$lib/handleRemotes/remoteNavbars";
-    import { PUBLIC_POLESTAR_BASE} from '$env/static/public'
 
 	let { children } = $props();
 
-
-	onMount(async () => {
-        try {
-            if(document){
-                const topNavElement = document.getElementById('top-nav')
-                const bottomNavElement = document.getElementById('bottom-nav')
-                const remote = await loadRemoteNavbars()
-                if(topNavElement) remote.TopNavInstance(topNavElement, {assetBase: PUBLIC_POLESTAR_BASE})
-                if(bottomNavElement) remote.BottomNavInstance(bottomNavElement, {assetBase: PUBLIC_POLESTAR_BASE})
-            }
-        }catch(e){
-            console.error(`Failed to load remote navbars`, e)
-        }
-    })
 
 
 </script>
 
 
-<div id="top-nav" ></div>
 <div id="body">
     {@render children()}
 </div>
-<div id="behind-bottom-nav"></div>
-<div id="bottom-nav"></div>
 
 
 

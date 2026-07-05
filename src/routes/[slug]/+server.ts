@@ -1,7 +1,5 @@
-import { resolve } from "$app/paths";
 import { setupProfilePage } from "$lib/server/api/pages/profilePage";
 import type { RequestHandler } from "@sveltejs/kit";
-import { chownSync } from "node:fs";
 
 
 

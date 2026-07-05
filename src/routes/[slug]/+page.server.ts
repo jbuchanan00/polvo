@@ -54,7 +54,7 @@ export const actions: Actions = {
 
         try{
             const pool = await locals.db()
-            await editUserBio(pool, {id: locals.user.id, bio})
+            // await editUserBio(pool, {id: locals.user.id, bio})
         }catch(e){
             console.error('Error caught in action')
         }
