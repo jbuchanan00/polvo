@@ -1,4 +1,5 @@
 import { insertMetaCall } from "$lib/db/queries";
+import { insertIntegratedInstagramPost } from "$lib/db/queries/user/creates/integratedInstagramPost";
 import type { RequestHandler } from "@sveltejs/kit";
 
 
@@ -29,8 +30,9 @@ export const GET: RequestHandler = async ({locals}) => {
     const payload = {ids: data, cursors}
 
     const client = await locals.db()
+    const dataUnfolded = data.map(val =>  val.id);
 
-    await insertMetaCall(client, payload, '11111111-1111-1111-1111-111111111111')
+    await insertIntegratedInstagramPost(client, 'ff23acf4-7685-425a-80a8-2e47450857a6', dataUnfolded)
 
     return new Response()
 }

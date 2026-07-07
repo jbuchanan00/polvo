@@ -28,9 +28,6 @@ export const GET: RequestHandler = async ({url, locals}) => {
         console.error('ERROR: no code')
         return new Response(JSON.stringify({message: "Couldn't get code or state"}));
     }
-    if(process.env.ENVIRONMENT == "dev"){
-        return new Response("All good");
-    }
     let res
     try{
         res = await exchangeTokens(code, 'meta')
@@ -38,16 +35,17 @@ export const GET: RequestHandler = async ({url, locals}) => {
         console.error('ERROR: exchanging tokens', err)
         return new Response(JSON.stringify({message: "Error exchanging tokens for meta"}))
     }
-
-    const json = await res.json()
-    res = await fetch(`https://graph.instagram.com/access_token?grant_type=ig_exchange_token&client_secret=${process.env.META_SECRET}&access_token=${json.access_token}`)
-
-
-    const {access_token} = await res.json()
-    userId = await getFromRedis(state)
     
+    const json = await res.json()
+    console.log("This is the code json " + JSON.stringify(json))
+    let resExchange = await fetch(`https://graph.instagram.com/access_token?grant_type=ig_exchange_token&client_secret=${process.env.META_SECRET}&access_token=${json.access_token}`)
+
+    console.log("Passed resExchange", JSON.stringify(resExchange))
+    const {access_token} = await resExchange.json()
+    userId = await getFromRedis(state)
+    console.log("User Id", userId, "and access_token", access_token)
     if(userId === ''){
-        return Response.error()
+        return new Response("Couldn't retrieve the user id", {status: 500})
     }
     try{
         const pool = await locals.db()
@@ -56,8 +54,9 @@ export const GET: RequestHandler = async ({url, locals}) => {
         pool.release()
     }catch(e){
         console.log(`Couldn't complete meta auth or ll token ${userId}`, e)
-        return Response.error()
+        return new Response("Couldn't complete setting token", {status: 500})
     }
     
     return new Response(JSON.stringify({message: "Successfully retrieved and saved access token"}))
 }
+
