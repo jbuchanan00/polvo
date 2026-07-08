@@ -50,7 +50,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB_POLVO}
     volumes:
       - pgdata_polvo:/var/lib/postgresql/data
-      - ./polvo-docker-db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./polvo-docker-db/init:/docker-entrypoint-initdb.d
     entrypoint: ['/bin/sh', '-c', 'rm -rf /var/run/postgresql/* && docker-entrypoint.sh postgres']
     networks:
       - shared
