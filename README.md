@@ -54,49 +54,6 @@ export async function exchangeTokens(code: string, authCo: string): Promise<Resp
 
 ---
 
-## 3. Token Lifecycle Flow
-
-### Short-Lived Tokens (Redis Cache)
-
-Tokens are cached in Redis for quick access during active sessions:
-
-**`src/lib/server/api/tokens/setSLToken.ts`**
-```typescript
-export async function setSLToken(userId: string, token: string): Promise<boolean>
-```
-- Stores short-lived token in Redis hash keyed by `userId` under field name `token`
-- Returns boolean success status
-
-**`src/lib/server/api/tokens/getSLToken.ts`**
-```typescript
-export async function getSLToken(userId: string): Promise<string>
-```
-- Retrieves the user's short-lived token from Redis hash (`hget`)
-- Returns raw token string or null if not found
-
-### Long-Lived Tokens (Encrypted Database)
-
-Tokens are encrypted and stored in PostgreSQL for persistence across sessions:
-
-**`src/lib/server/api/tokens/setLLToken.ts`**
-```typescript
-export async function setLLToken(db: PoolClient, userId: string, token: string): Promise<boolean>
-```
-- Encrypts token using AES encryption (ciphertext + iv + tag) via `helpers/encrypt.ts`
-- Inserts or upserts into `meta_lltokens` table (ON CONFLICT UPDATE on user_id)
-- Returns boolean success status
-
-**`src/lib/server/api/tokens/getLLToken.ts`**
-```typescript
-export async function getLLTokenAndId(db: PoolClient, userId: string, provider: string): Promise<{token: string, iv: string, tag: string, provider_user_id: string}>
-```
-- Retrieves encrypted token and encryption metadata from `meta_lltokens` table
-- LEFT JOINs with `auth_provider` to fetch associated `provider_user_id`
-- Query filters by both userId and provider
-- Returns raw encrypted data (not decrypted) — caller must use decrypt helper
-
----
-
 ## 4. Session Management Flow
 
 ### JWT Token Operations
@@ -160,27 +117,6 @@ export async function getPosts(db: PoolClient, page: number, limit: number): Pro
 - Fetches user location data via external IP geolocation API
 - Returns: `{ lat, lon, country }` or null/error on failure
 
-### Cookies
-
-**`src/lib/server/api/cookies.ts`**
-- Sets cookie properties for auth flow (likely OAuth state tokens)
-
-### Encryption / Decryption
-
-**`src/lib/server/api/helpers/encrypt.ts`**
-```typescript
-export function encrypt(token: string): { ciphertext, iv, tag }
-```
-- AES encryption utility for long-lived token storage
-- Returns encrypted payload with IV and authentication tag
-
-**`src/lib/server/api/helpers/index.ts`**
-```typescript
-export function decrypt(ciphertext: string, iv: string, tag: string): string
-```
-- Decrypts long-lived tokens stored in PostgreSQL
-- Exported from encrypt module for convenience
-
 ---
 
 ## Environment Variables Required
@@ -192,10 +128,3 @@ export function decrypt(ciphertext: string, iv: string, tag: string): string
 | `INSTAGRAM_CLIENT_ID` | Instagram (Meta) OAuth client ID |
 | `META_SECRET` | Instagram (Meta) OAuth secret |
 | `OAUTH_REDIRECT_BASE` | Base URL for OAuth redirect URIs |
-
----
-
-## Database Tables Referenced
-
-- **`auth_provider`** — maps `userId → provider` (google/meta)
-- **`meta_lltokens`** — stores encrypted long-lived tokens per user
