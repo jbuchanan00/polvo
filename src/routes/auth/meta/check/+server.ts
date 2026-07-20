@@ -13,7 +13,7 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 
     try {
         const res = await getMetaLLAuth(pool, userId)
-        return new Response(JSON.stringify(res))
+        return new Response(JSON.stringify(res.token))
     } catch (e) {
         const message = "Error trying to determine if user is meta authed"
         console.log(message)
