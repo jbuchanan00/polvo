@@ -1,9 +1,24 @@
 services:
-  app:
+  app-prod:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
     environment:
-      - NODE_ENV=production
+       NODE_ENV: production
+       POSTGRES_USER_POLVO: ${POSTGRES_USER_POLVO}
+       POSTGRES_HOST_POLVO: ${POSTGRES_HOST_POLVO}
+       POSTGRES_PORT_POLVO: ${POSTGRES_PORT_POLVO}
+       POSTGRES_DB_POLVO: ${POSTGRES_DB_POLVO}
+       POSTGRES_PASSWORD_POLVO: ${POSTGRES_PASSWORD_POLVO}
+    networks:
+      - shared
+    # make sure host.docker.internal resolves in Linux containers
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+
+networks:
+  shared:
+    external: true
