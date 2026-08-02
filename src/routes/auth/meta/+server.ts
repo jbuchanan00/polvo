@@ -19,9 +19,9 @@ export const GET: RequestHandler = async ({ url, locals }) => {
     const pool = await locals.db();
 
     try {
-        const getRes = await getLLTokenAndId(pool, userId, '*')
+        const getRes = await getLLTokenAndId(pool, userId)
 
-        if (getRes) {
+        if (getRes.token) {
             const token = decrypt(getRes.token, getRes.iv, getRes.tag)
             return new Response(JSON.stringify({ "token": token }))
         }

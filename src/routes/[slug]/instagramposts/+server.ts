@@ -17,8 +17,8 @@ export const GET: RequestHandler = async ({ params, request, locals, url, fetch 
 
     try {
         const pool = await locals.db()
-        console.log(await getLLTokenAndId(pool, userId, 'instagram'))
-        const tokenRes = await getLLTokenAndId(pool, userId, 'instagram')
+        console.log(await getLLTokenAndId(pool, userId))
+        const tokenRes = await getLLTokenAndId(pool, userId)
         if (!tokenRes) return new Response("Error with token")
         const { token, iv, provider_user_id: instaId, tag } = tokenRes
         pool.release()

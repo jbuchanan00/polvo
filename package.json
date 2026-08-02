@@ -20,9 +20,10 @@
 		"dev:net:up": "docker network create shared",
 		"dev:up": "docker compose -f docker-compose.dev.yml up -d --build",
 		"dev:reset": "docker compose -f docker-compose.dev.yml down --volumes --remove-orphans && docker compose -f docker-compose.dev.yml up -d --build",
-		"prod:up": "docker compose -f docker-compose.yml up --build",
+		"prod:up": "docker compose -f docker-compose.yml up --build -d",
 		"prod:reset": "docker compose -f docker-compose.yml down --volumes --remove-orphans && docker compose -f docker-compose.yml up --build",
-		"seed": "vite-node src/lib/adhocs/token.ts"
+		"seed": "vite-node src/lib/adhocs/token.ts",
+		"migrate": "ts-node ./scripts/migrate.ts"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.2.5",
@@ -56,6 +57,7 @@
 		"jose": "^6.0.11",
 		"pg": "^8.16.0",
 		"redis": "^5.8.2",
+		"ts-node": "^10.9.2",
 		"vite-node": "^3.2.4"
 	}
 }

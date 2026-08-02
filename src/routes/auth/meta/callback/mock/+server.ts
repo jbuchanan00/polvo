@@ -19,14 +19,14 @@ export const GET: RequestHandler = async ({ locals, url }) => {
 
         // console.log("Res for input", setRes)
 
-        const getRes = await getLLTokenAndId(pool, userId, '*')
-        if (!getRes) {
+        const getRes = await getLLTokenAndId(pool, userId)
+        if (!getRes || !getRes.token) {
             return new Response("No token found")
         }
 
         const token = decrypt(getRes.token, getRes.iv, getRes.tag)
 
-        return new Response(JSON.stringify({ "token": token }))
+        return new Response(JSON.stringify({ "metatoken": token }))
     } catch (e) {
         console.log("Error, ", e)
         return new Response("Error: " + e)
