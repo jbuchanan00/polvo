@@ -30,7 +30,7 @@ export const GET: RequestHandler = async ({ params, request, locals, url, fetch 
         const res = await fetch(gettingPostsUrl)
 
         if (!res.ok) {
-            console.log('Error retrieving posts from instagram')
+            console.log('Error retrieving posts from instagram', res)
             return new Response('Error retrieving post ids', { status: 500 })
         }
 
@@ -85,6 +85,9 @@ export const GET: RequestHandler = async ({ params, request, locals, url, fetch 
 //{data: [{id:""}, {id:""}]}
 export const POST: RequestHandler = async ({ params, request, locals }) => {
     const userId = params.slug
+    if (request == null) {
+        return new Response()
+    }
     const { data } = await request.json()
 
     const unfoldedData = data.map((item: { id: string }) => { return item.id })
@@ -98,6 +101,11 @@ export const POST: RequestHandler = async ({ params, request, locals }) => {
         return new Response("Successfully added posts ids")
     } catch (e) {
         console.log("Issue inserting integrated instagram posts", e)
+        //already exists
+
+        if ((e as Error).message.includes("duplicate key value violates unique constraint")) {
+            return new Response(JSON.stringify({ "status": "success" }))
+        }
         return new Response(`${e}`, { status: 500 })
     } finally {
         pool.release()

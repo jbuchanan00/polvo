@@ -19,7 +19,7 @@ export const GET: RequestHandler = async ({ url, locals }) => {
             return new Response(JSON.stringify({ "metatoken": null }))
         }
         const token = decrypt(res.token, res.iv, res.tag)
-        return new Response(JSON.stringify({ "metatoken": "" }))
+        return new Response(JSON.stringify({ "metatoken": token }))
 
     } catch (e) {
         const message = "Error trying to determine if user is meta authed"
