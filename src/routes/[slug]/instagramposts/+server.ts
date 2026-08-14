@@ -10,6 +10,7 @@ export const GET: RequestHandler = async ({ params, request, locals, url, fetch 
     const apiKey = request.headers.get('x-api-key')
     const before = url.searchParams.get('before')
     console.log('Calling Instagram Posts')
+    let milli = +Date.now()
 
     if (!userId) {
         return new Response('No User Id', { status: 400 })
@@ -74,7 +75,7 @@ export const GET: RequestHandler = async ({ params, request, locals, url, fetch 
         const ok = settled
             .filter((s): s is PromiseFulfilledResult<unknown> => s.status === "fulfilled")
             .map(s => s.value);
-        console.log('Posts data: ', JSON.stringify(ok))
+        console.log("Successfully gathered instagram posts in", +Date.now() - milli, "ms")
         return new Response(JSON.stringify({ posts: ok, cursor: paging.cursors.before }))
 
     } catch (e) {
@@ -85,6 +86,7 @@ export const GET: RequestHandler = async ({ params, request, locals, url, fetch 
 //{data: [{id:""}, {id:""}]}
 export const POST: RequestHandler = async ({ params, request, locals }) => {
     const userId = params.slug
+    let milli = +Date.now()
     if (request == null) {
         return new Response()
     }
@@ -98,6 +100,7 @@ export const POST: RequestHandler = async ({ params, request, locals }) => {
     const pool = await locals.db()
     try {
         await insertIntegratedInstagramPost(pool, userId, unfoldedData)
+        console.log("Successfully added instagram post ids in", +Date.now() - milli, "ms")
         return new Response("Successfully added posts ids")
     } catch (e) {
         console.log("Issue inserting integrated instagram posts", e)
