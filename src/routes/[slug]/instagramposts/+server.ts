@@ -18,8 +18,8 @@ export const GET: RequestHandler = async ({ params, request, locals, url, fetch 
 
     try {
         const pool = await locals.db()
-        console.log(await getLLTokenAndId(pool, userId))
-        const tokenRes = await getLLTokenAndId(pool, userId)
+        console.log(await getLLTokenAndId(pool, userId, "instagram"))
+        const tokenRes = await getLLTokenAndId(pool, userId, "instagram")
         if (!tokenRes) return new Response("Error with token")
         const { token, iv, provider_user_id: instaId, tag } = tokenRes
         pool.release()
@@ -29,6 +29,7 @@ export const GET: RequestHandler = async ({ params, request, locals, url, fetch 
         const gettingPostsUrl = `${process.env.INSTAGRAM_GRAPH_BASE}/${instaId}/media?access_token=${accessToken}`
 
         const res = await fetch(gettingPostsUrl)
+        console.log("Posts url: ", gettingPostsUrl)
 
         if (!res.ok) {
             console.log('Error retrieving posts from instagram', res)
