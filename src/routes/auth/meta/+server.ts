@@ -19,7 +19,7 @@ export const GET: RequestHandler = async ({ url, locals }) => {
     const pool = await locals.db();
 
     try {
-        const getRes = await getLLTokenAndId(pool, userId)
+        const getRes = await getLLTokenAndId(pool, userId, 'instagram')
 
         if (getRes.token) {
             const token = decrypt(getRes.token, getRes.iv, getRes.tag)
@@ -35,7 +35,7 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 
     const r = getRedis()
     await r.set(`ig:state:${state}`, JSON.stringify({ userId, state }), { EX: 6000 })
-    r.close()
+
 
     return new Response(JSON.stringify({ state }))
 }
