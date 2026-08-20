@@ -16,6 +16,7 @@ services:
       # IMPORTANT: run `docker compose` from WSL in the WSL repo path so '.'
       # is the Linux filesystem, not C:\.
       - .:/app
+      - polvo-docker-db:/app/sql/
       - node_modules:/app/node_modules
       - vite_cache:/app/.vite
       - svelte_kit:/app/.svelte-kit
@@ -64,6 +65,7 @@ volumes:
   vite_cache:
   svelte_kit:
   pgdata_polvo:
+  polvo-docker-db:
 
 networks:
   shared:

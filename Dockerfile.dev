@@ -1,9 +1,14 @@
 FROM node:25-alpine3.22 AS dev
 WORKDIR /app
-
+COPY /polvo-docker-db/ /app/sql
 # install deps first (better layer cache)
 COPY package.json package-lock.json* ./
+#COPY /scripts scriptsa/
+#COPY /polvo-docker-db/ /app/sql
 RUN npm ci
+
+RUN apk add postgresql-client \
+    && apk add tzdata
 
 # you'll bind-mount the rest of the source in compose
 EXPOSE 5173
